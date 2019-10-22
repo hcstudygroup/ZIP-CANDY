@@ -1,0 +1,206 @@
+@charset "UTF-8";
+/* PC共通
+---------------------------------------------------------- */
+.tagIcon {
+  margin: 5px 5px 0 0;
+  padding: 5px;
+  min-width: 116px;
+  display: inline-block;
+  border: solid 1px #C8CFD7;
+  background: #FFF;
+  text-align: center;
+  line-height: 1;
+  font-size: 12px;
+  color: #191E28;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+
+/* タブレット共通
+---------------------------------------------------------- */
+/* スマートフォン共通
+---------------------------------------------------------- */
+/* PC
+---------------------------------------------------------- */
+/* プレスリリーストップ */
+#newsIndex .articleDw {
+  margin-top: 60px;
+}
+
+/* プレスリリーストップ 「お知らせ」の一時的非表示 */
+#newsIndex #contentArea #mainColumn #item3.announcement {
+  /*display: none;*/
+}
+#newsIndex #contentArea #mainColumn ul.anchorLink li.scroll:last-child {
+  /*display: none;*/
+}
+
+/* プレスリリース検索結果 */
+#newsSearch .articleDw {
+  margin-top: 60px;
+}
+
+/* プレスリリースリスト */
+#newsList .articleDw {
+  margin-top: 60px;
+}
+
+/* プレスリリース詳細 */
+#newsDetail .articleAside {
+  margin-top: 10px;
+  overflow: hidden;
+  *zoom: 1;
+}
+#newsDetail .articleAside .snsBlock {
+  margin-top: 0;
+  height: 20px;
+  width: 38.23529%;
+  float: right;
+  letter-spacing: -.40em;
+  text-align: right;
+}
+#newsDetail .articleAside .snsBlock li {
+  margin: 0 10px 0 0;
+  height: 20px;
+  display: inline-block;
+  letter-spacing: normal;
+  vertical-align: top;
+}
+#newsDetail .articleAside .snsBlock li:last-child {
+  margin-right: 0;
+}
+#newsDetail .articleAside .asideBlock {
+  width: 61.76471%;
+  float: left;
+}
+#newsDetail .articleAside .asideBlock .category {
+  margin-top: -5px;
+  line-height: 1;
+}
+#newsDetail .articleAside .asideBlock .date {
+  margin-top: 10px;
+  line-height: 1.6;
+  font-size: 12px;
+  color: #323741;
+}
+#newsDetail .articleAside .asideBlock .release {
+  margin-top: 1px;
+  line-height: 1.6;
+  font-size: 12px;
+  color: #323741;
+}
+#newsDetail .articleDtl {
+  margin-top: 20px;
+  color: #323741;
+}
+#newsDetail .articleDtl .articleDtlImg {
+  margin: 0 0 30px 0;
+  text-align: left;
+  font-size: 0;
+}
+#newsDetail .articleDtl .articleDtlImg img {
+  width: 180px;
+  font-size: initial;
+}
+#newsDetail .articleDtl .articleDtlImg.logoList {
+  text-align: center;
+}
+#newsDetail .articleDtl .articleDtlImg.logoList img {
+  width: 128px;
+  height: 50px;
+  margin: 0;
+}
+#newsDetail .articleDtl figure {
+  margin: 13px 0 0 0;
+  text-align: left;
+  font-size: 0;
+}
+#newsDetail .articleDtl figure img {
+  height: auto;
+  vertical-align: top;
+  font-size: initial;
+}
+#newsDetail .articleSns {
+  margin-top: 60px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px #C8CFD7;
+}
+#newsDetail .articleSns .snsBlock {
+  margin-top: 0;
+  height: 20px;
+  letter-spacing: -.40em;
+  text-align: left;
+}
+#newsDetail .articleSns .snsBlock li {
+  margin: 0 10px 0 0;
+  height: 20px;
+  display: inline-block;
+  letter-spacing: normal;
+  vertical-align: top;
+}
+#newsDetail .articleSns .snsBlock li:last-child {
+  margin-right: 0;
+}
+#newsDetail .articleRelate {
+  margin-top: 40px;
+}
+#newsDetail .articleRelate h2 {
+  margin-top: 0;
+}
+#newsDetail .articleRelate .listStyle01 dt {
+  color: #273250;
+}
+#newsDetail .articleDw {
+  margin-top: 60px;
+}
+#newsDetail .articleDw p {
+  color: #323739;
+}
+#newsDetail .acfImg img {
+  width: initial;
+  max-width: 100%;
+}
+#newsDetail .wp-caption-text {
+  margin: auto;
+}
+
+/* タブレット
+---------------------------------------------------------- */
+@media only screen and (max-width: 768px) {
+  /* プレスリリース詳細 */
+  #newsDetail .articleAside .snsBlock {
+    width: 50%;
+  }
+  #newsDetail .articleAside .asideBlock {
+    width: 50%;
+  }
+}
+/* スマートフォン
+---------------------------------------------------------- */
+@media only screen and (max-width: 640px) {
+  /* プレスリリース詳細 */
+  #newsDetail .articleAside .snsBlock {
+    width: 100%;
+    float: none;
+    text-align: left;
+  }
+  #newsDetail .articleAside .asideBlock {
+    margin-top: 20px;
+    width: 100%;
+    float: none;
+  }
+  #newsDetail .articleDtl .articleDtlImg {
+    text-align: left;
+  }
+  #newsDetail .articleDtl .articleDtlImg img {
+    width: 94px;
+  }
+}

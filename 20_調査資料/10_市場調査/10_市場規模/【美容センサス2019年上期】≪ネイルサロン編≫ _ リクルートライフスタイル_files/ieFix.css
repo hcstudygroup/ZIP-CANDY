@@ -1,0 +1,276 @@
+@charset "UTF-8";
+.ie {
+  /* サービス サービス詳細 */
+  /*  ワーカーズ 共通 */
+  /*  ワーカーズ トップ */
+  /*  ワーカーズ タグ別一覧 */
+  /*  ワーカーズ 詳細 */
+  /* サービス サービスリスト タグ別一覧 */
+  /* プレスリリース 詳細 */
+  /* media 共通 */
+  /* media 詳細 */
+  /* 会社紹介 役員紹介 */
+  /* トップ */
+  /* サポート 広告掲載・サービス導入に関するお問い合わせ */
+}
+.ie #headerLink li#searchBox {
+  margin-top: -2px;
+}
+.ie .btnList li a {
+  padding: 18px 20px 8px;
+}
+.ie .btnXl {
+  padding: 25px 30px 10px;
+}
+.ie .btnLer {
+  padding: 20px 30px 10px;
+}
+.ie .btnDef {
+  padding: 16px 20px 12px;
+}
+.ie .btnSml {
+  padding: 10px 10px 5px;
+}
+.ie .btnSel:after {
+  margin-top: -.55em;
+}
+.ie .btnSel span {
+  padding: 18px 20px 10px;
+}
+.ie .selectLink span {
+  padding: 10px 0 4px .6em;
+}
+.ie .listStyle01 dd.icon,
+.ie .listStyle09 dd.icon {
+  padding: 8px 0 2px 0;
+}
+.ie .listStyle04 li dd.linkIcon .icon a {
+  padding: 15px 17px 9px 17px;
+}
+.ie .paging .dot {
+  padding-top: 10px;
+}
+.ie .paging .bkBtn span, .ie .paging .nxBtn span {
+  padding: 25px 0 7px;
+}
+.ie .paging ul li span {
+  padding: 25px 12px 15px;
+}
+.ie#serviceDetail .mainVi .sns {
+  padding-top: 7px;
+}
+.ie#serviceDetail .dtlArea .dtlTxt h2 {
+  margin: 8px 0 32px 0;
+}
+.ie#serviceDetail .btnList02 a {
+  padding: 21px 20px 13px 20px;
+}
+.ie#serviceDetail .btnList02 a.iconWeb {
+  padding-left: 54px;
+}
+.ie#serviceDetail .tagBtn01 dt {
+  top: 15px;
+}
+.ie#serviceDetail .tagBtn01 dd a {
+  padding: 8px 10px 4px;
+}
+.ie#serviceDetail .snsBtn01 dt {
+  padding-top: 10px;
+}
+.ie#serviceDetail .serviceBox .dtlArea h3 {
+  margin-bottom: 35px;
+  padding-top: 5px;
+}
+@media only screen and (max-width: 768px) {
+  .ie#serviceDetail .mainVi .sns {
+    padding-top: 0;
+  }
+}
+.ie.companyWks#companyWksTag .tagArea dl dt {
+  margin: -4px 0 6px;
+  padding-top: 12px;
+  background-position: left top;
+}
+.ie.companyWks .lmListArea .list .profile .profBox {
+  padding-top: 5px;
+}
+.ie.companyWks .lmListArea .list .profile .profBox .name span {
+  padding-bottom: 10px;
+}
+.ie.companyWks .lmSearchArea .search .business dt {
+  margin-bottom: -4px;
+  padding-top: 4px;
+}
+.ie.companyWks .lmSearchArea .search .business span a {
+  padding: 13px 10px 7px 10px;
+}
+.ie.companyWks .lmSearchArea .themeSearch .theme dt {
+  margin-bottom: -4px;
+  padding-top: 4px;
+}
+.ie.companyWks .lmSearchArea .themeSearch .theme dd span a {
+  padding: 13px 10px 7px 10px;
+}
+@media only screen and (max-width: 640px) {
+  .ie.companyWks .lmSearchArea .search .map .mapSp dt {
+    padding: 17px 40px 9px 40px;
+  }
+  .ie.companyWks .lmSearchArea .search .map .mapSp span a {
+    padding: 13px 10px 7px 10px;
+  }
+  .ie.companyWks .lmSearchArea .search .business dt {
+    padding: 17px 40px 9px 40px;
+  }
+  .ie.companyWks .lmSearchArea .themeSearch .theme dt {
+    padding: 13px 50px 7px 40px;
+  }
+}
+.ie#companyWksIndex .mainVi .viCont .profile .profBox .profDtl .name {
+  margin: 4px 0 0 0;
+}
+.ie#companyWksIndex .mainVi .viCont .profile .profBox .profDtl .dtlBtn a {
+  padding: 18px 15px 12px 15px;
+}
+.ie#companyWksIndex .mainVi .viCont .searchBtn a {
+  padding: 19px 15px 11px 42px;
+}
+.ie#companyWksIndex .lmListArea .listBtn a {
+  padding: 24px 60px 16px 60px;
+}
+.ie#companyWksTag .tagArea dl dt {
+  padding: 10px 0 4px 30px;
+}
+.ie#companyWksTag .tagArea dl dd span a {
+  padding: 13px 10px 7px 10px;
+}
+.ie#companyWksTag .tagArea .searchBtn a {
+  padding: 19px 15px 11px 42px;
+}
+.ie#companyWksTag .lmListArea .paging ul li span {
+  padding: 1.4em 0.5em 0.96em 0.5em;
+}
+@media only screen and (max-width: 768px) {
+  .ie#companyWksTag .tagArea dl dt {
+    padding: 17px 40px 11px 47px;
+  }
+}
+.ie#companyWksDtl .relatedArea .relatedContent dl.tag dd span a {
+  padding: 13px 10px 7px 10px;
+}
+.ie#companyWksDtl .recruitArea .recruitContent .linkBtn a {
+  padding: 15px 20px 9px 20px;
+}
+.ie#serviceList #tagList #tags ul li a {
+  padding: 10px 10px 5px;
+}
+.ie#serviceList #tagList #tags ul li span {
+  margin-top: -0.4em;
+}
+.ie#newsDetail .tagIcon {
+  padding: 8px 5px 2px 5px;
+}
+.ie#mediaIndex .tagBox li a, .ie#mediaDetail .tagBox li a {
+  padding-top: 9px;
+  padding-bottom: 3px;
+}
+.ie#mediaIndex .tagBox .tagBtn a, .ie#mediaDetail .tagBox .tagBtn a {
+  padding-top: 8px;
+  padding-bottom: 4px;
+}
+.ie#mediaIndex .aboutArea .aboutBtn a, .ie#mediaDetail .aboutArea .aboutBtn a {
+  padding-top: 9px;
+  padding-bottom: 3px;
+}
+.ie#mediaDetail .articleArea .author .authorDtl dt a {
+  padding-top: 4px;
+}
+.ie#mediaDetail .articleArea .articleSns ul li a {
+  padding-top: 25px;
+  padding-bottom: 15px;
+}
+.ie#mediaDetail .articleArea .articleTag h3 {
+  top: 14px;
+}
+.ie#mediaDetail .articleArea .articleTag ul li a {
+  padding-top: 9px;
+  padding-bottom: 3px;
+}
+.ie#mediaDetail .relateArea .linkBox a {
+  padding-top: 14px;
+  padding-bottom: 6px;
+}
+.ie#companyLeadership .officer .dtl .profile .comment dt:after {
+  top: 8px;
+}
+.ie#siteTop .linkbtn01 a,
+.ie#siteTop .linkbtn02 a,
+.ie#siteTop .linkbtn04 a {
+  padding: 21px 20px 11px 20px;
+}
+.ie#siteTop .linkbtn01 span {
+  padding: 21px 20px 11px 20px;
+}
+.ie#siteTop .linkbtn03 a {
+  padding: 11px 10px 5px 10px;
+}
+.ie#supportAd .adList dl dd a {
+  padding: 15px 35px 11px 35px;
+}
+
+.ie9 {
+  /* 共通 */
+  font-family: "メイリオ", Meiryo, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, sans-serif, monospace !important;
+  /* ie9のみ グラデーション filter無効 */
+  /* サイトトップ */
+  /* サービス 詳細 */
+  /*  ワーカーズ 共通 */
+}
+.ie9 .listStyle01 dd.icon,
+.ie9 .listStyle09 dd.icon {
+  padding: 6px 0 4px 0;
+}
+.ie9 #siteTop .service .viImg:after,
+.ie9 #siteTop .media .tbList ul li a .picImg:after,
+.ie9 #serviceIndex .serviceVi .viImg:after,
+.ie9 #serviceDetail .mainVi .viImg:after,
+.ie9 #serviceDetail .dtlArea .dtlImg .img:after,
+.ie9 #companyIndex .mainVi .viImg:after,
+.ie9 #mediaIndex .articleList ul li a .picImg:after,
+.ie9 #mediaDetail .mainArea .viImg:after {
+  filter: none;
+}
+.ie9#siteTop .noticeArea .notice dl dt {
+  width: 100px;
+}
+.ie9#siteTop .noticeArea .notice dl dd {
+  width: 735px;
+}
+.ie9#serviceDetail .mainVi .viCont .contFooter .sns {
+  width: 300px;
+}
+.ie9#serviceDetail .mainVi .viCont .contFooter .sns .snsBtn01 {
+  width: 300px;
+}
+.ie9#serviceDetail .dtlArea .dtlTxt h2 {
+  margin: 0 0 38px 0;
+  line-height: 1.2;
+}
+.ie9.companyWks .lmListArea .list .profile .profBox {
+  padding-top: 5px;
+}
+@media only screen and (max-width: 768px) {
+  .ie9#serviceDetail .mainVi .viCont .contFooter .sns {
+    width: 48.85057%;
+  }
+  .ie9#serviceDetail .mainVi .viCont .contFooter .sns .snsBtn01 {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 640px) {
+  .ie9#serviceDetail .mainVi .viCont .contFooter .sns {
+    width: 100%;
+  }
+  .ie9#serviceDetail .mainVi .viCont .contFooter .sns .snsBtn01 {
+    width: 100%;
+  }
+}

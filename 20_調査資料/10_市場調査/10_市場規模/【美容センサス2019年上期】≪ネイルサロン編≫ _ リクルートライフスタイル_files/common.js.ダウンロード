@@ -1,0 +1,292 @@
+(function(doc, win, $) {
+  $(window).on('pageshow', function() {
+    $('.hover').removeClass('hover');
+  });
+  $(window).load(function() {
+    if ($('#sideColumn').length && $('body').attr('id') !== 'companyIndex' && $('body').attr('id') !== 'company') {
+      $('#contentArea > *').heightLine({
+        minWidth: 769
+      });
+    }
+    if ($('#bnrSp').length && $('#bnrSp li').size() > 2) {
+      $('#bnrSp ul').bxSlider({
+        controls: false,
+        slideMargin: 20,
+        infiniteLoop: false
+      });
+    }
+  });
+  $(function() {
+    var centeringModalSyncer, isIE, isIE9, modalYtUrl, notList, timer, ua, viewport1, viewport2, viewportSet, windowW;
+    ua = navigator.userAgent;
+    if (ua.match(/MSIE/) || ua.match(/Trident/)) {
+      if (ua.match(/MSIE 9./)) {
+        isIE9 = true;
+      } else {
+        isIE = true;
+      }
+    }
+    if (isIE) {
+      $('body').addClass('ie');
+    } else if (isIE9) {
+      $('body').addClass('ie9');
+    }
+    if ($('img.over').length) {
+      $('img.over').mouseenter(function() {
+        $(this).attr('src', $(this).attr('src').replace('_no', '_on'));
+      }).mouseleave(function() {
+        $(this).attr('src', $(this).attr('src').replace('_on', '_no'));
+      });
+    }
+    notList = '.btn, header a, #headerSub a, #footerSub a, footer a, #headerSub a, #sideColumn a, #bnrArea a, .noIcon a';
+    $('a[href$=".pdf"]').not(notList).after('<span class="icon_dlpdf"></span>');
+    $('a[href$=".xls"],a[href$=".xlsx"]').not(notList).after('<span class="icon_dlxls"></span>');
+    $('a[href$=".zip"]').not(notList).after('<span class="icon_dlzip"></span>');
+    $('a[target="_blank"]').not('a[href$=".pdf"],a[href$=".xls"],a[href$=".xlsx"],a[href$=".zip"]').not(notList).after('<span class="icon_blank"></span>');
+    $('.scroll a[href^=#]').on('click touch', function() {
+      var href, position, speed, target;
+      speed = 600;
+      href = $(this).attr('href');
+      if (href === '#top') {
+        href = '#wrapper';
+      }
+      if (href !== "#" && href !== "") {
+        target = (href === "#" || href === "" ? 'html' : href);
+        position = $(target).offset().top;
+        $('body,html').animate({
+          scrollTop: position
+        }, speed, 'swing');
+      }
+      return false;
+    });
+    $('#searchBox input').on('focus', function() {
+      if (!$('#searchBox').hasClass('focus')) {
+        $('#searchBox').addClass('focus');
+      }
+    });
+    $('#searchBox input').on('blur', function() {
+      if ($(this).val() === '') {
+        $('#searchBox').removeClass('focus');
+      }
+    });
+    $('#searchBox button').on('click touch', function() {
+      $('#search').submit();
+    });
+    $('#menu button').on('click touch', function() {
+      $(this).toggleClass('open');
+      if ($(this).hasClass('open')) {
+        $('#headerIn').stop().slideDown(300, function() {
+          $(this).removeAttr('style').attr('style', 'display:block;');
+        });
+      } else {
+        $('#headerIn').stop().slideUp(300, function() {
+          $(this).removeAttr('style');
+        });
+      }
+    });
+    if (ua.search(/Android 2./) === -1) {
+      $(document).on('touchstart mouseenter', '#gNavi a,#lNavi a,.btn,.sNavi a,.logoList a', function() {
+        if ($('#menu').css('display') === 'block') {
+          $(this).addClass('hover');
+          setTimeout(function() {
+            if (($(this)).hasClass('hover')) {
+              $(this).addClass('hover');
+            }
+          }, 5000);
+        }
+      });
+      $(document).on('touchend mouseleave', '#gNavi a,#lNavi a,.btn,.sNavi a,.logoList a', function() {
+        if ($('#menu').css('display') === 'block') {
+          $(this).removeClass('hover');
+        }
+      });
+    }
+    if ($('.btnListPC').length) {
+      $('.btnListPC').each(function() {
+        var btn, select;
+        $(this).append('<div class="btnSel btn"><span>選択してください</span><select></select></div>');
+        btn = $('.btnSel a', this);
+        select = $('.btnSel select', this);
+        select.append('<option value="">選択してください</option>');
+        $('.btnListPC li').each(function() {
+          var link, text;
+          link = $('a', this).attr('href');
+          text = $('a', this).text();
+          if ($(this).hasClass('current')) {
+            select.append('<option value="' + link + '" selected>' + text + '</option>');
+            $('.btnSel span').text(text);
+          } else {
+            select.append('<option value="' + link + '">' + text + '</option>');
+          }
+          if (btn.text() === '') {
+            btn.text(text);
+          }
+        });
+      });
+    }
+    $(document).on('click touch', '.btnSel select', function() {
+      $(this).parent().removeClass('hover');
+    });
+    $(document).on('change', '.btnSel select', function() {
+      if ($(this).val() !== '') {
+        $(this).removeAttr('style').blur();
+        $(this).prev('span').text($('option:selected', this).text()).removeAttr('style');
+        location.href = $(this).val();
+      } else {
+        $(this).removeAttr('style').blur();
+        $(this).prev('span').text($('option:selected', this).text());
+      }
+    });
+    if ($('.selectbox').length) {
+      $('.selectbox').each(function() {
+        var select;
+        select = $('select', this);
+        select.prev('span').text($('option:selected', select).text());
+      });
+    }
+    $('.selectbox select').on('click touch', function() {
+      $(this).parent().removeClass('hover');
+    });
+    $('.selectbox select').on('change', function() {
+      if ($(this).val() !== '') {
+        $(this).removeAttr('style').blur();
+        $(this).prev('span').text($('option:selected', this).text()).removeAttr('style');
+      } else {
+        $(this).removeAttr('style').blur();
+        $(this).prev('span').text($('option:selected', this).text());
+      }
+    });
+    $('.selectLink .btn').on('click touch', function() {
+      var select;
+      var dateVal;
+      select = $(this).attr('data-select');
+      if (select == "#category1") {
+        dateNum = $("#date1").val();
+      }
+      else if (select == "#category2") {
+        dateNum = $("#date2").val();
+      }
+
+      if (($(select).val() !== '')||(dateNum !=='')) {
+        //カテゴリのみ選ばれた時
+        if (dateNum === '') {
+          location.href = $(select).val();
+        }
+        //年だけ選ばれた時
+        else if ($(select).val() === '') {
+          location.href = dateNum;
+        }
+        //両方選ばれた時
+        else{
+          result = dateNum.match( /(\d{4})/ );
+          location.href = $(select).val()+result[0];
+        }
+      }
+    });
+    $('.tabCont .btnTab li').click(function() {
+      var num;
+      num = $('.tabCont .btnTab li').index(this);
+      $('.tabCont .btnTab li').removeClass('current');
+      $('.tabDtlArea .tabDtl').css('display', 'none');
+      $(this).addClass('current');
+      $('.tabDtlArea .tabDtl').eq(num).css('display', 'block');
+    });
+    modalYtUrl = function() {
+      var mdlCls, winSize;
+      winSize = $(window).innerWidth();
+      mdlCls = $('.movieImg a').hasClass('modal');
+      if (winSize <= 768 && mdlCls === true) {
+        $('.modal').each(function(i) {
+          var ytId, ytUrl;
+          ytId = $(this).data('yt');
+          ytUrl = 'https://www.youtube.com/watch?v=' + ytId;
+          $(this).attr({
+            href: ytUrl,
+            target: '_blank'
+          });
+        });
+      } else if (winSize > 768 && mdlCls === true) {
+        $('.modal').attr('href', 'javascript:void(0)').removeAttr('target');
+      }
+    };
+    centeringModalSyncer = function() {
+      var ch, cw, h, pxleft, pxtop, w;
+      w = $(window).width();
+      h = $(window).height();
+      cw = $('.modalContent').width();
+      ch = $('.modalContent').height();
+      pxleft = (w - cw) / 2;
+      pxtop = (h - ch) / 2;
+      $('.modalContent').css({
+        'left': pxleft + 'px',
+        'top': pxtop + 'px'
+      });
+    };
+    modalYtUrl();
+    $(window).resize(modalYtUrl);
+    $('.modal').click(function() {
+      var pcWinSize, pcYtId;
+      pcWinSize = $(window).innerWidth();
+      pcYtId = $(this).data('yt');
+      if (pcWinSize > 768) {
+        $('body').append('<div class="modalOverlay"></div>');
+        $('.modalOverlay').fadeIn('fast');
+        $('body').append('<div class="modalContent">' + '<iframe width="960" height="573" src="https://www.youtube.com/embed/' + pcYtId + '?rel=0" frameborder="0" allowfullscreen></iframe>' + '<div class="modalCls"><img src="/common/img/btn_close.png" alt="閉じる"></div>' + '</div>');
+        centeringModalSyncer();
+        $('.modalContent').fadeIn('fast');
+        $(window).resize(centeringModalSyncer);
+        $('.modalOverlay,.modalCls').unbind().click(function() {
+          $('.modalOverlay,.modalContent').fadeOut('fast', function() {
+            $('.modalOverlay,.modalContent').remove();
+          });
+        });
+      }
+    });
+    if (ua.search(/Android 2./) === -1) {
+      viewport1 = "width=980px,minimum-scale=0.5,maximum-scale=2.0,user-scalable=yes";
+      viewport2 = "width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no";
+      windowW = window.innerWidth;
+      viewportSet = function() {
+        if (windowW > 768 && windowW <= 980) {
+          $("meta[name='viewport']").attr('content', viewport1);
+        } else {
+          $("meta[name='viewport']").attr('content', viewport2);
+        }
+      };
+      viewportSet();
+      timer = false;
+      $(window).resize(function() {
+        if (timer !== false) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+          windowW = window.innerWidth;
+          viewportSet();
+        }, 200);
+      });
+    }
+    $('#tagView a').on('click', function() {
+      var $url, btnTxt_hide, btnTxt_view;
+      $url = location.href;
+      if (/english/.test($url)) {
+        btnTxt_hide = 'Hide the Tags';
+        btnTxt_view = 'View the Tags';
+      } else {
+        btnTxt_hide = 'タグを隠す';
+        btnTxt_view = 'タグを表示する';
+      }
+      $(this).removeClass('hover');
+      if (!$('#tagList').hasClass('open')) {
+        $('#tagList #tags').stop().slideDown('fast', function() {
+          $('#tagList').addClass('open');
+          $('#tagView .btnTxt').text(btnTxt_hide);
+        });
+      } else {
+        $('#tagList #tags').stop().slideUp('fast', function() {
+          $('#tagList').removeClass('open');
+          $('#tagView .btnTxt').text(btnTxt_view);
+        });
+      }
+    });
+  });
+})(document, window, jQuery);
