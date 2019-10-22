@@ -1,0 +1,22 @@
+// 画像ロールオーバー
+jQuery(function($){
+      jQuery('.detail-container a img:not(.active)').hover(function(){
+            jQuery(this).attr('src', jQuery(this).attr('src').replace('_off', '_on'));
+                }, function($){
+                      jQuery(this).attr('src', jQuery(this).attr('src').replace('_on', '_off'));
+  });
+
+});
+
+
+jQuery(function($){
+  jQuery('.main-contents a[href^=#]').click(function() {
+    var speed = 500;
+    var href= jQuery(this).attr("href");
+    var target = jQuery(href == "#" || href == "" ? 'html' : href);
+    var position = target.offset().top-32;
+    jQuery('body,html').animate({scrollTop:position}, speed, 'swing');
+    return false;
+   });
+});
+
