@@ -1,0 +1,91 @@
+@charset "utf-8";
+/* ============================================================
+＠＠
+初期化
+
+%update / 2011.11.22
+
+------------------
+【目次】
+------------------
+▼initialization
+▼other hack
+============================================================ */
+
+/* ------------------------------------------------------------
+▼initialization
+------------------------------------------------------------ */
+div,p,dl,dt,dd,ul,ol,li,table,tr,th,td,
+h1,h2,h3,h4,h5,h6,form,input,textarea,button,fieldset,blockquote {
+	margin: 0;
+	padding: 0;
+	zoom: 1;  /* for IE hasLayout true */
+}
+
+body {  /* background, color refer => pageframe.css */
+	margin: 0;
+	padding: 0;
+	font-size: 75%;
+	font-style: normal;
+	font-weight: normal;
+	font-family: "游ゴシック", "YuGothic", "メイリオ", Meiryo, "Hiragino Kaku Gothic ProN", sans-serif; 
+	line-height: 1.5;
+	color: #313135;
+	-webkit-text-size-adjust: 100%;
+}
+
+
+h1,h2,h3,h4,h5,h6 {
+	font-size: 100%;
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+input, textarea {
+	padding: 0px;
+	vertical-align: middle;
+}
+
+select {
+	padding: 0px;
+	vertical-align: middle;
+}
+* html select { vertical-align: -0.25em; }  /* for IE6 */
+
+em, strong {
+	font-weight:bold;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+hr { display: none;}
+
+img {
+	border: none;
+	vertical-align: bottom;
+}
+
+/*li { list-style: none outside; }*/
+
+textarea {
+	overflow: auto;
+}
+
+map {
+	display: none;
+}
+
+select,
+input,
+textarea,
+button {
+	font-family: "游ゴシック", "YuGothic", "メイリオ", Meiryo, "Hiragino Kaku Gothic ProN", sans-serif; 
+}
+
+/* ------------------------------------------------------------
+▼other hack
+------------------------------------------------------------ */
+/* for IE6 background flicker bug */
+* html { filter: expression( document.execCommand("BackgroundImageCache", false, true) ); }

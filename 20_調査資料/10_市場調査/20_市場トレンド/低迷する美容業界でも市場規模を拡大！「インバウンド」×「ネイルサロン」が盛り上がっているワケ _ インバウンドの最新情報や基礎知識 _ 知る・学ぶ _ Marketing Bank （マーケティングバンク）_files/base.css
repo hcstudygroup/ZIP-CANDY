@@ -1,0 +1,397 @@
+@charset "utf-8";
+/* -----------------------------------------
+common.css
+サイト共通設定用css
+----------------------------------------- */
+
+
+/* ------------------
+【マージン調整】
+------------------ */
+
+/* margin ----- */
+.mt_00{margin-top:0px !important;}
+.mt_05{margin-top:5px !important;}
+.mt_10{margin-top:10px !important;}
+.mt_15{margin-top:15px !important;}
+.mt_20{margin-top:20px !important;}
+.mt_25{margin-top:25px !important;}
+.mt_30{margin-top:30px !important;}
+.mt_35{margin-top:35px !important;}
+.mt_40{margin-top:40px !important;}
+.mt_60{margin-top:60px !important;}
+
+.mr_00{margin-right:0px !important;}
+.mr_05{margin-right:5px !important;}
+.mr_10{margin-right:10px !important;}
+.mr_15{margin-right:15px !important;}
+.mr_20{margin-right:20px !important;}
+.mr_25{margin-right:25px !important;}
+.mr_30{margin-right:30px !important;}
+.mr_35{margin-right:35px !important;}
+.mr_40{margin-right:40px !important;}
+
+.ml_00{margin-left:0px !important;}
+.ml_05{margin-left:5px !important;}
+.ml_10{margin-left:10px !important;}
+.ml_15{margin-left:15px !important;}
+.ml_20{margin-left:20px !important;}
+.ml_25{margin-left:25px !important;}
+.ml_30{margin-left:30px !important;}
+.ml_35{margin-left:35px !important;}
+.ml_40{margin-left:40px !important;}
+
+.mb_00{margin-bottom:0px !important;}
+.mb_05{margin-bottom:5px !important;}
+.mb_10{margin-bottom:10px !important;}
+.mb_15{margin-bottom:15px !important;}
+.mb_20{margin-bottom:20px !important;}
+.mb_25{margin-bottom:25px !important;}
+.mb_30{margin-bottom:30px !important;}
+.mb_35{margin-bottom:35px !important;}
+.mb_40{margin-bottom:40px !important;}
+.mb_50{margin-bottom:50px !important;}
+.mb_60{margin-bottom:60px !important;}
+.mb_90{margin-bottom:90px !important;}
+
+/* padding ----- */
+.pt_00{padding-top:0px !important;}
+.pt_05{padding-top:5px !important;}
+.pt_10{padding-top:10px !important;}
+.pt_15{padding-top:15px !important;}
+.pt_20{padding-top:20px !important;}
+.pt_25{padding-top:25px !important;}
+.pt_30{padding-top:30px !important;}
+.pt_35{padding-top:35px !important;}
+.pt_40{padding-top:40px !important;}
+
+.pr_00{padding-right:0px !important;}
+.pr_05{padding-right:5px !important;}
+.pr_10{padding-right:10px !important;}
+.pr_15{padding-right:15px !important;}
+.pr_20{padding-right:20px !important;}
+.pr_25{padding-right:25px !important;}
+.pr_30{padding-right:30px !important;}
+.pr_35{padding-right:35px !important;}
+.pr_40{padding-right:40px !important;}
+
+.pl_00{padding-left:0px !important;}
+.pl_05{padding-left:5px !important;}
+.pl_10{padding-left:10px !important;}
+.pl_15{padding-left:15px !important;}
+.pl_20{padding-left:20px !important;}
+.pl_25{padding-left:25px !important;}
+.pl_30{padding-left:30px !important;}
+.pl_35{padding-left:35px !important;}
+.pl_40{padding-left:40px !important;}
+
+.pb_00{padding-bottom:0px !important;}
+.pb_05{padding-bottom:5px !important;}
+.pb_10{padding-bottom:10px !important;}
+.pb_15{padding-bottom:15px !important;}
+.pb_20{padding-bottom:20px !important;}
+.pb_25{padding-bottom:25px !important;}
+.pb_30{padding-bottom:30px !important;}
+.pb_35{padding-bottom:35px !important;}
+.pb_40{padding-bottom:40px !important;}
+
+
+/* ------------------------------------------------------------
+▼基本段落
+------------------------------------------------------------ */
+.sectionL {
+	margin-bottom: 40px !important;
+}
+
+.sectionM {
+	margin-bottom: 20px !important;
+}
+
+.sectionS {
+	margin-bottom: 10px !important;
+}
+
+/* ------------------------------------------------------------
+▼共通レイアウト
+------------------------------------------------------------ */
+
+
+/* flot ----- */
+.float_l{float:left;}
+.float_r{float:right;}
+
+/* text-align ----- */
+.text_align_l{text-align:left;}
+.text_align_r{text-align:right;}
+.text_align_c{text-align:center;}
+
+/* position ----- */
+.position_rel{position:relative;}
+.position_abs{position:absolute;}
+.position_sta{position:static;}
+.position_fix{position:fixed;}
+
+/* center ----- */
+.center{margin:0px auto;}
+
+.cancelMrk:before {
+	display: none;
+}
+
+
+
+
+/* ------------------------------------------------------------
+▼フォントサイズ
+------------------------------------------------------------ */
+
+/*-----------------------------------------------------
+Font Settings
+http://webtech-walker.com/archive/2008/05/16032443.html参照
+
+基本サイズ12px
+
+
+26px = 217%
+10px = 84%
+11px = 92%
+12px = 100%
+13px = 109%
+14px = 117%
+15px = 125%
+16px = 134%
+17px = 142%
+18px = 150%
+19px = 159%
+20px = 167%
+21px = 175%
+22px = 184%
+23px = 192%
+24px = 200%
+25px = 209%
+26px = 217%
+28px = 233%
+30px = 250%
+36px = 300%
+------------------------------------------------------*/
+
+
+
+/* h1-h6 */
+
+
+h1 {
+	font-size: 250%; /*30px*/
+	line-height:1;
+	letter-spacing:2px;
+}
+
+h2 {
+	font-size: 217%;/*26px*/
+	line-height:1;
+	display:block;
+	position:relative;
+}
+
+h3 {
+	font-size: 167%;/*20px*/
+	line-height:1;
+	color:#FFFFFF;
+	background-color:#242424;
+	display:block;
+	position:relative;
+}
+
+h4 {
+	font-size:150%;/*18px*/
+	line-height:1;
+	border-bottom:1px solid #cccccc;
+	margin-bottom:20px;
+}
+
+
+
+h5 {
+	font-size: 134% ;/*16px*/
+	line-height:1;
+	display:block;
+	position:relative;
+}
+
+h6 {
+	font-size: 134% ;/*16px*/
+	line-height:1;
+	display:block;
+	position:relative;
+}
+
+p,
+li,
+dt,
+dd{
+	font-size: 117% ;/*14px*/
+	line-height:1.6;
+}
+
+
+table{
+	font-size: 100% ;/*12px*/
+	line-height:1.6;
+}
+
+
+dt,
+dd,
+li,
+th,
+td{
+}
+
+em {
+	font-style:normal;
+}
+br{
+letter-spacing: 0;
+}
+
+/* superscript, subscript */
+sup,
+sub {
+	line-height: 1.2;
+}
+* html sup,
+* html sub { font-size: 100%; }  /* for IE6 */
+*:first-child+html sup,
+*:first-child+html sub { font-size: 100%; }  /* for IE7 */
+head~/* */body sup,
+head~/* */body sub { font-size: 100%; }  /* for IE8 */
+html:not(:target) sup,
+html:not(:target) sub { font-size: 83.4%; }  /* for mordern except IE8 */
+
+sup { vertical-align: 0.25em; }
+sub { vertical-align: 0px; }
+
+
+/* Large,Small */
+.fontS {
+	font-size: 94%;
+}
+.fontL {
+	font-size: 116%;
+}
+.fontLL {
+	font-size: 133%;
+}
+
+/* color */
+.cBlue {
+	color:#418cc5 !important;
+}
+
+.cRed {
+	color:#f0574b !important;
+}
+
+.cBlack {
+	color:#313135 !important;
+}
+
+
+/* ------------------------------------------------------------
+▼画像
+------------------------------------------------------------ */
+img {
+	border: 0px;
+}
+
+
+/* ------------------------------------------------------------
+▼リンク、画像マーカー
+------------------------------------------------------------ */
+/* <a> */
+a:link { 
+	color: #418cc5;
+	text-decoration: none;
+	-webkit-transition: all .3s;
+	transition: all .3s;
+}
+a:visited {
+	color: #418cc5;
+	text-decoration: none;
+}
+a:hover,
+a:active { 
+	color: #418cc5;
+	text-decoration: underline;
+}
+/* --- */
+
+
+a img {
+	background:none!important;
+	-webkit-transition: all .3s;
+	transition: all .3s;
+}
+ 
+ 
+a:hover img{
+	opacity:0.6;
+	filter:alpha(opacity=60);
+	-ms-filter: "alpha( opacity=60 )";
+	background:none!important;
+	zoom:1; /* for IE7 */
+	display:inline-block; /* for IE8 */
+}
+
+a.iconNoLine {
+	text-decoration: none;
+}
+a.iconNoLine span {
+	padding-left: 5px;
+}
+a.iconNoLine:hover span {
+	text-decoration: underline;
+}
+
+input,
+.conBtnArea {
+	-webkit-transition: all .3s;
+	transition: all .3s;
+}
+
+
+/* ------------------------------------------------------------
+▼汎用クラス
+------------------------------------------------------------ */
+
+.inner{
+	padding:0 20px;
+}
+
+
+
+
+
+
+
+/* ------------------------------------------------------------
+▼clearfix追記用
+------------------------------------------------------------ */
+
+
+.clearfix:after{
+	content:"";
+	display:block;
+	clear:both;
+	height:0.01px;
+}
+
+
+/* no ie mac */
+* html .clearfix{
+	height:1%;
+}
+
+/*.clearfix{
+	display:block;
+}*/

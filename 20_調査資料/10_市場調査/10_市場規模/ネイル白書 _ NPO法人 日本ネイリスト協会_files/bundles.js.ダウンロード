@@ -1,0 +1,380 @@
+(function ($) {
+
+function getDevice() {
+  var userAgent;
+  userAgent = window.navigator.userAgent.toLowerCase();
+  if ((navigator.userAgent.indexOf('Android') > 0 && navigator.userAgent.indexOf('Mobile') === -1) || navigator.userAgent.indexOf('A1_07') > 0 || navigator.userAgent.indexOf('SC-01C') > 0 || navigator.userAgent.indexOf('iPad') > 0) {
+    return 'sp';
+  } else if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') === -1) || navigator.userAgent.indexOf('iPod') > 0 || (navigator.userAgent.indexOf('Android') > 0 && navigator.userAgent.indexOf('Mobile') > 0)) {
+    return 'sp';
+  } else {
+    return 'www';
+  }
+}
+
+function scrollToTop(e){
+    e.preventDefault();
+    $('html,body').animate({
+        scrollTop: 0
+    }, 700);
+}
+
+var oldWinW = 0, oldWinH = 0;
+
+/** Resize Function**/
+function resizeFunction() {
+  var winW = $(window).outerWidth();
+  var winH = $(window).outerHeight();
+  
+  // Safari in apps のリサイズセンサーのバグ対応
+  if (winW == oldWinW && winH == oldWinH) {
+    return;
+  }
+  
+  oldWinW = winW;
+  oldWinH = winH;
+
+  $('.global_nav, .global_nav_sp').removeClass('opened');
+  $(".glnav-sp__open").removeClass('opened');
+  $('.wrapper').css({
+    position: '',
+    width: '',
+    top: ''
+  });
+  $(document).trigger('scroll');
+    
+  if (winW < 980) {    
+    // Main Navi Height
+    var mainNaviWidth = $('.global_nav_sp nav.root-nav ol li:first-child').outerWidth();
+    $('.global_nav_sp nav.root-nav li').each(function(){
+      var $self = $(this);
+      var adjustedHeight = mainNaviWidth * 4 / 5;
+      $self.height(adjustedHeight);
+    });
+    
+    if ($('.global_nav_sp').height() + $('.wrapper > .header').height() > winH) {
+      $('.global_nav_sp').height(winH - $('.wrapper > .header').height());
+    } else {
+      $('.global_nav_sp').css('height', '');
+    }
+    
+    // external sites navi height
+    $("#side-nav2 ul li").each(function(){
+      var $self = $(this);
+      var adjustedHeight = winW * 5 / 64;
+      $self.height(adjustedHeight);
+    });
+  } else {
+    $("#side-nav2 ul li").each(function(){
+      $(this).css({height: ''});
+    });
+  }
+};
+
+Drupal.behaviors.jnaContent = {
+  attach: function (context) {
+    
+    if ($('.wrapper').length) {
+      var sensor = new ResizeSensor($('.wrapper'), function(){
+        resizeFunction();
+      });
+      resizeFunction();
+    }
+  
+    /** Logo link **/
+    /** hook logo clicked **/
+    /*
+    $("#logo, ol.breadcrumb li:first-child > a").on("click", function(e){
+      e.preventDefault();
+      window.location = "http://"+getDevice()+".nail.or.jp";
+    });
+    */
+    // Scroll to Top
+    $("a.scroll-up").on("click", scrollToTop);
+    
+    /** PC 向けのサイトの処理 **/
+    $('.gnav-btn').on('click', function(e){
+      e.preventDefault();
+      var $glnav = $('.global__menu').parent();
+      $glnav.toggleClass('opened');
+      
+      var scrollTop = $(document).scrollTop();
+      var toolbarHeight = $('body').is('.toolbar-drawer') ? 64 : 0;
+      
+      if ($glnav.is('.opened')) {
+          var winW = $(window).width();
+          var marginLeft = parseInt($('.wrapper').css('marginLeft').replace('px',''),10);
+          
+          $('.wrapper').css({
+            position: 'fixed',
+            top: -1 * (scrollTop - toolbarHeight),
+            width: winW - marginLeft
+          });
+          $glnav.data({scroll: scrollTop});
+      } else {
+          $('.wrapper').css({
+            position: '',
+            width: '',
+            top: ''
+          });
+          
+          $(window).scrollTop($glnav.data('scroll'));
+      }
+    });
+    
+    /** Smart Phone 向けのフッターサイトマップの処理 **/
+    $("ul.navi__accordion__root > li > a.has-child").on("click", function(e){
+      e.preventDefault();
+      
+      var $self = $(this),
+        $pList = $self.parent(),
+        isActive = $pList.is(".active"),
+        $childNaviList = $pList.find("ul.navi__accordion__child");
+
+      $childNaviList.height(0);
+      $pList.removeClass("active").siblings().removeClass("active").find("ul.navi__accordion__child").height(0);
+      
+      if (!isActive) {
+        var height = $pList.outerHeight();
+        
+        var listHeight = $childNaviList.find("li").length * height;
+        $pList.addClass("active");
+        $childNaviList.height(listHeight);
+      }
+    }).on("click", function(e){e.preventDefault();});
+    
+    /** Smart Phone 向けメニューの制御 **/
+    $(".glnav-sp__open").on("click", function(e){
+      e.preventDefault();
+      var $glnavSp = $('.global_nav_sp');
+      $glnavSp.toggleClass('opened');
+      $(this).toggleClass('opened');
+      if ($glnavSp.is('.opened')) {
+        $('.wrapper').css({position: 'fixed', top: 0});
+      } else {
+        $('.wrapper').css({position: '', top: ''});
+        $(window).scrollTop(0);
+      }
+    });
+    
+    // Title and Menu Scrolling
+    $(document).on('scroll', function(e){
+      var winW = $(window).width();
+      var scrollTop = $(document).scrollTop();
+      var $leftMenuWord = $('.left_menu_word');
+      var $leftMenuContent = $('.left_menu_content');
+      var reset = {
+          position: 'static',
+          top: "",
+          zIndex: ""
+        };
+      
+       if (scrollTop > 0) {
+         $('a.scroll-up').addClass('shown');
+       } else {
+         $('a.scroll-up').removeClass('shown');
+       }
+       
+       if ($('.global_nav, .global_nav_sp').is('.opened')) {
+          return false;
+       }
+      /*
+      if (winW > 979) {
+        var headerHeight = $('.wrapper > .header').height() + $('.breadcrumb').height();
+        var wordHeight = $leftMenuWord.outerHeight();
+        var toolbarHeight = $('body').is('.toolbar-drawer') ? 64 : 0;
+
+        var leftMenuHeight = wordHeight+$leftMenuContent.outerHeight();
+        var scrolled = $('.wrapper').height() - scrollTop - leftMenuHeight - $(".footer").height();
+        
+        scrolled = scrolled > 0 ? 0 : scrolled;
+        
+        if (scrollTop >= headerHeight ) {
+          $leftMenuWord.css({
+            position: 'fixed',
+            top: scrolled + toolbarHeight,
+            zIndex: 1
+          });
+          $leftMenuContent.css({
+            position: 'fixed',
+            top: scrolled + wordHeight + toolbarHeight,
+            zIndex: 1
+          });
+          
+          $('.main').css({marginLeft: 320});
+        } else {
+          $leftMenuWord.css(reset);
+          $leftMenuContent.css(reset);
+          $('.main').css({marginLeft: 0});
+        }
+      } else {
+        $leftMenuWord.css(reset);
+        $leftMenuContent.css(reset);
+        $('.main').css({marginLeft: 0});
+      }*/
+    });
+
+    // Hash change event occurred
+    /*
+    $(window).on("hashchange", function(e){
+      $(document).trigger("scroll");
+    });
+    
+    if (window.location.hash && $(window.location.hash).length) {
+      var pos = $(window.location.hash).position();
+      $(document).scrollTop(pos.top).trigger("scroll");
+    }
+    */
+  }
+};
+
+}(jQuery));
+
+/**
+ * Class for dimension change detection.
+ *
+ * @param {Element|Element[]|Elements|jQuery} element
+ * @param {Function} callback
+ *
+ * @constructor
+ */
+ResizeSensor = function(element, callback) {
+    /**
+     *
+     * @constructor
+     */
+    function EventQueue() {
+        this.q = [];
+        this.add = function(ev) {
+            this.q.push(ev);
+        };
+
+        var i, j;
+        this.call = function() {
+            for (i = 0, j = this.q.length; i < j; i++) {
+                this.q[i].call();
+            }
+        };
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {String}      prop
+     * @returns {String|Number}
+     */
+    function getComputedStyle(element, prop) {
+        if (element.currentStyle) {
+            return element.currentStyle[prop];
+        } else if (window.getComputedStyle) {
+            return window.getComputedStyle(element, null).getPropertyValue(prop);
+        } else {
+            return element.style[prop];
+        }
+    }
+
+    /**
+     *
+     * @param {HTMLElement} element
+     * @param {Function}    resized
+     */
+    function attachResizeEvent(element, resized) {
+        if (!element.resizedAttached) {
+            element.resizedAttached = new EventQueue();
+            element.resizedAttached.add(resized);
+        } else if (element.resizedAttached) {
+            element.resizedAttached.add(resized);
+            return;
+        }
+
+        element.resizeSensor = document.createElement('div');
+        element.resizeSensor.className = 'resize-sensor';
+        var style = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+        var styleChild = 'position: absolute; left: 0; top: 0;';
+
+        element.resizeSensor.style.cssText = style;
+        element.resizeSensor.innerHTML =
+            '<div class="resize-sensor-expand" style="' + style + '">' +
+            '<div style="' + styleChild + '"></div>' +
+            '</div>' +
+            '<div class="resize-sensor-shrink" style="' + style + '">' +
+            '<div style="' + styleChild + ' width: 200%; height: 200%"></div>' +
+            '</div>';
+        element.appendChild(element.resizeSensor);
+
+        if (!{fixed: 1, absolute: 1}[getComputedStyle(element, 'position')]) {
+            element.style.position = 'relative';
+        }
+
+        var expand = element.resizeSensor.childNodes[0];
+        var expandChild = expand.childNodes[0];
+        var shrink = element.resizeSensor.childNodes[1];
+        var shrinkChild = shrink.childNodes[0];
+
+        var lastWidth, lastHeight;
+
+        var reset = function() {
+            expandChild.style.width = expand.offsetWidth + 10 + 'px';
+            expandChild.style.height = expand.offsetHeight + 10 + 'px';
+            expand.scrollLeft = expand.scrollWidth;
+            expand.scrollTop = expand.scrollHeight;
+            shrink.scrollLeft = shrink.scrollWidth;
+            shrink.scrollTop = shrink.scrollHeight;
+            lastWidth = element.offsetWidth;
+            lastHeight = element.offsetHeight;
+        };
+
+        reset();
+
+        var changed = function() {
+            if (element.resizedAttached) {
+                element.resizedAttached.call();
+            }
+        };
+
+        var addEvent = function(el, name, cb) {
+            if (el.attachEvent) {
+                el.attachEvent('on' + name, cb);
+            } else {
+                el.addEventListener(name, cb);
+            }
+        };
+
+        addEvent(expand, 'scroll', function() {
+            if (element.offsetWidth > lastWidth || element.offsetHeight > lastHeight) {
+                changed();
+            }
+            reset();
+        });
+
+        addEvent(shrink, 'scroll',function() {
+            if (element.offsetWidth < lastWidth || element.offsetHeight < lastHeight) {
+                changed();
+            }
+            reset();
+        });
+    }
+
+    if ("[object Array]" === Object.prototype.toString.call(element)
+        || ('undefined' !== typeof jQuery && element instanceof jQuery) //jquery
+        || ('undefined' !== typeof Elements && element instanceof Elements) //mootools
+    ) {
+        var i = 0, j = element.length;
+        for (; i < j; i++) {
+            attachResizeEvent(element[i], callback);
+        }
+    } else {
+        attachResizeEvent(element, callback);
+    }
+
+    this.detach = function() {
+        ResizeSensor.detach(element);
+    };
+};
+
+ResizeSensor.detach = function(element) {
+    if (element.resizeSensor) {
+        element.removeChild(element.resizeSensor);
+        delete element.resizeSensor;
+        delete element.resizedAttached;
+    }
+};

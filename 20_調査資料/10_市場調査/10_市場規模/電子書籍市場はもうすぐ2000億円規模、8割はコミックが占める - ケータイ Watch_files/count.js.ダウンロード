@@ -1,0 +1,61 @@
+if (typeof ipc == 'undefined') ipc = {};
+if (!ipc.count) ipc.count = {
+  send: function() {
+    (function(n,s){n&&n.sendBeacon?n.sendBeacon(s):(new Image(1,1)).src=s})(navigator,"//beacon.watch.impress.co.jp/measure");
+  },
+  load: function(selector) {
+    var parent = null;
+    if (typeof selector == 'undefined') {
+      parent = $(document);
+    } else {
+      parent = $(selector);
+    }
+    parent.find('a[data-ipc-count], area[data-ipc-count]').filter(function() {
+      return !$(this).attr('data-ipc-count-loaded');
+    }).each(function() {
+      $(this).attr('data-ipc-count-loaded', 'done');
+      $(this).click(function() {
+        var property = $(this).attr('data-ipc-count');
+        var dest = this.href.replace(/https?:\/\//, '');
+        
+        var src = '//beacon.watch.impress.co.jp/count/' + encodeURI(dest) + '?p=' + property;
+        if (navigator && navigator.sendBeacon) {
+          navigator.sendBeacon(src);
+        } else {
+          $.ajax({
+            url: src,
+            xhrFields: { withCredentials: true },
+          }).success(function(res){
+            console.log(res);
+          });
+        }
+        return true;
+      });
+    });
+  },
+  sequential_load: function(selector, remain) {
+    this.load(selector);
+    remain--;
+    if (remain > 0) {
+      window.setTimeout(function(){
+        ipc.count.sequential_load(selector, remain);
+      }, 1000);
+    }
+  }
+};
+if (document.addEventListener) {
+  document.addEventListener('DOMContentLoaded', function() {
+    ipc.count.load();
+  });
+}
+if (window.addEventListener) {
+  window.addEventListener('load', function() {
+    ipc.count.sequential_load(undefined, 10);
+  });
+} else if (window.attachEvent) {
+  window.attachEvent('onload', function() {
+    ipc.count.sequential_load(undefined, 10);
+  });
+}
+ipc.count.send();
+

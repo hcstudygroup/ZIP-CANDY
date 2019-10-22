@@ -1,0 +1,2193 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* フォーム用CSS
+--------------------------------------- */
+
+/* リード */
+
+.leadArea {
+	margin:0 auto 40px;
+	padding:0;
+	width:100%;
+}
+
+.leadArea .leadbox {
+	float:left;
+	margin:0 20px 0 0;
+	padding:0;
+	width:340px;
+	height:60px;
+	display:table;
+}
+
+.leadArea .leadbox2col {
+	float:left;
+	margin:0 15px 0 0;
+	padding:0;
+	width:520px;
+	height:60px;
+	display:table;
+}
+
+.leadArea .leadbox.last,
+.leadArea .leadbox2col.last {
+	margin-right:0;
+}
+
+.leadArea .leadbox.st1 {
+	background:url(/images/contact/bg_step01.png) no-repeat right top;
+}
+
+.leadArea .leadbox2col.st1 {
+	background:url(/images/contact/bg_stepL01.png) no-repeat right top;
+}
+
+.leadArea .leadbox.st1.current {
+	background:url(/images/contact/bg_step01_on.png) no-repeat right top;
+}
+
+.leadArea .leadbox2col.st1.current {
+	background:url(/images/contact/bg_stepL01_on.png) no-repeat right top;
+}
+
+.leadArea .leadbox.st2 {
+	background:url(/images/contact/bg_step02.png) no-repeat right top;
+}
+
+.leadArea .leadbox2col.st2 {
+	background:url(/images/contact/bg_stepL02.png) no-repeat right top;
+}
+
+.leadArea .leadbox.st2.current {
+	background:url(/images/contact/bg_step02_on.png) no-repeat right top;
+}
+
+.leadArea .leadbox2col.st2.current {
+	background:url(/images/contact/bg_stepL02_on.png) no-repeat right top;
+}
+.leadArea .leadbox.st3 {
+	background:url(/images/contact/bg_step03.png) no-repeat right top;
+}
+
+.leadArea .leadbox.st3.current {
+	background:url(/images/contact/bg_step03_on.png) no-repeat right top;
+}
+
+.leadArea .leadbox dl,
+.leadArea .leadbox2col dl {
+	margin:0;
+	height:60px;
+	display:table-cell;
+	vertical-align:middle;
+}
+
+.leadArea .leadbox.st1 dl {
+	background:url(/images/contact/bg_step01.png) no-repeat left top;
+}
+
+.leadArea .leadbox2col.st1 dl {
+	background:url(/images/contact/bg_stepL01.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st1.current dl {
+	background:url(/images/contact/bg_step01_on.png) no-repeat left top;
+}
+
+.leadArea .leadbox2col.st1.current dl {
+	background:url(/images/contact/bg_stepL01_on.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st2 dl {
+	background:url(/images/contact/bg_step02.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st2.current dl {
+	background:url(/images/contact/bg_step02_on.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st3 dl {
+	background:url(/images/contact/bg_step03.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st3.current dl {
+	background:url(/images/contact/bg_step03_on.png) no-repeat left top;
+}
+
+
+
+.leadArea .leadbox dl dt,
+.leadArea .leadbox2col dl dt {
+	float:left;
+	width:48px;
+	height:48px;
+	margin-left:20px;
+	text-indent:-9999px;
+}
+
+.leadArea .leadbox.st1 dl dt,
+.leadArea .leadbox2col.st1 dl dt {
+	background:url(/images/contact/ico_step1.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st1.current dl dt,
+.leadArea .leadbox2col.st1.current dl dt{
+	background:url(/images/contact/ico_step1_cu.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st2 dl dt,
+.leadArea .leadbox2col.st2 dl dt {
+	background:url(/images/contact/ico_step2.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st2.current dl dt,
+.leadArea .leadbox2col.st2.current dl dt{
+	background:url(/images/contact/ico_step2_cu.png) no-repeat left top;
+}
+
+
+.leadArea .leadbox.st3 dl dt {
+	background:url(/images/contact/ico_step3.png) no-repeat left top;
+}
+
+.leadArea .leadbox.st3.current dl dt{
+	background:url(/images/contact/ico_step3_cu.png) no-repeat left top;
+}
+
+.leadArea .leadbox dl dd,
+.leadArea .leadbox2col dl dd {
+	font-size:134%;
+	font-weight:bold;
+	padding-top:12px;
+	text-align:center;
+	margin-right:20px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.leadArea .leadbox.st1.current dl dd,
+.leadArea .leadbox2col.st1.current dl dd,
+.leadArea .leadbox.st2.current dl dd,
+.leadArea .leadbox2col.st2.current dl dd,
+.leadArea .leadbox.st3.current dl dd{
+	color:#FFF;
+}
+
+
+/*__参照リンク__*/
+a.sanshou{
+	background:url(/images/maker/ico_sanshou.png) no-repeat 0 0;
+	padding-left:24px;
+	margin-left:30px;
+}
+
+/* フォームエリア */
+
+.formInner {
+	width:1020px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.formInner .lead {
+	margin:0 0 30px 0;
+}
+
+.formInner .lead h2 {
+	line-height:1.5;
+	margin-bottom:15px !important;
+	text-align:left !important;
+}
+
+.formInner .lead p {
+	font-size:134%;
+}
+
+.formInner .entryContainer {
+	margin:0 0 40px 0;
+}
+.formInner .entryContainerSub {
+	margin:0 0 20px;
+}
+
+.entryContainerSub .formTTl {
+	display:table;
+	width:1020px;
+	padding:5px 0;
+	margin-bottom:20px;
+	border-bottom: 1px solid #cccccc;
+}
+
+.entryContainerSub .formTTl h4 {
+	display:table-cell;
+	border-bottom:none;
+}
+
+.entryContainerSub .formTTl .delbtn {
+	display:table-cell;
+	vertical-align:middle;
+	text-align:right;
+	padding-right:0;
+}
+
+.entryContainerSub .formTTl .delbtn:before {
+	content:"\f057";
+    font-family: FontAwesome;
+	padding-right:5px;
+	color:#418cc5;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.entryContainer .formTTl {
+	display:table;
+	width:1020px;
+	margin-bottom: 30px;
+}
+
+.entryContainer .formTTl h3 {
+	display:table-cell;
+	text-align:left;
+	background-color: #242424;
+}
+
+.entryContainer .formTTl .delbtn.delH3{
+	display:table-cell;
+	text-align:right;
+	padding-right:10px;
+	background-color: #242424;
+}
+
+.entryContainer .formTTl .delbtn.delH3 a {
+	color:#FFFFFF;
+}
+
+.entryContainer .formTTl .delbtn.delH3 a:hover {
+	background-color:#FFFFFF;
+	color:#424242;
+}
+
+.entryContainer .formTTl .delbtn.delH3 a:before {
+	content:"\f057";
+    font-family: FontAwesome;
+	padding-right:5px;
+	color:#FFFFFF;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.formInner h2 {
+	line-height:1.5;
+	margin-bottom:40px;
+}
+
+
+.formInner .formContainer {
+	display: table;
+	width:1020px;
+	background-color:#FFF;
+	margin-bottom:0;
+}
+
+.formInner .panel-general .formContainer {
+	width:980px;
+}
+
+.formInner .formContainer .formbox {
+	display: table-cell;
+}
+
+.formInner .formContainer .formbox.Inner {
+	width:280px;
+	display: table-cell;
+	height:100%;
+	padding:0 0 10px;
+	vertical-align:middle;
+	font-size:134%;
+	font-weight:bold;
+/*	border-top: 2px solid #242424;*/
+	background:url(/common/images/bg_fboxInnerBlack.png) repeat-x left bottom #f9f9f9;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.formInner .formContainer .formbox.Inner .fbox {
+	background:#f9f9f9 url(../images/contact/bg_formttl.jpg) repeat-x left top;
+	width:100%;
+	display: table-cell;
+	vertical-align:top;
+}
+
+.formInner .formContainer .formbox.Inner:after { /* clearfix */
+  content: "";
+  display: block;
+  clear: left;
+}
+
+.formInner .formContainer .formbox.Inner.first {
+	position: relative;
+	padding-top: 10px;
+}
+
+.formInner .formContainer .formbox.Inner.first:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 10px;
+	background:url(/common/images/bg_fboxInnerBlack.png) repeat-x 0 0;
+}
+
+.formInner .formContainer .formbox.Inner .label {
+	padding: 20px 18px 20px 20px;
+	width: 240px;
+	overflow: hidden;
+}
+
+.formInner .formContainer .formbox.Inner .label .ttl {
+	float: left;
+}
+
+.formInner .formContainer .formbox.Inner .label .check {
+	float: right;
+}
+
+.formInner .formContainer .formbox.Inner .label .check em {
+	display: block;
+	padding: 1px 5px;
+	background-color:#f0574b;
+	color:#fff;
+	font-size:87.5%;
+}
+
+.lead p em {
+	display: inline-block;
+	color:#fff;
+	background-color:#f0574b;
+	margin-right:5px;
+	padding: 0 5px;
+	font-size:87.5%;
+}
+
+
+/* ログイン用 */
+
+.formInner.flogin .panel-general .sectionM {
+	background-color:#FFFFFF;
+	padding: 20px;
+}
+
+.formInner.flogin .panel-general .formContainer {
+	width: auto;
+}
+
+.formInner.flogin .formContainer .formbox.Inner {
+	width:300px;
+	padding-right:30px;
+}
+
+.formInner.flogin .formContainer .formbox.Inner,
+.formInner.flogin .formContainer .formbox.Main {
+	background: none;
+	padding-right: 10px;
+	padding-bottom: 0;
+}
+
+.formInner.flogin .formContainer .formbox.Inner:before,
+.formInner.flogin .formContainer .formbox.Main:before {
+	display: none;
+}
+
+.formInner.flogin .formContainer .formbox.Inner.first,
+.formInner.flogin .formContainer .formbox.Main.first {
+	padding-top: 0;
+}
+
+.formInner.flogin .formContainer .formbox.Inner .label {
+	padding-right: 0;
+	width: 280px;
+}
+
+.formInner.flogin .formContainer .formbox.Inner .label .ttl {
+	float: right;
+}
+
+.formInner.flogin .formContainer.Error .formbox.Inner,
+.formInner.flogin .formContainer.Error .formbox.Main {
+	background-color: #fffaf9;
+}
+
+.formInner.flogin .wLarge,
+.formInner.flogin .wMedium {
+	width:410px !important;
+}
+
+.formInner.flogin .sec {
+	margin: 10px 15px;
+}
+
+/* パスワード再発行 */
+
+.formInner.fpasswd .panel-general {
+	padding-top: 27px;
+}
+
+.formInner.fpasswd .formContainer {
+	padding: 20px;
+	width: auto;
+}
+
+.formInner.fpasswd .formContainer .formbox.Inner.first,
+.formInner.fpasswd .formContainer .formbox.Main.first {
+	background: none #fff;
+	padding: 0;
+}
+
+.formInner.fpasswd .formContainer .formbox.Inner:before,
+.formInner.fpasswd .formContainer .formbox.Main:before {
+	display: none;
+}
+
+.formInner.fpasswd .panel-general .conBtnArea {
+	margin: 20px auto 0;
+}
+
+.formInner.fpasswd .formContainer.Error .formbox.Inner,
+.formInner.fpasswd .formContainer.Error .formbox.Main {
+	background-color: #fffaf9;
+}
+
+
+.formInner .formContainer .formbox.Main {
+	background:url(/common/images/bg_fboxInnerGray.png) repeat-x left bottom;
+	margin-left:0;
+	display:table-cell;
+	vertical-align:middle;
+	font-size:117%;
+	width:740px;
+}
+
+.formInner .panel-general .formContainer .formbox.Main {
+	width:680px;
+}
+
+.formInner .formContainer .formbox.Main.first {
+	position: relative;
+	padding-top: 10px;
+}
+
+.formInner .formContainer .formbox.Main.first:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 10px;
+	background:url(/common/images/bg_fboxInnerGray.png) repeat-x 0 0;
+}
+
+
+div.sec {
+	margin:11px auto 21px 18px;
+}
+
+div.sec1 {
+	margin:16px auto 0 18px;
+}
+
+div.sec2 {
+	margin:5px auto 21px 18px;
+}
+
+div.secRate {
+	margin-left:20px;
+}
+
+div.secCont .secbox {
+	display: block;
+	float:left;
+}
+
+.formInner .formContainer .formbox.Main .secbgGray {
+	margin:16px 18px 26px;
+}
+
+.formInner .formContainer .formbox.Main .catetitle {
+	display:table;
+	position:relative;
+	width:100%;
+	margin-bottom:10px;
+	margin-left:20px;
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.formInner .formContainer .formbox.Main .catetitle .column {
+	display:table-cell;
+	float:left;
+	width:307px;
+}
+
+.formInner .formContainer .formbox.Main .listbox {
+	display: inline-block;
+	vertical-align: middle;
+	overflow: hidden;
+}
+
+
+.formInner .formContainer .formbox.Main .listbox .column {
+	float:left;
+	margin-right:60px;
+	position:relative;
+}
+
+.formInner .formContainer .formbox.Main .listbox .column:after {
+	content:"\f054";
+    font-family: FontAwesome;
+	position:absolute;
+	top:5px;
+	right:-40px;
+	font-size:117%;
+	color:#424242;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.formInner .formContainer .formbox.Main .listbox .column select {
+	min-width: 180px;
+}
+
+.formInner .formContainer .formbox.Main .listbox .column.sub {
+	margin-right:0;
+}
+
+.formInner .formContainer .formbox.Main .listbox .column.sub:after {
+	content: "";
+}
+
+.formInner .formContainer .formbox.Main .listbox .column.sub select {
+	background:url(/common/images/bg_selectbtnGray.png) no-repeat right top #fff;
+	min-width: 275px;
+}
+
+.formInner .formContainer .formbox.Main .image-parallel-R .image{
+	margin-right:20px;
+}
+
+.formInner .formContainer .formbox.Main .image-parallel-R .image img{
+	max-width: 238px;
+	max-height: 138px;
+}
+
+.formInner .formContainer .formbox.Main .image-parallel-R .image.case img{
+	max-width: 360px;
+	max-height: 255px;
+}
+
+.formInner .formContainer .formbox.Main .sec dl {
+	display:table;
+	margin-bottom:10px;
+}
+
+.formInner .formContainer .formbox.Main .sec dl dt {
+	float:left;
+	display:table-cell;
+	width:6.0em;
+}
+
+.formInner .formContainer .formbox.Main .sec dl dd {
+	margin-left:6.0em;
+}
+
+.formInner .formContainer .formbox.Main .sec dl dt,
+.formInner .formContainer .formbox.Main .sec dl dd {
+	font-size:100%;
+}
+
+.formInner .sec .selectValue {
+	margin-bottom: 10px;
+}
+
+.formInner .sec .selectValue:empty:before {
+	content: "未選択";
+}
+
+.formInner .demoArea {
+	margin-bottom:30px;
+}
+
+.formInner .demoArea h3 {
+	background-color:#f9f9f9 !important;
+	color:#424242 !important;
+	margin-bottom:10px;
+}
+
+
+/*.formInner .conBtnSub,
+.formInner .conBtnCircle {
+	display:table;
+	margin-bottom:20px;
+}*/
+
+/*.formInner .conBtnCircle .conBtnClose {
+	display:table-cell;
+	float:left;
+	width:110px !important;
+	height:36px;
+	margin: 10px 10px 0 auto;
+	text-align:center;
+}
+*/
+
+.formInner .conBtnCircle .conBtnClose {
+	width:110px !important;
+	height:36px;
+	padding: 0;
+	font-size:117%;
+	background-color:#C7C7C7;
+	border: 2px solid #C7C7C7;
+	cursor:default;
+	color:#418cc5;
+	font-weight:bold;
+	display:table;
+	border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */  
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+.formInner .comfirmBtn:hover {
+	background-color:#418cc5;
+	color:#fff;
+}
+
+/* toolbtnarea */
+
+div.white_box,
+div.gray_box {
+	margin-top:30px;
+	width:1020px;
+	border-top:solid 2px #242424;
+	padding: 10px 0 0;
+	display:table;
+	position:relative;
+}
+div.gray_box{
+	background-color:#F9F9F9;
+}
+
+div.white_box p,
+div.gray_box p{
+	text-align:center;
+	font-size:117%;
+}
+
+div.white_box .itembtm{
+	width: 100%;
+	margin:20px auto;
+	padding: 20px 0;
+	display:table;
+	float:left;
+	position:relative;
+	height:32px;
+}
+
+div.white_box .itembtm:after{
+	display:block;
+	visibility:hidden;
+	clear:both;
+	height:0;
+	content:" ";
+}
+
+div.white_box .itembk {
+	display:table-cell;
+	vertical-align:top;
+	width:auto;
+	margin:0 0 auto 0;
+}
+
+
+/* clearfix */
+div.secCont:before,
+div.secCont:after {
+    content: "";
+    display: table;
+}
+ 
+div.secCont:after {
+    clear: both;
+}
+ 
+/* For IE 6/7 (trigger hasLayout) */
+div.secCont {
+    zoom: 1;
+}
+
+div.secCont .secbox span.t01,
+div.secCont .secboxSmall span.t01 {
+	margin-right:0.6em;
+	margin-left:1.0em;
+}
+
+div.secCont .secboxConf span.t02,
+div.secCont .secbox span.t02 {
+	margin-right:0.6em;
+	margin-left:0em;
+}
+
+div.secCont {
+	margin:11px auto 21px 18px;
+	overflow: hidden;
+}
+
+div.secCont .sec {
+	margin: 0;
+}
+
+div.secCont .secbox {
+	display:table-cell;
+	padding-right:20px;
+	padding-top:5px;
+	padding-bottom:5px;
+	min-width:220px;
+}
+
+div.secCont .secbox:after { /* clearfix */
+  content: "";
+  display: block;
+  clear: left;
+}
+
+div.secCont .secboxSmall {
+	display: block;
+	float:left;
+/*	padding-right:5px;*/
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+div.secCont .secboxSmall:after { /* clearfix */
+  content: "";
+  display: block;
+  clear: left;
+}
+
+div.secCont .secboxConf {
+	display:table-cell;
+	padding-right:0.6em;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+div.secCont .secboxConf:after { /* clearfix */
+  content: "";
+  display: block;
+  clear: left;
+}
+
+/* clearfix */
+div.secCont:before,
+div.secCont:after {
+    content: "";
+    display: table;
+}
+ 
+div.secCont:after {
+    clear: both;
+}
+ 
+
+/* エラー表示用スタイル */
+
+.formInner .formContainer.Error .formbox.Inner {
+	background-color:#fdeeed;
+}
+
+.formInner .formContainer.Error .formbox.Main {
+	background-color: #fffaf9;
+}
+
+.secError {
+	margin:8px auto 0 0;
+	color:#f0574b;
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.secError:before {
+	content:"\f06a";
+    font-family: FontAwesome;
+	padding-right:5px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+/* フォームスタイル */
+
+.formInner .formContainer p {
+	font-size:100%;
+}
+
+
+.formInner ol li {
+	margin-top:10px;
+}
+
+.formInner select {
+	line-height:1.4;
+	padding:10px;
+	margin-right:10px;
+	color:#666;
+	border:#d8d8d8 1px solid;
+}
+
+.formInner input[type=checkbox],
+.formInner input[type=radio] {
+	line-height:1.4;
+	padding:10px;
+	margin-right:10px;
+	color:#666;
+}
+
+
+.formInner input[type=text],
+.formInner input[type=password],
+.formInner form textarea {
+	line-height:1.4;
+	padding:10px;
+	margin-right:10px;
+	color:#666;
+	border:#d5d3d4 1px solid;
+	-webkit-box-shadow:1px 1.732px 1px 0px rgba(216,216,216,0.2) inset;
+	box-shadow:1px 1.732px 1px 0px rgba(200,200,200,0.2) inset;
+	font-size:117%;
+	border-radius: 3px;        /* CSS3草案 */  
+    -webkit-border-radius: 3px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 3px;   /* Firefox用 */  
+}
+
+.formInner input[type=file] {
+	line-height:1.4;
+	padding:10px 0;
+	margin-right:10px;
+	color:#666;
+}
+
+
+.formInner .wSmall {
+	width:130px;
+}
+
+.formInner .wMedium {
+	width:270px;
+}
+
+.formInner .wLarge {
+	width:430px;
+}
+
+.formInner .wFull {
+	width:680px;
+}
+
+
+.formimg_right {
+	margin:0 10px 0 0;
+}
+
+.formimg_left {
+	margin:0 0 0 10px;
+}
+
+.formimg_center {
+	margin:0 10px;
+}
+
+p.checktxt {
+	color:#df1519;
+}
+
+
+.textBox {
+	line-height:1.4;
+	width:680px;
+	height:200px;
+	color:#666;
+	padding:13px 14px;
+	margin-right:10px;
+	background-color:#fbfbfb;
+	border:1px solid #A9A9A9;
+	overflow-y:scroll;
+}
+
+.textBox p {
+
+}
+
+.textBox ul {
+}
+
+.textBox li {
+	list-style:none;
+	font-size: 100%;
+	margin-left:1.2em;
+	text-indent:-1.2em;
+}
+
+.textBox li span {
+	text-indent:1.2em;
+}
+
+.textBox li ul li {
+	font-size:100%;
+}
+
+.formInner select {
+	position: relative;
+	height:40px;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	text-indent: .01px; /*Firefox用*/
+    text-overflow: ""; /*Firefox用*/
+	border-radius: 0;
+	border: 1px solid #d5d3d4;
+	min-width: 385px;
+	margin: 0;
+	padding:0 53px 0 13px;
+	background:#FFFFFF url(/common/images/bg_selectbtn.png) no-repeat right top;
+	vertical-align: middle;
+	color: inherit;
+	box-sizing: content-box;
+	font-size:14px;
+}
+
+body.ie8 .formInner select {
+	background-image: none;
+	padding: 10px 13px;
+	min-width: 425px;
+	height: 20px;
+}
+
+body.ie8 .formInner .formContainer .formbox.Main .listbox .column.sub select {
+	background-image: none;
+}
+
+select::-ms-expand {
+  display: none; /* IE10用 */
+}
+
+:root .formInner {
+	overflow: hidden\0/;
+}
+
+:root .formInner > select {
+	width:280px\0/;
+}
+
+
+@media (min-width: 1px) {
+    .formInner input[type=radio],
+	.formInner input[type=checkbox] {
+/*      display: none;
+        margin: 0;*/
+    }
+    .formInner input[type=radio],
+    .formInner input[type=checkbox] {
+        padding: 5px 0 5px 28px;
+		position:relative;
+    }
+    .formInner input[type=radio]::before,
+    .formInner input[type=checkbox]::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin-top: -9px;
+        background: #FFF;
+    }
+    .formInner input[type=radio]::before {
+        border: 2px solid #ccc;
+        border-radius: 30px;
+    }
+    .formInner input[type=checkbox]::before {
+        border: 2px solid #ccc;
+    }
+    .formInner input[type=radio]:checked::after,
+    .formInner input[type=checkbox]:checked::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: block;
+    }
+    .formInner input[type=radio]:checked::after {
+        left: 5px;
+        width: 8px;
+        height: 8px;
+        margin-top: -4px;
+        background: #418cc5;
+        border-radius: 8px;
+    }
+    .formInner input[type=checkbox]:checked::after {
+        left: 3px;
+        width: 16px;
+        height: 8px;
+        margin-top: -8px;
+        border-left: 3px solid #418cc5;
+        border-bottom: 3px solid #418cc5;
+        -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+}
+
+
+.formInner .formBtnArea {
+	position:relative;
+}
+
+.formInner .formBtnbk{
+	position:absolute;
+	left:0;
+	top:0;
+	display:table;
+}
+
+.formInner .formBtnNt{
+	position:absolute;
+	right:0;
+	top:0;
+	display:table;
+}
+
+.formInner .formBtnbk .conBtnSub,
+.formInner .formBtnNt .conBtnSub {
+	padding:0;
+	margin:0;
+	display:table;
+	vertical-align:middle;
+	position:relative;
+	text-align:center;
+	font-weight:bold;
+	background-color:#FFF;
+	cursor:pointer;
+	color:#242424;
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}  
+
+
+.formInner .formBtnbk .conBtnSub input.comfirmBtn,
+.formInner .formBtnNt .conBtnSub input.comfirmBtn {
+	padding:0;
+	margin:0;
+	display:table;
+	vertical-align:middle;
+	position:relative;
+	text-align:center;
+	font-weight:bold;
+	background-color:#FFF;
+	cursor:pointer;
+	color:#242424;
+	border: 2px solid #242424;
+	border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */  
+	z-index:99;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.formInner .formBtnbk .conBtnSub input.comfirmBtn {
+	width: 130px;
+	height:26px;
+}
+
+.formInner .formBtnNt .conBtnSub input.comfirmBtn {
+	width: 130px;
+	height:26px;
+}
+
+.formInner .formBtnbk .conBtnSub:hover,
+.formInner .formBtnNt .conBtnSub:hover,
+.formInner .formBtnbk .conBtnSub a:hover,
+.formInner .formBtnbk .conBtnSub input.comfirmBtn:hover,
+.formInner .formBtnNt .conBtnSub input.comfirmBtn:hover {
+	border-color:#418cc5;
+}
+
+.formInner .formBtnbk .conBtnSub .comfirmBtn:hover,
+.formInner .formBtnNt .conBtnSub .comfirmBtn:hover,
+.formInner .formBtnbk .conBtnSub a:hover {
+	color:#418cc5;
+}
+
+.formInner .formBtnbk .conBtnSub a,
+.formInner .formBtnNt .conBtnSub a {
+	height:22px;
+	padding:0;
+	margin:0;
+	color:#242424;
+	text-decoration:none;
+	display:table-cell;
+	vertical-align:middle;
+	border: 2px solid #242424;
+	border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */  
+}
+
+.formInner .formBtnbk .conBtnSub a {
+	padding-left:30px;
+	padding-right:20px;
+	background:url(/common/images/ico_arrowL.png) no-repeat 14px 6px;
+}
+
+.formInner .formBtnbk .conBtnSub a:hover {
+	padding-left:30px;
+	padding-right:20px;
+	background:url(/common/images/ico_arrowL_ov.png) no-repeat 14px 6px;
+}
+
+.formInner .formBtnNt .conBtnSub a {
+	width: 156px;
+}
+
+.formInner .formBtnbk .conBtnSub input[type=submit] {
+	background:url(/common/images/ico_arrowL.png) no-repeat 40px 6px;
+	padding-left: 10px;
+}
+
+.formInner .formBtnNt .conBtnSub input[type=submit] {
+	background:url(/common/images/ico_arrowR.png) no-repeat 84px 6px;
+}
+
+.formInner .formBtnbk .conBtnSub input[type=submit]:hover {
+	background-image:url(/common/images/ico_arrowL_ov.png);
+}
+
+.formInner .formBtnNt .conBtnSub input[type=submit]:hover {
+	background-image:url(/common/images/ico_arrowR_ov.png);
+}
+
+
+/**/
+
+.formInner .conBtnArea {
+	width: 300px;
+	height:50px;
+	margin: 40px auto 100px;
+}
+
+.formInner .panel-general .conBtnArea {
+	width: 300px;
+	height:50px;
+	margin: 10px auto;
+}
+
+.formInner .white_box .conBtnArea {
+	margin: 10px auto !important;
+}
+
+.formInner .conBtnArea .comfirmBtn {
+	width: 300px;
+	height:50px;
+	font-size:150%;
+	background-color:#418cc5;
+	cursor:pointer;
+	position:relative;
+	color:#FFF;
+	font-weight:bold;
+	border: none;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.formInner .conBtnArea .comfirmBtn:hover {
+	background-color:#242424;
+	border-color:#242424;
+	color:#fff;
+}
+
+.formInner .conBtnArea .comfirmBtnDisabled {
+	width: 300px;
+	height:50px;
+	font-size:150%;
+	background-color:#c7c7c7;
+	color:#FFF;
+	font-weight:bold;
+	border: none;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+.formInner .conBtnArea .comfirmClose {
+	width: 260px;
+    padding: 15px 20px;
+	font-size:150%;
+	background-color:#c7c7c7;
+	border: 2px solid #c7c7c7;
+	color:#FFFFFF;
+	position:relative;
+	font-weight:bold;
+	border: none;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+
+.formInner .conBtnIn {
+	display:table;
+}
+
+.formInner .conBtnIn .comfirmBtn {
+	padding: 1px 20px;
+	font-size:92%;
+	background-color:#FFFFFF;
+	border: 2px solid #418cc5;
+	cursor:pointer;
+	color:#418cc5;
+	font-weight:normal;
+	border-radius: 25px;
+}
+
+.conBtnCircle .conBtnArea {
+	display:table;
+	margin: 10px auto;
+}
+
+
+
+.formInner .conBtnCircle .comfirmBtn {
+	font-size:16px;
+	background-color:#FFFFFF;
+	border: 2px solid #418cc5;
+	padding: 6px 15px 4px;
+	cursor:pointer;
+	color:#418cc5;
+	font-weight:bold;
+	display:inline-block;
+	border-radius: 25px;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+.formInner .conBtnCircle .comfirmBtn span {
+	padding:8px 10px;
+}
+
+.formInner .comfirmBtn:hover {
+	background-color:#418cc5;
+	color:#fff;
+}
+.formInner .comfirmBtn a {
+	color:#418cc5;
+	display: block;
+	padding: 3px 0;
+	text-align:center;
+	text-decoration:none;
+	font-size: 16px;
+}
+.formInner .comfirmBtn a:hover {
+	color:#fff;
+}
+
+.formInner .conBtnCircle .comfirmBtn.close {
+	padding: 3px 15px 0px;
+	font-size:18px;
+	background-color:#c7c7c7;;
+	border: 2px solid #c7c7c7;;
+	color:#FFFFFF;
+	font-weight:bold;
+	cursor:default;
+	border-radius: 25px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+/**/
+
+.panel-general h3.login {
+	text-align:center;
+}
+
+.panel-general h3.login:before {
+	content: "";
+}
+
+.formInner .panel-general .conBtnArea {
+	width:300px;
+	height:50px;
+	margin: 0px auto 10px;
+	cursor:pointer;
+	text-align:center;
+	border: 2px solid #418cc5;
+	position:relative;
+	display:table;
+	color:#242424;
+	text-decoration:none;
+}
+
+.formInner .panel-general .conBtnArea:hover {
+	border: 2px solid #242424;
+	color:#418cc5;
+	text-decoration:none;
+}
+
+
+/* 会員登録完了 */
+
+.loginBox {
+	background-color: #f9f9f9;
+	padding: 25px 0 30px;
+}
+
+.loginBox .title {
+	margin-bottom: 20px;
+	text-align: center;
+	font-size: 150%;
+}
+
+.loginBox .conBtnArea {
+	margin: 0 auto;
+	border: 2px solid #313135;
+}
+
+.loginBox .conBtnArea:hover {
+	border: 2px solid #313135;
+}
+
+.loginBox .conBtnArea .comfirmBtn {
+	position: relative;
+	background-color: transparent;
+	width:300px;
+	height:50px;
+	color:#242424;
+	font-size:134%;	
+	font-weight:bold;
+	line-height: 1.1;
+	transition: all 0.2s ease;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.loginBox .conBtnArea .comfirmBtn:hover {
+	background-color: #313135;
+	color:#fff;
+}
+
+.loginBox .conBtnArea .comfirmBtn:after {
+	content:"\f105";
+    font-family: FontAwesome;
+	position:absolute;
+	right: 9px;
+	color: #313135;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.loginBox .conBtnArea:hover .comfirmBtn:after {
+	color: #fff;
+}
+
+
+/* タブ形式 */
+
+.formInner .tabmenu {
+	width:1020px !important;
+}
+
+.formInner .tabmain {
+	width:1020px !important;
+}
+
+
+/* チェックOK表示 */
+
+.checkok {
+	margin:8px auto 0 0;
+	color:#418cc5;
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+/* テーブル追加 */
+
+.formInner .wTableCel {
+	width:203px;
+	height: 110px;
+	margin:0 10px 0 0;
+}
+
+.formInner .priceAddarea {
+	border:none;
+	border-bottom:1px solid #EFEFEF;
+	position:relative;
+	padding-bottom:10px;
+	margin-bottom:10px;
+}
+
+.formInner .priceAddarea table.tableForm {
+	border:none;
+	width:620px;
+	margin:0;
+}
+.formInner table.tableForm td {
+	padding:0;
+	width:210px;
+}
+.formInner table.tableForm td.w10 {
+	width:10px !important;
+}
+
+.formInner .priceAddarea .delbtn {
+	text-align: right;
+	margin: 10px 20px 0 0;
+}
+
+.formInner .priceAddarea .delbtn a,
+.formInner .priceAddarea .delbtn a:hover {
+	background: none;
+	color: #418cc5;
+	text-decoration: none;
+}
+.formInner .priceAddarea .delbtn a:before {
+	content:"\f057";
+    font-family: FontAwesome;
+	padding-right:5px;
+	color:#418cc5;
+	font-size: 21px;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+.formInner .priceAddarea .delbtn a span {
+	font-size: 114.2%;
+	vertical-align: middle;
+	line-height: 1;
+}
+.formInner .priceAddarea .delbtn a span:hover {
+	text-decoration: underline;
+}
+
+
+/* デモ・資料追加一覧 */
+
+
+.displayMovie,
+.displayPanf,
+.displayWp,
+.displayCase {
+	margin-bottom:10px;
+}
+
+.displayMovie .layout-block,
+.displayPanf .layout-block,
+.displayWp .layout-block,
+.displayCase .layout-block {
+	margin-bottom:10px;
+	border:1px solid #EFEFEF !important;
+	padding:5px 10px;
+	width:998px;
+}
+
+
+.displayMovie .layout-block .column,
+.displayPanf .layout-block .column,
+.displayWp .layout-block .column,
+.displayCase .layout-block .column {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.displayMovie .layout-block.col3 .column,
+.displayPanf .layout-block.col3 .column,
+.displayWp .layout-block.col3 .column,
+.displayCase .layout-block.col3 .column {
+	width: auto;
+	margin-right:0 !important;
+}
+
+.displayMovie .layout-block.col3 .column.coltitle,
+.displayPanf .layout-block.col3 .column.coltitle,
+.displayWp .layout-block.col3 .column.coltitle,
+.displayCase .layout-block.col3 .column.coltitle {
+	width: 820px;
+	display:table;
+}
+
+
+.displayMovie .layout-block.col3 .column.colbtn,
+.displayPanf .layout-block.col3 .column.colbtn,
+.displayWp .layout-block.col3 .column.colbtn,
+.displayCase .layout-block.col3 .column.colbtn {
+	width: 80px;
+	display:table;
+}
+
+.displayMovie .layout-block.col3 .column.coltitle p,
+.displayPanf .layout-block.col3 .column.coltitle p,
+.displayPanf .layout-block.col3 .column.coltitle p,
+.displayCase .layout-block.col3 .column.coltitle p {
+	display:table-cell;
+	vertical-align:middle;
+	padding-top:6px;
+	padding-bottom:6px;
+}
+
+.displayMovie .layout-block.col3 .column.colbtn .conBtnCircle,
+.displayPanf .layout-block.col3 .column.colbtn .conBtnCircle,
+.displayWp .layout-block.col3 .column.colbtn .conBtnCircle,
+.displayCase .layout-block.col3 .column.colbtn .conBtnCircle {
+	display:table-cell;
+	vertical-align:middle;
+	text-align:right;
+}
+
+.displayMovie .layout-block.col3 .column.coldel,
+.displayPanf .layout-block.col3 .column.coldel,
+.displayWp .layout-block.col3 .column.coldel,
+.displayCase .layout-block.col3 .column.coldel {
+	width: 90px;
+	display:table;
+}
+
+
+.displayMovie .layout-block.col3 .column.coldel .delbtn,
+.displayPanf .layout-block.col3 .column.coldel .delbtn,
+.displayWp .layout-block.col3 .column.coldel .delbtn,
+.displayCase .layout-block.col3 .column.coldel .delbtn {
+	display:table-cell;
+	vertical-align:middle;
+	text-align:right;
+}
+.displayMovie .layout-block.col3 .column.coldel .delbtn a,
+.displayPanf .layout-block.col3 .column.coldel .delbtn a,
+.displayWp .layout-block.col3 .column.coldel .delbtn a,
+.displayCase .layout-block.col3 .column.coldel .delbtn a {
+	text-decoration: none;
+}
+.displayMovie .layout-block.col3 .column.coldel .delbtn a:hover,
+.displayPanf .layout-block.col3 .column.coldel .delbtn a:hover,
+.displayWp .layout-block.col3 .column.coldel .delbtn a:hover,
+.displayCase .layout-block.col3 .column.coldel .delbtn a:hover {
+	background: none;
+	color: #418cc5;
+}
+.displayMovie .layout-block.col3 .column.coldel .delbtn a:before,
+.displayPanf .layout-block.col3 .column.coldel .delbtn a:before,
+.displayWp .layout-block.col3 .column.coldel .delbtn a:before,
+.displayCase .layout-block.col3 .column.coldel .delbtn a:before {
+	content:"\f057";
+    font-family: FontAwesome;
+	padding-right: 5px;
+	color: #418cc5;
+	font-size: 21px;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+.displayMovie .layout-block.col3 .column.coldel .delbtn a span,
+.displayPanf .layout-block.col3 .column.coldel .delbtn a span,
+.displayWp .layout-block.col3 .column.coldel .delbtn a span,
+.displayCase .layout-block.col3 .column.coldel .delbtn a span {
+	font-size: 133.3%;
+	vertical-align: middle;
+	line-height: 1;
+}
+.displayMovie .layout-block.col3 .column.coldel .delbtn a:hover span,
+.displayPanf .layout-block.col3 .column.coldel .delbtn a:hover span,
+.displayWp .layout-block.col3 .column.coldel .delbtn a:hover span,
+.displayCase .layout-block.col3 .column.coldel .delbtn a:hover span {
+	text-decoration: underline;
+}
+
+/* 登録申請・削除まわり */
+
+.formInner div.gray_box p{
+	text-align:center !important;
+	margin: 0 !important;
+}
+
+
+.formInner div.gray_box .conBtnArea {
+	width: 260px;
+	margin: 5px auto 20px !important;
+}
+
+
+/* この後の流れ */
+
+.panel-afterflow {
+	padding: 20px;
+	background-color:#f9f9f9;
+	margin-bottom:10px;
+}
+
+.panel-afterflow h3 {
+	font-size: 134%; 
+	line-height: 1.4;
+}
+.panel-afterflow h3:before {
+	content: "";
+}
+
+.panel-afterflow .layout-block.hasMargin {
+	margin: 0 60px;
+}
+
+.panel-afterflow .layout-block .column {
+	margin-right:38px;
+	background-color:#FFFFFF !important;
+	padding:0 20px 20px;
+	position:relative;
+	min-height: 187px;
+}
+
+.panel-afterflow .layout-block.hasMargin .column p {
+	font-size: 133.3%;
+}
+
+.panel-afterflow .layout-block .column:after {
+	content:"\f105";
+	font-family: FontAwesome;
+	padding-right:5px;
+	color:#a3a3a3;
+	position:absolute;
+	font-size:300%;
+	right: -32px;
+	top: 50%;
+	margin-top: -27px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+.panel-afterflow .layout-block.col4 .column:after {
+	right: -28px;
+}
+
+.panel-afterflow .layout-block .column.last {
+	margin-right:0 !important;
+	padding-right:20px !important;
+	
+}
+
+.panel-afterflow .layout-block .column.last:after {
+	content: "";
+}
+
+.panel-afterflow .layout-block.col2 .column {
+	width: 430px;
+}
+
+.panel-afterflow .layout-block.col2.hasMargin .column {
+	width: 370px;
+}
+
+.panel-afterflow .layout-block.col3 .column {
+	width: 250px;
+}
+
+.panel-afterflow.cart .layout-block.col3 .column {
+	width: 260px;
+}
+.panel-afterflow.cart h3 {
+	text-align:center;
+	margin-bottom:20px;
+}
+
+
+/* 契約メーカー、代理店専用ページスタイル */
+
+
+/*　契約メーカー見出しメニュー　*/
+
+.makerTopMenu .siteTitle {
+	margin:0 auto;
+	width:100%;
+	background:url(/common/images/bg_sitetitle.png) repeat 14px 6px;
+}
+
+.makerTopMenu .siteTitle .siteBox {
+	width:1020px;
+	margin:0 auto;
+	padding:30px 0;
+}
+
+
+.makerTopMenu .siteTitle .siteBox h1 {
+	text-align:center;
+	margin-bottom:27px;
+}
+
+
+.makerTopMenu .siteTitle .siteBox .layout-block.col2 {
+	width:700px;
+	margin:0 auto;
+}
+.makerTopMenu .siteTitle .siteBox .layout-block.col3 {
+	width:1020px;
+	margin:0 auto;
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block.col3 .column,
+.makerTopMenu .siteTitle .siteBox .layout-block.col2 .column {
+	width: 320px;
+	position:relative;
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block.col3 .column {
+	margin-right:30px;
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block.col2 .column {
+	margin-right:60px;
+}
+
+
+.makerTopMenu .siteTitle .siteBox .layout-block.col3 .column.last,
+.makerTopMenu .siteTitle .siteBox .layout-block.col2 .column.last {
+	margin-right:0 !important;
+	
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block .column p.menu {
+	font-size: 134%; 
+	line-height: 1.0;
+	color:#FFFFFF;
+	font-weight:bold;
+	background-color:#242424;
+	display:block;
+	position:relative;
+	text-align:center;
+	padding-top:13px;
+	padding-bottom:12px;
+	position:relative;
+	margin-bottom:13px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block .column p.mtext {
+	font-size: 134%; 
+	line-height: 1.6;
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block .column p.menu:after {
+	content:"\f078";
+    font-family: FontAwesome;
+	color:#ffffff;
+	position:absolute;
+	right: 14px;
+	top: 14px;
+	font-size: 12px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+.makerTopMenu .siteTitle .siteBox .layout-block .column p.menu a {
+	color:#ffffff;
+	text-decoration:none;
+	display:block;
+}
+
+.makerTopMenu .siteTitle .siteBox .layout-block .column p.menu a:hover {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+
+/*　メーカー・代理店登録の流れ　*/
+
+div.gray_box .panel-afterflow .layout-block.col3 .column {
+}
+
+div.gray_box .panel-afterflow .layout-block.col4 {
+	width:980px;
+}
+
+div.gray_box .panel-afterflow {
+	margin-bottom:0;
+}
+
+div.gray_box .panel-afterflow h4 {
+	font-size: 134%; 
+	line-height: 1.0;
+	color:#FFFFFF;
+	background-color:#242424;
+	display:block;
+	position:relative;
+	text-align:left;
+	padding:10px 20px;
+	border-bottom: none;
+}
+
+div.gray_box .panel-afterflow h4:before {
+	content: "";
+}
+
+div.gray_box .panel-afterflow .layout-block {
+	margin-bottom:0;
+}
+
+div.gray_box .panel-afterflow .layout-block.col3 .column {
+	width: 250px;
+	background-color:#FFFFFF !important;
+	padding:0 15px 20px;
+	position:relative;
+	margin-right:50px;
+}
+
+div.gray_box .panel-afterflow .layout-block.col4 .column {
+	width: 190px;
+	background-color:#FFFFFF !important;
+	padding:0 15px 20px;
+	position:relative;
+	margin-right:31px;
+	text-align: center;
+}
+div.gray_box .panel-afterflow .layout-block.col4 .column > p.mb_10 {
+	margin-bottom: 10px !important;
+}
+div.gray_box .panel-afterflow .layout-block.col4 .column > p {
+	text-align: center;
+}
+div.gray_box .panel-afterflow .layout-block .column.last {
+	margin-right:0 !important;
+	
+}
+
+div.gray_box .panel-afterflow .layout-block .column p {
+	margin-bottom:0 !important;
+	margin-left:0 !important;
+}
+
+.makerSectionBox01 {
+	border-top:2px solid #efefef;
+	padding-top:30px;
+	padding-bottom:30px;
+}
+
+.makerSectionBox01 .mailContact {
+	margin-bottom:0 !important;
+}
+
+.makerSectionBox02 .mailContact .panel-general {
+	margin-bottom:0 !important;
+}
+
+
+.makerSectionBox02 {
+	padding-top:0;
+	padding-bottom:30px;
+}
+
+.makerSectionBox02 .mailContact {
+	margin-bottom:0 !important;
+}
+
+.makerSectionBox02 .mailContact .panel-general {
+	padding-top:0 !important;
+	margin-bottom:0 !important;
+}
+
+
+
+.makerSectionBox01 .mailContact p,
+.makerSectionBox02 .mailContact p {
+	text-align:center !important;
+	margin-bottom:10px;
+	font-size:125%;
+}
+
+
+.makerSectionBox01 .mailContact .comfirmBtn,
+.makerSectionBox01 .mailContact a.conBtn,
+.makerSectionBox02 .mailContact .comfirmBtn,
+.makerSectionBox02 .mailContact a.conBtn {
+	margin-bottom:0 !important;
+}
+
+
+#inline_content .leadText {
+	margin: 15px 0;
+	font-size: 133.3%;
+}
+
+#inline_content .setBtn {
+	float: right;
+	margin-bottom: 10px;
+}
+
+#inline_content .resetBtn {
+	float: right;
+	margin: 10px 20px 0 0;
+}
+
+#inline_content .resetBtn a {
+	display: block;
+	background-color: #fff;
+	padding: 4px 10px;
+	font-size: 14px;
+}
+
+#inline_content .resetBtn a:hover {
+	text-decoration: none;
+}
+
+#inline_content .selectList {
+	float: left;
+	overflow: hidden;
+	width: 650px;
+	height: 62px;
+}
+
+#inline_content .selectList li {
+	position: relative;
+	float: left;
+	background-color: #fff;
+	margin: 4px 3px 0 0;
+	padding: 2px 30px 2px 10px;
+	max-width: 173px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	list-style-type: none;
+}
+
+#inline_content .selectList li .close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	bottom: 5px;
+	width: 20px;
+	background: url(/images/partner/btn_delete_list.gif) no-repeat 50% 50%;
+	cursor: pointer;
+}
+
+
+#AgDialogGenre,
+#AgDialogTool,
+#AgDialogArea,
+#DialogKadai {
+	background-color: #efefef;
+	width: 1040px;
+	padding: 10px 10px 0;
+}
+
+#AgDialogGenre #inline_content,
+#AgDialogTool #inline_content,
+#AgDialogArea #inline_content,
+#DialogKadai #inline_content {
+	background-color: inherit;
+}
+
+#AgDialogGenre .checkArea {
+	border: 1px solid #d5d3d4;
+	padding: 10px;
+	height: 364px;
+	margin-bottom: 5px;
+	background-color: #fff;
+	overflow-y: scroll;
+	text-align: left;
+}
+
+#AgDialogGenre .categList > li {
+	position: relative;
+	overflow: hidden;
+	border-top: 2px solid #242424;
+	list-style-type: none;
+}
+
+#AgDialogGenre .categList > li:first-child {
+	border-top: none;
+}
+
+#AgDialogGenre .categList > li:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 2px;
+	bottom: 2px;
+	width: 240px;
+	background-color: #f9f9f9;
+}
+
+#AgDialogGenre .categList .categ {
+	position: relative;
+	float: left;
+	width: 200px;
+	padding: 15px 20px;
+}
+
+#AgDialogGenre .categList .subCateg {
+	float: right;
+	width: 700px;
+	padding: 12px 20px 8px;
+}
+
+
+#AgDialogTool .anchorList {
+	background-color: #418cc5;
+	overflow: hidden;
+	padding: 0 16px;
+}
+
+#AgDialogTool .anchorList li {
+	float: left;
+	list-style-type: none;
+}
+
+#AgDialogTool .anchorList li a {
+	display: block;
+	padding: 5px 0;
+	width: 26px;
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+}
+
+#AgDialogTool .checkArea {
+	border: 1px solid #d5d3d4;
+	padding: 10px;
+	height: 300px;
+	margin-bottom: 5px;
+	background-color: #fff;
+	overflow-y: scroll;
+	text-align: left;
+}
+
+#AgDialogTool .indexList > li {
+	list-style-type: none;
+}
+
+#AgDialogTool .indexList h4 {
+	border-bottom: 2px solid #242424;
+	padding: 6px 20px;
+	font-size: 133.3%;
+}
+
+#AgDialogTool .indexList .layout-block {
+	margin: 0 20px;
+}
+
+
+#AgDialogArea .checkArea {
+	overflow: hidden;
+	padding: 8px 10px 5px;
+	margin-bottom: 5px;
+	background-color: #fff;
+	text-align: left;
+}
+
+#AgDialogArea .column01 {
+	float: left;
+	width: 252px;
+	margin-right: 23px;
+}
+
+#AgDialogArea .column02 {
+	float: left;
+	width: 450px;
+	margin-right: 23px;
+}
+
+#AgDialogArea .column02_1 {
+	float: left;
+	width: 213px;
+	margin-right: 23px;
+}
+
+#AgDialogArea .column02_2 {
+	float: left;
+	width: 213px;
+}
+
+#AgDialogArea .column03 {
+	float: left;
+	width: 252px;
+}
+
+#AgDialogArea .checkGroup {
+	border-top: 2px solid #242424;
+	padding-top: 5px;
+	margin-top: 2px;
+	font-size: 116.7%;
+}
+
+#AgDialogArea .checkGroup .areaAll,
+#AgDialogArea .checkGroup .areaCateg {
+	margin-bottom: 2px;
+	font-weight: bold;
+}
+
+@media (min-width: 1px) {
+    .checkArea .cmnCheckbox input[type=checkbox]:checked + span {
+		display: block;
+		background-color: #efefef;
+	}
+	
+	#AgDialogArea .cmnCheckbox input[type="checkbox"] + span {
+		display: block;
+		padding: 2px 0 2px 27px;
+		margin-bottom: 0;
+		height: 1.5em;
+	}
+}
+
+/*#AgDialogArea #inline_content .setBtn {
+	position: relative;
+	top: -10px;
+	margin-bottom: -5px;
+}
+
+#AgDialogArea #inline_content .resetBtn {
+	margin-top: 0;
+}
+
+#AgDialogArea #inline_content .selectList {
+	height: 31px;
+}*/
+
+#DialogKadai .checkList {
+	overflow: hidden;
+}
+
+#DialogKadai .checkList li {
+	float: left;
+	width: 49%;
+	padding-right: 1%;
+	list-style-type: none;
+}
+
+#DialogKadai .checkArea {
+	border: 1px solid #d5d3d4;
+	padding: 10px 20px;
+	height: 335px;
+	margin-bottom: 20px;
+	background-color: #fff;
+	overflow-y: scroll;
+	text-align: left;
+}
+

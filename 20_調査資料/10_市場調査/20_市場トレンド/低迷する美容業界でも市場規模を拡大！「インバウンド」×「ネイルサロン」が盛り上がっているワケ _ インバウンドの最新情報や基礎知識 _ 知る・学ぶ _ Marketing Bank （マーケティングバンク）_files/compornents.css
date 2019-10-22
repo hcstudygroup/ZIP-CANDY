@@ -1,0 +1,1285 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* ============================================================
+compornents.css：コンポーネント
+
+%update / 2015.01.21
+
+============================================================ */
+
+
+/*--------------------------------------
+	レイアウト
+--------------------------------------*/
+
+
+/*　image-block…画像配置ブロック　*/
+
+
+.image-block {
+	_overflow: visible;
+	_height: 1px;
+	*zoom: 1;
+	/*\*//*/
+	overflow: hidden;
+	/**/
+	width: auto;
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom:40px;
+	padding: 0;
+}
+
+.image-block:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+}
+
+
+
+.image-block p.img,
+.layout-block .column img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.image-block .column.last {
+	margin-right:0 !important;
+	padding-right:0 !important;
+}
+
+
+.layout-block {
+	_overflow: visible;
+	_height: 1px;
+	*zoom: 1;
+	/*\*//*/
+	overflow: hidden;
+	/**/
+	margin: 0;
+	padding: 0;
+}
+
+.layout-block:after{
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+}
+
+
+
+.image-layout{
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom:40px;
+	padding: 0;
+}
+
+.image-layout:after{
+	display:block;
+	visibility:hidden;
+	clear:both;
+	height:0;
+	content:" ";
+}
+
+.image-layout{
+	zoom:1;
+}
+
+.image-block.col1 .column {
+    display: table;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0;
+}
+
+.image-block.col2 .column,
+.image-block.col3 .column,
+.image-block.col4 .column,
+.image-block.col5 .column{
+    display: table;
+	margin-left: auto;
+	margin-right: 10px;
+	margin-top: 0;
+}
+
+.image-parallel-L .image{
+	float:left;
+	margin:0 20px 5px  0;
+    display: table;
+	border:1px solid #cccccc;
+}
+
+.image-parallel-R .image{
+	float:right;
+	margin:0 0 5px 20px;
+    display: table;
+	border:1px solid #cccccc;
+}
+
+.image .imageBox {
+	text-align:center;
+	letter-spacing: -1em;
+}
+.image .imageBox:before,
+.image .imageBox:after {
+	display: inline-block;
+	content: "";
+	width: 1px;
+	height: 255px;
+	vertical-align: middle;
+	letter-spacing: normal;
+}
+.image .imageBox img {
+	display: inline-block;
+	vertical-align: middle;
+	letter-spacing: normal;
+}
+
+.image-parallel-L .column,
+.image-parallel-R .column{
+	overflow:hidden;
+	zoom:1;
+}
+
+
+/*　layout-block…カラムブロック　*/
+
+.layout-block .column {
+	float: left;
+	_display: inline;
+/*	margin-bottom:30px;*/
+}
+
+.layout-block .column > *:first-child {
+	margin-top: 0;
+}
+
+.layout-block:after{
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+}
+
+.layout-block {
+	margin-right: -2.1%;
+}
+
+.layout-block.col2 .column {
+	width: 48%;
+	margin-right: 2%;
+}
+
+.layout-block.col3 .column {
+	width: 31.3%;
+	margin-right: 2%;
+}
+
+.layout-block.col3 .column.double {
+	width: 64.6%;
+	margin-right: 2%;
+}
+
+.layout-block.col4 .column {
+	width: 23%;
+	margin-right: 2%;
+}
+
+.layout-block.col4 .column.double {
+	width: 48%;
+	margin-right: 2%;
+}
+
+.layout-block.col5 .column {
+	width: 18%;
+	margin-right: 2%;
+}
+
+.layout-block .column.last {
+	margin-right:0 !important;
+}
+
+
+/* ------------------------------------------------------------
+▼panel-general…囲み枠
+------------------------------------------------------------ */
+
+/* 背景グレー 画像＋リスト */
+
+.panel-general {
+	padding: 20px;
+	background-color:#f9f9f9;
+	margin-bottom:10px;
+}
+
+.panel-general h3 {
+	font-size: 134%; 
+	line-height: 1.4;
+}
+.panel-general h3:before {
+	content:"\f105";
+    font-family: FontAwesome;
+	padding-right:5px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.panelCatch {
+	border-bottom: 1px dotted #4c92c8;
+	padding-bottom:10px;
+}
+
+.panelBox {
+	margin-top:20px;
+	width:100%;
+}
+
+.columnList {
+	float:left;
+	width:46%;
+	margin:0 10px 10px;
+}
+
+.columnList dl dt {
+	float:left;
+	padding-right:10px;
+}
+
+
+/* ------------------------------------------------------------
+▼リストスタイル
+------------------------------------------------------------ */
+
+
+/* リスト基本形 */
+
+.listIcon li {
+	line-height: 1.8;
+	list-style-position: inside;
+	text-indent: -0.86em;
+	margin-left: 0.86em;
+	padding-left: 0.86em;
+	color:#418cc5;
+}
+
+.listIcon li span {
+    color: #000;
+	padding-left:5px;
+}
+
+ul.listIcon li span {
+	margin-left:-7px;
+}
+
+/* listIcon 数字 */
+
+ol.listIcon li span {
+	margin-left:-8px;
+}
+
+.listIcon li ol {
+	margin-top:10px;
+}
+.listIcon li ol li {
+	font-size:100%;
+}
+
+/* リンク用リスト */
+
+ul.link li {
+	line-height: 1.8;
+	list-style: none;
+	color:#418cc5;
+}
+
+
+ul.link li:before {
+	content:"\f105";
+    font-family: FontAwesome;
+	padding-right:5px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+
+/* リスト カラム配置用：右 */
+
+.listR li {
+	line-height: 1.8;
+	list-style: none;
+	text-indent: -0.86em;
+	margin-left: 0.86em;
+	color:#418cc5;
+}
+
+.listR li:before {
+	content:"\f105";
+    font-family: FontAwesome;
+	font-weight:bold;
+	padding-right:10px;
+	color:#418cc5;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.listR li a {
+	color:#333;
+}
+.listR li a:hover {
+}
+
+
+.fa-blue {
+	color:#418cc5;
+	padding-right:10px;
+}
+
+
+/* リスト カラム配置用：左 */
+
+.listL li {
+	line-height: 1.8;
+	list-style: none;
+	text-indent: -0.86em;
+	margin-left: 0.86em;
+	color:#418cc5;
+}
+
+.listL li:before {
+	content:"\f104";
+    font-family: FontAwesome;
+	font-weight:bold;
+	padding-right:10px;
+	color:#418cc5;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.listL li a {
+	color:#333;
+}
+
+.listL li a:hover {
+	color:#4690c8;
+	text-decoration: none;
+}
+
+/* リスト 注釈  */
+
+
+ul.note {
+	margin: 5px 0 0 0;
+	padding: 0;
+	color: #666;
+}
+
+ul.note li {
+	margin: 0;
+	padding: 0 0 0 1.4em;
+	list-style-type: none;
+	line-height: 1.6;
+	text-indent: -1.4em;
+	background: none;
+	font-weight: normal;
+}
+
+ul.note li span.marker {
+	margin-right: 0.4em;
+}
+
+
+/* 横並び  */
+
+
+dl.recent dt {
+	clear: left;
+	float: left;
+	width: auto;
+}
+
+dl.recent dd {
+	margin-left: auto;
+}
+
+
+/* ------------------------------------------------------------
+▼テーブルスタイル
+------------------------------------------------------------ */
+
+
+/* table共通  */
+
+.table-A01,
+.table-B01{
+	margin: 10px 0 0 0;
+	padding: 3px 0;
+}
+
+.table-A01 table,
+.table-B01 table{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	border-collapse: collapse;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+.table-A01 table caption,
+.table-B01 table caption{
+	caption-side: top;
+	text-align: left;
+	font-size: 108%; /* 14px */
+	font-weight:bold;
+	padding-bottom: 5px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.table-A01 table th,
+.table-A01 table td,
+.table-B01 table th,
+.table-B01 table td{
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+
+.table-A01 table th,
+.table-B01 table th {
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.table-A01 table thead th,
+.table-B01 table thead th {
+	background-color: #f3f3f3;
+	font-weight:bold;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.table-A01 table td > *:first-child,
+.table-B01 table td > *:first-child {
+	margin-top: 0;
+}
+
+
+/** table-A01　テーブルヘッダ上 */
+
+.table-A01 table th {
+	padding: 12px 10px;
+	display: table-cell;
+	vertical-align: middle;
+	font-weight: normal;
+	background-color: #418cc5 !important;
+	color:#FFFFFF;
+}
+
+.table-A01 table td {
+	padding: 12px 10px;
+	display: table-cell;
+	vertical-align: middle;
+	font-weight: normal;
+	background-color: #fff;
+}
+
+/* table-B01　テーブルヘッダ上・左 */
+
+.table-B01 table th {
+	padding: 12px 10px;
+	vertical-align: middle;
+}
+
+.table-B01 table td {
+	padding: 12px 10px;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: left;
+}
+
+.table-B01 thead tr th {
+	background-color: #515151;
+	color:#FFFFFF;
+}
+
+.table-B01 thead tr th.lt {
+	background-color: #ffffff;
+	border-top: none;
+	border-left: none;
+}
+
+.table-B01 thead tr th.detail {
+	background-color: #242424;
+}
+
+.table-B01 tbody tr th {
+	background-color: #418cc5;
+	color:#FFF;
+}
+
+.table-B01 tbody tr td {
+	background-color: #ffffff;
+}
+
+.table-B01 tbody tr td.detail {
+	background-color: #f9f9f9;
+}
+
+
+/* table col Size */
+
+table col.par5 { width: 5%; }
+table col.par8 { width: 8%; }
+table col.par10 { width: 10%; }
+table col.par12 { width: 12%; }
+table col.par15 { width: 15%; }
+table col.par20 { width: 20%; }
+table col.par25 { width: 25%; }
+table col.par30 { width: 30%; }
+table col.par32 { width: 32%; }
+table col.par35 { width: 35%; }
+table col.par40 { width: 40%; }
+table col.par45 { width: 45%; }
+table col.par50 { width: 50%; }
+table col.par55 { width: 55%; }
+table col.par60 { width: 60%; }
+table col.par65 { width: 65%; }
+table col.par70 { width: 70%; }
+table col.par75 { width: 75%; }
+table col.par80 { width: 80%; }
+table col.par85 { width: 85%; }
+table col.par90 { width: 90%; }
+table col.par95 { width: 95%; }
+table col.par100 { width: 100%; }
+
+
+
+/* ------------------------------------------------------------
+▼ボタンスタイル
+------------------------------------------------------------ */
+
+
+
+a.btn {
+	display:block;
+	float:left;
+	height:50px;
+	background:url(/common/images/btn_green.png) top right no-repeat;
+	font-size:150%;
+	text-decoration:none;
+	color:#FFFFFF;
+	margin:0 auto 10px;
+}
+
+a.btn span {
+	display:block;
+	float:left;
+	margin-right:20px;
+	background:url(/common/images/btn_green.png) top left no-repeat;
+	height:38px;
+	padding:12px 0 0 20px;
+	cursor:pointer;
+}
+
+a.btn span:before {
+	content:"\f002";
+    font-family: FontAwesome;
+	color:#FFFFFF;
+	padding-right:10px;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+a.btn:hover {
+	background-position:right -50px;
+}
+
+a.btn:hover span{
+	background-position:left -50px;
+}
+
+
+/* 共通ボタン */
+
+.conBtnArea {
+	display:table;
+	margin:0 auto 30px;
+	position:relative;
+}
+
+
+.conBtnArea .conBtn {
+	width: 300px;
+	height:50px;
+	margin: 0 0 10px auto;
+	cursor:pointer;
+	text-align:center;
+	background-color:#418cc5;
+	position:relative;
+	display:table;
+}
+
+
+.conBtnArea .conBtn:hover {
+	background-color:#242424;
+	color:#fff;
+}
+
+.conBtnArea .conBtn a {
+	color:#FFF;
+	font-size:150%;
+	font-weight:bold;
+	text-decoration:none;
+	display:table-cell;
+	vertical-align:middle;
+	-webkit-font-smoothing: antialiased; /*Safari Chrome*/
+	-moz-osx-font-smoothing: auto | grayscale; /* Firefox*/
+}
+
+.conBtnArea .conBtn a:hover {
+	color:#fff;
+	text-decoration:none;
+}
+
+
+/* 共通ボタン 再定義 */
+
+.cmnBtn {
+	position:relative;
+	display:inline-block;
+	border: none;
+	background-color:#418cc5;
+	width:300px;
+	height:50px;
+	line-height: 50px;
+	text-align:center;
+	font-size:16px;
+	font-weight:bold;
+	color:#fff !important;
+	cursor: pointer;
+}
+
+.cmnBtn:after {
+	content:"\f054";
+	position:absolute;
+	top:0;
+	right:10px;
+	font-family:FontAwesome;
+	font-weight:normal;
+	font-size:14px;
+}
+
+.cmnBtn.white {
+	border: 2px solid #242424;
+	box-sizing: border-box;
+	background-color: #fff;
+	color: inherit !important;
+}
+
+.cmnBtn:hover {
+	background-color:#242424;
+	text-decoration: none;
+	color:#fff !important;
+}
+
+.cmnBtn.h60 { height:60px; line-height:60px; }
+.cmnBtn.h65 { height:65px; line-height:65px; font-size:22px; }
+.cmnBtn.h75 { height:75px; line-height:75px; }
+
+.cmnBtn.w260 { width:260px; }
+.cmnBtn.w320 { width:320px; }
+.cmnBtn.w380 { width:380px; }
+.cmnBtn.w440 { width:440px; }
+
+.cmnBtn.f20 { font-size: 20px; }
+.cmnBtn.f22 { font-size: 22px; }
+
+.cmnBtn.noArrow:after {
+	display: none;
+}
+
+.cmnBtn.large {
+	height: 70px;
+	line-height: 70px;
+	font-size: 20px;
+}
+
+.cmnBtn.large:after {
+	right: 15px;
+}
+
+.cmnBtn.hasFree:before {
+	content: "";
+	position: absolute;
+	top: -2px;
+	right: -2px;
+	background: url(/common/images/btn_free.png) no-repeat 0 0;
+	width: 39px;
+	height: 36px;
+}
+
+.cmnBtn .fukidashi {
+	position: absolute;
+	top: -22px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	background-color: #e8f200;
+	padding: 5px 0;
+	width: 110px;
+	text-align: center;
+	line-height: 1.3;
+	font-size: 17px;
+	color: #242424 !important;
+}
+
+.cmnBtn .fukidashi:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -9px;
+	width: 0;
+	height: 0;
+	margin: auto;
+	border-top: 9px solid #e8f200;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+}
+
+
+/* 共通ボタン（角丸） 再定義 */
+
+.cmnRadiusBtn {
+	position:relative;
+	display:inline-block;
+	background-color:#fff;
+	width:200px;
+	height:32px;
+	border-radius: 18px;
+	border: 2px solid #418cc5;
+	line-height:32px;
+	text-align:center;
+	font-size:16px;
+	font-weight:bold;
+}
+
+.cmnRadiusBtn:hover {
+	background-color:#418cc5;
+	text-decoration:none;
+	color:#fff !important;
+}
+
+.cmnRadiusBtn.sizeS {
+	font-size:14px;
+	height:28px;
+	line-height:28px;
+}
+
+.cmnRadiusBtn.w240 { width:240px; }
+
+
+/* リンク */
+
+.cmnLink {
+	position: relative;
+	font-size: 14px;
+	font-weight: bold;
+	color: #333 !important;
+}
+
+.cmnLink:before {
+	content: "\f054";
+	padding-right:5px;
+	font-family:FontAwesome;
+	font-weight:normal;
+	color:#418cc5;
+}
+
+.cmnLink:hover {
+	text-decoration: none;
+	color: #418cc5 !important;
+}
+
+
+/* 検索結果 */
+
+h2.nohit {
+    font-size: 134% !important;
+    line-height: 1.5;
+    margin: 100px auto;
+    text-align: center;
+    width: 1060px;
+}
+
+
+/* ------------------------------------------------------------
+▼フォーム
+------------------------------------------------------------ */
+
+.cmnSelectBox {
+    -moz-appearance: none;
+	-webkit-appearance: none;
+    background: rgba(0, 0, 0, 0) url("/common/images/bg_selectbtn.png") no-repeat scroll right top;
+    border: 1px solid #d5d3d4;
+    border-radius: 0;
+    box-sizing: content-box;
+    color: inherit;
+    font-size: inherit;
+    height: 40px;
+    margin: 0;
+    padding: 0 10px;
+    text-indent: 0.01px;
+    text-overflow: "";
+    vertical-align: middle;
+    width: 240px;
+	min-width: 0 !important;
+}
+
+body.ie8 .cmnSelectBox, body.ie9 .cmnSelectBox {
+    background-image: none;
+    height: 20px;
+    padding: 10px 13px;
+}
+
+.cmnSelectBox.w120 { width: 120px; }
+.cmnSelectBox.w360 { width: 360px; }
+.cmnSelectBox.w560 { width: 560px; }
+
+.cmnRadioBtn li {
+	list-style-type: none;
+	font-size: 14px;
+}
+
+.cmnRadioBtn.inlineList li {
+	display: inline-block;
+	margin-right: 40px;
+}
+
+.cmnRadioBtn input[type=radio] {
+	margin-right: 5px;
+}
+
+@media (min-width: 1px) {
+    .cmnCheckbox {
+		position: relative;
+	}
+    .cmnCheckbox input[type=checkbox] {
+        display: none;
+        margin: 0;
+    }
+    .cmnCheckbox input[type=checkbox] + span {
+		display: inline-block;
+        padding: 2px 0 2px 33px;
+		margin-bottom: 2px;
+    }
+    .cmnCheckbox input[type=checkbox] + span::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 5px;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin-top: -9px;
+        background: #FFF;
+    }
+    .cmnCheckbox input[type=checkbox]:checked + span::after {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 8px;
+        width: 16px;
+        height: 8px;
+        margin-top: -8px;
+        border-left: 3px solid #418cc5;
+        border-bottom: 3px solid #418cc5;
+        -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: block;
+    }
+    .cmnRadioBtn li {
+		position: relative;
+	}
+    .cmnRadioBtn input[type=radio] {
+        display: none;
+        margin: 0;
+    }
+    .cmnRadioBtn input[type=radio] + span {
+		display: inline-block;
+		padding: 3px 0 3px 33px;
+    }
+    .cmnRadioBtn input[type=radio] + span::before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 5px;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+		border-radius: 11px;
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: #FFF;
+		box-shadow: 1px 1px 1px #ccc inset;
+    }
+    .cmnRadioBtn input[type=radio]:checked + span {
+		display: block;
+		background-color: #efefef;
+	}
+    .cmnRadioBtn.noBg input[type=radio]:checked + span {
+		display: inline-block;
+		background-color: transparent;
+	}
+    .cmnRadioBtn input[type=radio]:checked + span::after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 9px;
+		width: 11px;
+		height: 11px;
+		border-radius: 7px;
+		background-color: #418cc5;
+    }
+}
+
+
+/* ------------------------------------------------------------
+▼スライダー
+------------------------------------------------------------ */
+
+
+.wideslider .slider_prev {
+	background: #fff url(/common/images/slide_arrow_l.png) no-repeat right center;
+}
+.wideslider .slider_next {
+	background: #fff url(/common/images/slide_arrow_r.png) no-repeat left center;
+}
+
+
+
+a.window {
+	background:url(/common/images/link_window.png) no-repeat left 4px;
+	padding-left:16px;
+}
+a.window2 {
+	background:url(/common/images/link_window2.png) no-repeat left 4px;
+	padding-left:16px;
+}
+
+a.pdf {
+	background:url(/common/images/link_pdf.png) no-repeat left top;
+	padding-left:20px;
+}
+
+
+/* ------------------------------------------------------------
+▼レコメンド
+------------------------------------------------------------ */
+
+/* レコメンド枠 */
+
+.sliderRecomend{
+	position: relative;
+	width: 1020px;
+	margin:-10px auto 30px;
+}
+
+
+#slider_prev {
+	width:132px;
+	position: absolute;
+	left:-113px;
+	top:0;
+	z-index:7;
+}
+#slider_prev img {
+	position: absolute;
+	left:52px;
+	top:60px;
+	cursor: pointer;
+}
+#slider_next {
+	width:132px;
+	position: absolute;
+	right:-125px;
+	top:0;
+	z-index:7;
+}
+#slider_next img {
+	position: absolute;
+	right:52px;
+	top:60px;
+	cursor: pointer;
+}
+#slider {
+  overflow: hidden;
+}
+#photo_list {
+  width: 2500px;
+  padding: 0 0 20px;
+  margin-top:0;
+  margin-left: 25px;
+  list-style-type: none;
+  float: left;
+  background-color: #FFF;
+  position: relative;
+}
+#photo_list li {
+  float: left;
+  margin-right:20px;
+  display: inline;
+  position:relative;
+  width:230px;
+  height: 230px;
+  cursor:pointer;
+  list-style:none;
+}
+ 
+#photo_list img {
+  border: none;
+}
+
+
+/* ------------------------------------------------------------
+▼開閉
+------------------------------------------------------------ */
+
+.toggleBtn {
+	cursor: pointer;
+}
+
+.toggleContents {
+	display: none;
+}
+
+
+/* ------------------------------------------------------------
+▼事例
+------------------------------------------------------------ */
+
+.caseBlock {
+	border-bottom: 2px solid #242424;
+	padding: 25px 0 45px;
+}
+
+.caseBlock:first-child {
+	border-top: 2px solid #242424;
+}
+
+.caseBlock .lead {
+	margin-bottom: 30px;
+	font-size: 233.3%;
+	line-height: 1.3;
+}
+
+.caseBlock .infoBox {
+	margin-bottom: 30px;
+	background-color: #f9f9f9;
+}
+
+.caseBlock .infoBox .name {
+	background: url(/common/images/line_dot1.png) repeat-x 0 100%;
+	padding: 15px 20px;
+	font-size: 183.3%;
+}
+
+.caseBlock .infoBox .name span {
+	padding-left: 15px;
+	font-size: 81.8%;
+	color: #959595;
+}
+
+.caseBlock .infoBox dl {
+	padding: 15px 20px;
+	overflow: hidden;
+}
+
+.caseBlock .infoBox dl dt {
+	display: inline-block;
+	background-color: #959595;
+	padding: 2px 20px;
+	margin-right: 10px;
+	color: #fff;
+}
+
+.caseBlock .infoBox dl dt:before {
+	font-family: FontAwesome;
+	font-weight: normal;
+	padding-right: 6px;
+}
+
+.caseBlock .infoBox dt.info01:before { content: "\f041"; }
+.caseBlock .infoBox dt.info02:before { content: "\f085"; }
+.caseBlock .infoBox dt.info03:before { content: "\f0c0"; }
+
+.caseBlock .infoBox dl dd {
+	display: inline-block;
+	padding: 1px 25px 1px 0;
+	font-size: 133.3%;
+}
+
+.caseBlock h4 {
+	border-bottom: none;
+	margin-bottom: 5px;
+}
+
+.caseBlock .hasArrow {
+	position: relative;
+	margin-bottom: 60px;
+}
+
+.caseBlock .hasArrow:after {
+	content: "";
+	position: absolute;
+	bottom: -50px;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 0;
+	height: 0;
+	border-top: 30px solid #f9f9f9;
+	border-left: 100px solid transparent;
+	border-right: 100px solid transparent;
+}
+
+.caseBlock .image {
+	box-shadow: 0 2px 0 0 rgb(240, 240, 240);
+}
+
+.caseBlock .imageBox {
+    height: 275px;
+    width: 380px;
+}
+
+.caseBlock .imageBox::before, .toolDetail .imageBox::after {
+    height: 275px;
+}
+
+.caseBlock .imageBox img {
+    max-height: 255px;
+    max-width: 360px;
+}
+
+.caseBlock .linkBox {
+	border: 1px solid #c2c2c2;
+	padding: 4px;
+	box-shadow: 0 2px 0 0 rgb(240, 240, 240);
+}
+
+.caseBlock .linkBox dl {
+	display: table;
+	width: 100%;
+	font-weight: bold;
+}
+
+.caseBlock .linkBox dl dt {
+	display: table-cell;
+	background-color: #242424;
+	width: 125px;
+	padding: 5px;
+	color: #fff;
+	text-align: center;
+}
+
+.caseBlock .linkBox dl dd {
+	display: table-cell;
+	background-color: #f9f9f9;
+	padding: 5px 20px;
+}
+
+.caseBlock .linkBox ul {
+	overflow: hidden;
+	padding: 8px 10px 3px;
+}
+
+.caseBlock .linkBox ul li {
+	float: left;
+	margin-right: 30px;
+	list-style-type: none;
+}
+
+.caseBlock .linkBox ul li a {
+	position: relative;
+	padding-left: 12px;
+	color: #333;
+}
+
+.caseBlock .linkBox ul li a:before {
+	content: "\f054";
+	position: absolute;
+	top: 2px;
+	left: 0;
+	font-family: FontAwesome;
+	font-weight: normal;
+	font-size: 10px;
+	padding-right: 6px;
+}
+
+
+/* ------------------------------------------------------------
+▼その他
+------------------------------------------------------------ */
+
+.cmnBreakall {
+	word-break: break-all;
+}
+
+
+.cmnHelpBtn {
+	position: relative;
+	display: inline-block;
+	padding: 1px 5px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.cmnHelpBtn .helpText {
+	position: absolute;
+	left: -104px;
+	bottom: 35px;
+	width: 200px;
+	background-color: #fff;
+	border-radius: 5px;
+	border: 2px solid #f0574b;
+	padding: 13px 15px;
+	box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	font-size: 12px;
+	font-weight: normal;
+	display: none;
+}
+
+.cmnHelpBtn .helpText:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -23px;
+	margin: auto;
+	background: url(/common/images/bg_help.png) no-repeat 0 0;
+	width: 22px;
+	height: 23px;
+}

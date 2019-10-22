@@ -1,0 +1,2341 @@
+"use strict";
+
+var labelType, nativeTextSupport, useGradients, animate, iphone, android, ipad, smartPhone, totalPx;
+var timer = false;
+
+var msmyRoot = 'http://visualizing.info/cr/msmy/';
+var mstRoot  = 'http://visualizing.info/cr/mst/';
+var uhTarget = 'msmy';
+
+var title = '市場規模マップ';
+var titleVersion = ' (年指定表示対応版)';
+var defaultYear = 2016;
+var yearMin;
+var yearMax;
+var cbSizeRanges = [
+  {text: "マップ全体",            value: "all"},
+  {text: "市場規模10兆円未満",    value: "10"},
+  {text: "市場規模5兆円未満",     value: "5"},
+  {text: "市場規模1兆円未満",     value: "1"},
+  {text: "市場規模5,000億円未満", value: "0.5"},
+  {text: "市場規模1,000億円未満", value: "0.1"},
+  {text: "市場規模500億円未満",   value: "0.05"},
+  {text: "市場規模100億円未満",   value: "0.01"}
+];
+var ddSizeRanges = [
+  cbSizeRanges[0],
+  cbSizeRanges[1],
+  cbSizeRanges[3],
+  cbSizeRanges[5]
+];
+var defaultSizeRange = 'all';
+var colorLabel = '前年比';
+var colorList = ["CC0000", "00CC00", "0000CC", "CCCC00", "00CCCC", "CC00CC",
+                 "FF0000", "00FF00", "0000FF", "FFFF00", "00FFFF", "FF00FF"];
+var minDefaultColor = "#CC0000";
+var maxDefaultColor = "#00CC00";
+var gradLabel = '色濃淡範囲 ±';
+var defaultGradientRange = 10;
+var zeroColor = 0;
+var globalOptions = [
+  {text: "見込値の場合は表示しない",       value: "e", default: false},
+  {text: "予測値の場合は表示しない",       value: "f", default: false},
+  {text: "指定年以外のデータは表示しない", value: "o", default: false}
+];
+var cellClickOptions = [
+  {text: "出所を表示",             value: "s", default: false},
+  {text: "トレンドグラフを表示",   value: "g", default: true },
+  {text: "市場規模トレンドを表示", value: "t", default: false},
+  //{text: "まとめページを表示",     value: "d", default: false},
+  {text: "セルをハイライト表示",   value: "h", default: false},
+  {text: "マップデータから除外",   value: "r", default: false}
+];
+var listSearchUpdateHistoryOptions = [
+  {text: "セルをハイライト表示",                   value: "a", default: true },
+  {text: "マップ表示範囲を「マップ全体」に固定",   value: "w", default: false},
+  {text: "トレンドグラフを表示",                   value: "b", default: true },
+  {text: "データが選択されていない場合は選択する", value: "c", default: true },
+  {text: "マップ表示設定によりデータを表示できない場合は表示できるようにマップ表示設定を変更する", value: "u", default: true }
+];
+var historyItems = [
+  {name: 'update_by_name_change',                 text: '名称が変更された項目'},
+  {name: 'add',                                   text: '追加された項目'},
+  {name: 'delete',                                text: '削除された項目'},
+  {name: 'update_by_source_update',               text: '最新データが反映された項目'},
+  {name: 'update_by_source_past_yearly_data_add', text: '過去年データが追加された項目'},
+  {name: 'update_by_source_change',               text: '出所元が変更された項目'},
+  {name: 'update_by_other_reason',                text: 'その他の理由で変更された項目'},
+  //{name: 'update_by_source_error_correct',        text: '出所元のデータ訂正反映のため更新された項目'},
+  //{name: 'update_by_self_error_correct',          text: '誤記、データ誤り訂正のため更新された項目'},
+  {name: 'o_to_m',                                text: 'デフォルト表示対象に変更された項目'},
+  {name: 'm_to_o',                                text: 'デフォルト表示対象外に変更された項目'},
+  {name: 'update_by_yearly',                      text: '年指定表示対応のため更新された項目'},
+  {name: 'update_by_change_def',                  text: '前年比定義変更のため更新された項目'}
+];
+
+var tm;
+var sourceData;
+var marketIds;
+var marketIdDict;
+var highlightedMarkets = [];
+var indented;
+var orgSrcCopy;
+var hrefBeforeLoad;
+var debugMode = false;
+
+var sizeRangeToIndex = function(sizeRanges){
+  var result = {};
+  for (var i = 0; i < sizeRanges.length; i++) {
+    result[sizeRanges[i].value] = i;
+  }
+  return result;
+}
+var cbSizeRangeToIndex = sizeRangeToIndex(cbSizeRanges);
+var ddSizeRangeToIndex = sizeRangeToIndex(ddSizeRanges);
+
+(function(){
+  var ua = navigator.userAgent,
+      iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),
+      typeOfCanvas = typeof HTMLCanvasElement,
+      nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),
+      textSupport = nativeCanvasSupport 
+        && (typeof document.createElement('canvas').getContext('2d').fillText == 'function');
+  
+  //I'm setting this based on the fact that ExCanvas provides text support for IE
+  //and that as of today iPhone/iPad current text support is lame
+  labelType = (!nativeCanvasSupport || (textSupport && !iStuff))? 'Native' : 'HTML';
+  nativeTextSupport = labelType == 'Native';
+
+  //useGradients = nativeCanvasSupport;
+  useGradients = false;
+  
+  //animate = !(iStuff || !nativeCanvasSupport);
+  animate = false;
+
+  iphone = ua.match(/iPhone/i);
+  android = ua.match(/Android/i);
+  ipad = ua.match(/iPad/i);
+  smartPhone = iStuff || android || cssua.userAgent.mobile;
+  
+})();
+
+$(document).ready(function(){
+  setUpResize();
+  setUpOrientation();
+  setUpMapWidth();
+  setUpMapHeight();
+  
+  setUpTitles();
+  
+  setUpCbSize();
+  setUpCbGrad();
+
+  setUpDDSize();
+  setUpSlider();
+  //setUpYSlider();
+  //setUpYearLabel();
+  //setUpOptionSelect();
+
+  setUpColorLegend();
+  setUpHelp();
+  //setUpNote();
+  setUpCustomize();
+  setUpDialog();
+
+  //hrefBeforeLoad = window.location.href;
+  //if (!(history && history.pushState) && hrefBeforeLoad != msmyRoot && !(/&hbl=/.test(hrefBeforeLoad))) {
+    //alert(hrefBeforeLoad);
+    //window.location.href = hrefBeforeLoad + '&hbl=1';
+  //}
+  
+  //window.onbeforeunload = function(){
+    //if (!(history && history.pushState) && window.location.href != msmyRoot) {
+      //alert('before');
+      //window.location.href = msmyRoot;
+    //}
+  //}
+  
+});
+
+window.onload = function(){
+
+  //console.profile('a');
+  
+  updateByLocationHash(true);
+  init(defaultSizeRange, defaultGradientRange, minDefaultColor, maxDefaultColor, defaultYear, false);
+
+  //console.profileEnd('a');
+  
+  if (iphone) {
+    setTimeout(scrollTo, 100, 0, 1);
+  }
+}
+
+function gase(category, action, label, value){
+  var event_h = {
+    'hitType':        'event',             // Required.
+    'eventCategory':  category.toString(), // Required.
+    'eventAction':    action.toString(),   // Required.
+    'nonInteraction': 1
+  };
+  if (label != undefined) {
+    event_h['eventLabel'] = label.toString();
+  }
+  if (value != undefined && parseInt(value) > 0) {
+    event_h['eventValue'] = parseInt(value);
+  }
+  ga('send', event_h);
+}
+
+function setUpResize(){
+  if (smartPhone) {
+    return;
+  }
+  $(window).resize(function(){
+    if (timer !== false) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function(){
+      setUpMapHeight();
+      //updateInfovis();
+      $("#infovis").empty();
+      init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+    }, 200);
+  });
+}
+
+function setUpOrientation(){
+  if (!iphone && !ipad) {
+    return;
+  }
+  window.onorientationchange = function(){
+    //$("meta[name=viewport]").attr("content", "width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=10.0, user-scalable=yes");
+    setUpMapWidth();
+    setUpMapHeight();
+    //updateInfovis();
+    $("#infovis").empty();
+    init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+    if (iphone) {
+      setTimeout(scrollTo, 100, 0, 1);
+    }
+  };
+}
+
+function setUpMapWidth(){
+  if (!iphone && !ipad) {
+    return;
+  }
+  var map = (iphone &&  orientationIsLandscape() ? 960  :
+             iphone && !orientationIsLandscape() ? 640  :
+             ipad   &&  orientationIsLandscape() ? 2000 :
+             ipad   && !orientationIsLandscape() ? 1500 :
+                                                   640);
+  $("#container"          ).css("width", String(map));
+  $("#center-container"   ).css("width", String(map));
+  $("#infovis"            ).css("width", String(map));  
+  $("#customize-map-title").css("width", String(map));  
+  $("#footer"             ).css("width", String(map));  
+  $("#map-ctr"            ).css("width", String(map));  
+}
+
+function setUpMapHeight(){
+  var header = parseInt($("#vis-header").css("height"));
+  var inner = parseInt($(window).height()) * (android ? 2 : 1);
+  var footer = parseInt($("#footer").css("height"))
+               + ($("#customize-map-title").css("display") != "none" ? parseInt($("#customize-map-title").css("height")) : 0);
+  var map = (iphone               ? inner + (orientationIsLandscape() ? 115 : 0):
+             inner - footer < 300 ? 300   :
+                                    inner - footer - (smartPhone ? 10 : 0));
+  $("#container"       ).css("height", String(map));
+  $("#center-container").css("height", String(map));
+  
+  map -= (smartPhone ? 0 : header + 3);
+  
+  $("#infovis"         ).css("height", String(map));
+  if (iphone) {
+    if (orientationIsLandscape()) {
+      $("#footer").css("display", "none");
+    } else {
+      $("#footer").css("display", "block");
+    }
+  }
+  
+  totalPx = (iphone     ? 640  * 960  * (orientationIsLandscape() ? 0.3 : 0.25) :
+             ipad       ? 1500 * 2000 * 0.3  :
+             android    ? 640  * map  * 0.35 :
+             smartPhone ? 640  * map  * 0.3  :
+                          980  * map  * 0.4  );
+  
+}
+
+function orientationIsLandscape(){
+  //alert(window.orientation);
+  return Math.abs(window.orientation) === 90;
+}
+
+function setUpTitles(){
+  $("title").text(title + titleVersion);
+  if (smartPhone) {
+    $("#map-title").text(title);
+  }
+}
+
+function setUpYearLabel(){
+  var customizeMapTitle = $('#customize-map-title').text();
+  $("title").text((customizeMapTitle != '' ? customizeMapTitle + ' - ' : '') + title + ' ' + yearValue() + titleVersion);
+  //$("#map-year-label").text(yearValue());
+  if (!smartPhone) {
+    var mapTitle = $("#map-title");
+    mapTitle.removeClass('parentheses');
+    if (customizeMapTitle != '') {
+      mapTitle.addClass('parentheses');
+    }
+    mapTitle.empty();
+    mapTitle.append($('<a>', {text: (customizeMapTitle != '' ? '(' : '') + title, href: msmyRoot}));
+    mapTitle.append(' ');
+    //mapTitle.append(yearValue());
+    mapTitle.append($('<a>', {text: yearValue() + (customizeMapTitle != '' ? ')' : ''),
+                              href: 'javascript:void(0)', class: 'map-title-year-label'}));
+    $("#map-title a.map-title-year-label").click(function(){
+      location.reload();
+    });
+    
+    //$("#map-title").text(title + ' ' + yearValue());
+  }
+}
+
+function sizeRangeValue(value){
+  if (value != undefined) {
+    if (smartPhone) {
+      $("#cb-size").val(value);
+    } else {
+      $("#size-option").val([value]);
+      $("#size-option").multiselect("refresh");
+      
+      $('#map-dd-size .ui-multiselect.size-option-menu').css('width', '225px');
+      $('.ui-multiselect-menu.size-option-menu').css('width', '217px');
+    }
+  }
+  return smartPhone ? $("#cb-size").val() :
+    $("#size-option").multiselect("getChecked").map(function(){
+      return this.value;
+    }).get()[0];
+}
+
+function xsizeRangeValue(value){
+  if (value != undefined) {
+    if (smartPhone) {
+      $("#cb-size").val(value);
+    } else {
+      var dropdownlist = $("#dd-size").data("kendoDropDownList");
+      dropdownlist.value(value);
+    }
+  }
+  return $(smartPhone ? "#cb-size" : "#dd-size").val();
+}
+
+function gradientRangeValue(value){
+  if (value != undefined) {
+    if (smartPhone) {
+      $("#cb-grad").val(value);
+    } else {
+      $("#slider").data("kendoSlider").value(value);
+    }
+  }
+  return smartPhone ? $("#cb-grad").val() : $("#slider").data("kendoSlider").value();
+}
+
+function yearValue(value){
+  if (value != undefined) {
+    if (smartPhone) {
+      $("#cb-year").val(value);
+    } else {
+      $("#y-slider").data("kendoSlider").value(value);
+    }
+  }
+  return smartPhone ? $("#cb-year").val() : $("#y-slider").data("kendoSlider").value();
+}
+
+function optionValues(values){
+  if (values != undefined) {
+    $("#option").val(values);
+    $("#option").multiselect("refresh");
+    
+    $.each(indented, function(k, v){
+      $('input[name="multiselect_option"][value="' + k + '"]').parent('label').addClass('ui-corner-all-indented-' + v);
+      //$('input[name="multiselect_option"][value="' + v + '"]').next('span').text(v + '*** long string ***');
+    });
+    $('#map-option .ui-multiselect.map-option-menu').css('width', '225px');
+    $('.ui-multiselect-menu.map-option-menu').css('width', '217px');
+  }
+  return $("#option").multiselect("getChecked").map(function(){
+    return this.value;
+  }).get();
+}
+
+function dataOptionValues(values){
+  if (values != undefined) {
+    $("#data-option").val(values);
+    $("#data-option").multiselect("refresh");
+    
+    $.each(indented, function(k, v){
+      $('input[name="multiselect_data-option"][value="' + k + '"]').parent('label').addClass('ui-corner-all-indented-' + v);
+      //$('input[name="multiselect_data-option"][value="' + v + '"]').next('span').text(v + '*** long string ***');
+    });
+    $('#data-select-option .ui-multiselect.data-option-menu').css('width', '255px');
+    $('.ui-multiselect-menu.data-option-menu').css('width', '247px');
+
+    $('.ui-multiselect-menu.data-option-menu .ui-multiselect-filter input').addClass('ui-corner-all');
+  }
+  return $("#data-option").multiselect("getChecked").map(function(){
+    return this.value;
+  }).get();
+}
+
+function filterByOption(src){
+  var optionDict = {};
+  $.each(dataOptionValues(), function(i, v){
+    optionDict[v] = '';
+  });
+  var filtered = [];
+  $.each(src, function(i, v){
+    if (v.name in optionDict) {
+      filtered.push(v);
+    }
+  });
+  return filtered;
+}
+
+function filterByPrpAry(src, prp, ary){
+  var dict = {};
+  $.each(ary, function(i, v){
+    dict[v] = '';
+  });
+  var filtered = [];
+  $.each(src, function(i, v){
+    if (v[prp] in dict) {
+      filtered.push(v);
+    }
+  });
+  return filtered;
+}
+
+function rateToFontsize(rate, length){
+  var adj = 1.0;
+  return Math.round(Math.sqrt(totalPx * rate / length) * adj) + "px";
+}
+
+function updateMapData(json){
+  var totalArea = 0.0;
+  $.each(json.children, function(i, v){
+    totalArea += parseFloat(v.data['$area']);
+  });
+  var updated = json;
+  var children = [];
+  $.each(json.children, function(i, v){
+    v.data.fontSize = rateToFontsize(parseFloat(v.data['$area']) / totalArea, v.name.length);
+    children.push(v);
+  });
+  updated.children = children;
+  return updated;
+}
+
+function getNextLatestYear(marketDict, timeSeries){
+  var years = [];
+  $.each(marketDict, function(k){
+    years.push(k);
+  });
+  var result = false;
+  var first = true;
+  $.each(years.sort().reverse(), function(i, v){
+    if (v < timeSeries && first) {
+      result = v;
+      first = false;
+    }
+  });
+  //return result;
+  return result === false ? years.sort()[0] : result;
+}
+
+function valueIsIncluded(value, array){
+  return $.inArray(value, array) == -1 ? false : true;
+}
+
+function getTargetYear(marketDict, timeSeries, mapOptions){
+  var nextLatestYear = getNextLatestYear(marketDict, timeSeries);
+  if (timeSeries in marketDict) {
+    var year = marketDict[timeSeries].year;
+    if ((/見込/.test(year) && valueIsIncluded('e', mapOptions) && valueIsIncluded('o', mapOptions))
+        || (/予測/.test(year) && valueIsIncluded('f', mapOptions) && valueIsIncluded('o', mapOptions))) {
+      return false;
+    } else if ((/見込/.test(year) && valueIsIncluded('e', mapOptions) && !valueIsIncluded('o', mapOptions))
+               || (/予測/.test(year) && valueIsIncluded('f', mapOptions) && !valueIsIncluded('o', mapOptions))) {
+      return nextLatestYear == timeSeries ? false : getTargetYear(marketDict, nextLatestYear, mapOptions);
+    } else {
+      return timeSeries;
+    }
+  } else if (!valueIsIncluded('o', mapOptions)) {
+    return nextLatestYear == '' ? '' : getTargetYear(marketDict, nextLatestYear, mapOptions);
+  } else {
+    return false;
+  }
+}
+
+function zeroPadding(str, num){
+  var pad = '';
+  for (var i = 0; i < num; i++){
+    pad += '0';
+  }
+  return (pad + str).slice(-num);
+}
+
+function changeToColor(change, nstp, minColor, maxColor){
+  if (change < -nstp) {
+    return blendColors(minColor, zeroColor, 1);
+  } else if (change < 0) {
+    return blendColors(minColor, zeroColor, Math.abs(change) / nstp);
+  } else if (change > nstp) {
+    return blendColors(zeroColor, maxColor, 0);
+  } else if (change > 0) {
+    return blendColors(zeroColor, maxColor, 1 - (Math.abs(change) / nstp));
+  } else {
+    return zeroColor;
+  }
+}
+
+function addFigure(str){
+  var num = new String(str).replace(/,/g, "");
+  while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+  return num;
+}
+
+function appendStrN(strDst, strSrc, n) {
+  var result = strDst;
+  for (var i = 0; i < n; i++) {
+    result += strSrc;
+  }
+  return result;
+}
+
+function roundPrec(value, prec){
+  var adj = Math.pow(10, prec);
+  var v = (Math.round(parseFloat(value) * adj) / adj).toString();
+  if (prec <= 0) {
+    return v;
+  } else {
+    var pointPos = v.indexOf('.');
+    if (pointPos == -1) {
+      return appendStrN(v + '.', '0', prec);
+    } else if (v.length - (pointPos + 1) >= prec) {
+      return v;
+    } else {
+      return appendStrN(v, '0', prec - (v.length - (pointPos + 1)));
+    }
+  }
+}
+
+function valueFormatter(value){
+  var v = parseFloat(value);
+  return v >= 1 ? addFigure(roundPrec(value, 1)) + '兆円' : addFigure(Math.round(v * 10000).toString()) + '億円';
+}
+
+function xvalueFormatter(value){
+  var v = parseFloat(value);
+  return v >= 1 ? addFigure((Math.round(v * 10) / 10).toString()) + '兆円' : addFigure(Math.round(v * 10000).toString()) + '億円';
+}
+
+function changeFormatter(change){
+  if (change == '') {
+    return '---';
+  }
+  return (parseFloat(change) > 0 ? '+' : '') +
+    //roundPrec(change, 1) +
+    addFigure(change) +
+    '%';
+}
+
+function xchangeFormatter(change){
+  if (change == '') {
+    return '---';
+  }
+  var c = Math.round(parseFloat(change) * 10) / 10;
+  return (c > 0 ? '+' : '') + c.toString() + '%';
+}
+
+function createMapData(targetYearData, valueRange, gradientRange, minColor, maxColor){
+  var jit = {
+    children: [],
+    data: {},
+    id: 'root',
+    name: '市場データが選択されていないか存在しません'
+  };
+  var totalArea = 0.0;
+  $.each(targetYearData, function(i, v){
+    if (valueRange == 'all' || parseFloat(valueRange) > parseFloat(v.value)) {
+      totalArea += parseFloat(v.value);
+    }
+  });
+  $.each(targetYearData, function(i, v){
+    if (valueRange == 'all' || parseFloat(valueRange) > parseFloat(v.value)) {
+      jit.children.push({
+        data: {
+          '$area' : v.value,
+          '$color' : '#' + colorZeroPadding(changeToColor(v.change == '' ? 0.0 : parseFloat(v.change),
+                                                          parseFloat(gradientRange),
+                                                          parseInt(colorIntStr(minColor), 16),
+                                                          parseInt(colorIntStr(maxColor), 16)).toString(16)),
+          fontSize: rateToFontsize(parseFloat(v.value) / totalArea, v.name.length),
+          value: valueFormatter(v.value),
+          change: changeFormatter(v.change),
+          date: v.date,
+          source: v.source,
+          url: v.url,
+          comment: v.comment || [],
+          unit: v.unit,
+          dmVal: v.dmVal,
+          excRate: v.excRate,
+          type: v.type,
+          category: v.category || '',
+          cntbkwd: v.cntbkwd || '',
+          matomeId: v.id
+        },
+        id: v.name,
+        name: v.name
+      });
+    }
+  });
+  return jit;
+}
+
+function createTargetYearData(json, timeSeries, mapOptions){
+  var result = [];
+  $.each(json, function(i, v){
+    var marketDict = {};
+    $.each(v.yearly, function(i2, y){
+      marketDict[y.year.substr(0, 4)] = y;
+    });
+    var targetYear = getTargetYear(marketDict, timeSeries, mapOptions);
+    if (!(targetYear === false)) {
+      var target = marketDict[targetYear];
+      var item = {
+        name: v.name,
+        id: v.id,
+        value: target.value,
+        change: target.change,
+        date: target.year + (('def' in v) ? ' ' + v.def : ''),
+        source: target.source,
+        url: target.url,
+        type: ('etc' in v) ? '金額規模' : '市場規模',
+        unit: target.unit || '',
+        dmVal: target.dmVal || '',
+        excRate: target.excRate || ''
+      };
+      if ('cntbkwd' in target) {
+        item['cntbkwd'] = target.cntbkwd;
+      }
+      if ('comment' in v) {
+        item['comment'] = createTargetYearComment(v.comment, target.year);
+      }
+      result.push(item);
+    }
+  });
+  return result;
+}
+
+function createTargetYearComment(comments, targetYear){
+  var result = [];
+  $.each([new RegExp("^《全体コメント》\n"),
+          new RegExp("^《" + targetYear.substr(0, 4) + "年コメント》\n")],
+         function(i, re){
+           $.each(comments, function(i2, v){
+             if (re.test(v)) {
+               result.push(v.replace(/^《.+?》\n/, ''));
+             }
+           });
+         });
+  return result;
+}
+
+function updateInfovis(minOrMax, color, notUpdateLocationHash){
+  //$("#infovis").empty();
+  /*
+  tm.loadJSON(createMapData(filterByOption(createTargetYearData(sourceData, yearValue(), optionValues())),
+                            sizeRangeValue(),
+                            gradientRangeValue(),
+                            minOrMax === 'min' ? color : $("#min-color").val(),
+                            minOrMax === 'max' ? color : $("#max-color").val()));
+  */
+  tm.loadJSON(createMapData(createTargetYearData(filterByPrpAry(sourceData, 'name', dataOptionValues()),
+                                                 yearValue(), optionValues()),
+                            sizeRangeValue(),
+                            gradientRangeValue(),
+                            minOrMax === 'min' ? color : $("#min-color").val(),
+                            minOrMax === 'max' ? color : $("#max-color").val()));
+  tm.refresh();
+  if (!(notUpdateLocationHash === true)) {
+    updateLocationHash();
+  }
+  assertSourceDataIsImmutable('updateInfovis');
+}
+
+function updateColorLabel(){
+  $("#map-color-min-label").html("-" + gradientRangeValue() + "%");
+  $("#map-color-max-label").html("+" + gradientRangeValue() + "%");
+}
+
+function updateColorGradient(){
+  $("#map-color-gradient").html(colorGradient());
+}
+
+function setUpCbSize(){
+  var selectedIndex = cbSizeRangeToIndex[defaultSizeRange];
+  for (var i = 0; i < cbSizeRanges.length; i++) {
+    var option = $('<option>', {text: cbSizeRanges[i].text, value: cbSizeRanges[i].value});
+    if (i === selectedIndex) {
+      option.attr('selected', 'selected');
+    }
+    option.appendTo($('#cb-size'));
+  }
+  $('#cb-size').change(function(){
+    updateInfovis();
+    gase('msmy areaRange', 'change', sizeRangeValue());
+  });
+}
+
+function setUpCbYear(){
+  var cbYear = $('#cb-year');
+  for (var yyyy = yearMin; yyyy <= yearMax; yyyy++) {
+    var value = String(yyyy);
+    var option = $('<option>', {text: value + '年', value: value});
+    if (yyyy == defaultYear) {
+      option.attr('selected', 'selected');
+    }
+    option.appendTo(cbYear);
+  }
+  cbYear.change(function(){
+    updateInfovis();
+    setUpYearLabel();
+  });
+}
+
+function setUpCbGrad(){
+  //$("#map-sl-grad-label").text(gradLabel);
+  var cbGradRanges = [];
+  for (var i = 1; i <= 9; i++) { cbGradRanges.push(i); }
+  for (var i = 10; i <= 100; i += 10) { cbGradRanges.push(i); }
+  for (var i = 0; i < cbGradRanges.length; i++) {
+    var value = String(cbGradRanges[i]);
+    var option = $('<option>', {text: value + '%', value: value});
+    if (cbGradRanges[i] === defaultGradientRange) {
+      option.attr('selected', 'selected');
+    }
+    option.appendTo($('#cb-grad'));
+  }
+  $('#cb-grad').change(function(){
+    updateInfovis();
+    updateColorLabel();
+  });
+}
+
+function setUpDDSize(){
+  var sizeOption = $('#map-dd-size');
+  sizeOption.empty();
+  //sizeOption.hide();
+  var optionSelect = $('<select>',
+                       {id: "size-option", title: "マップ表示範囲を選択", name: "マップ表示範囲を選択", size: "5"});
+  optionSelect.appendTo(sizeOption);
+  $.each(ddSizeRanges, function(i, v){
+    var optionAttr = {text: v['text'], value: v['value']};
+    if (v['value'] == defaultSizeRange) {
+      optionAttr['selected'] = 'selected';
+    }
+    $('<option>', optionAttr).appendTo(optionSelect);
+  });
+  
+  optionSelect.multiselect({
+    header: false,
+    multiple: false, 
+    //height: 300,
+    //height: 175,
+    height: 'auto',
+    minWidth: 225,
+    classes: 'size-option-menu',
+    position: {
+      of: sizeOption,
+      my: 'left bottom',
+      at: 'left top'
+    },
+    //noneSelectedText: '詳細設定',
+    //selectedText: '詳細設定',
+    selectedList: 1,
+    click: function(event, ui){
+      if (ui.checked) {
+        //alert(optionValues().join(','));
+      } else {
+        
+      }
+      updateInfovis('', '', true);
+      gase('msmy areaRange', 'change', sizeRangeValue());
+    },
+    close: function(){
+      updateLocationHash();
+    }
+  });
+}
+
+function xsetUpDDSize(){
+  $("#dd-size").kendoDropDownList({
+    dataTextField: "text",
+    dataValueField: "value",
+    dataSource: ddSizeRanges,
+    index: ddSizeRangeToIndex[defaultSizeRange],
+    change: function(){
+      updateInfovis();
+    }
+  });
+  var dropdownlist = $("#dd-size").data("kendoDropDownList");
+  dropdownlist.list.width(180);
+  dropdownlist.select(ddSizeRangeToIndex[defaultSizeRange]);
+}
+
+function setUpSlider(){
+  $("#slider").kendoSlider({
+    change: function(e){
+      updateInfovis();
+      updateColorLabel();
+    },
+    showButtons: false,
+    min: 1,
+    max: 100,
+    smallStep: 1,
+    largeStep: 99,
+    value: defaultGradientRange,
+    tickPlacement: "topLeft",
+    tooltip: {
+      format: "{0}%"
+    }
+  });
+}
+
+function createYearRange(json){
+  yearMin = defaultYear;
+  yearMax = defaultYear;
+  $.each(json, function(i, m){
+    $.each(m.yearly, function(i2, v){
+      if (v.year != '') {
+        var yyyy = parseInt(v.year.substr(0, 4));
+        if (yyyy < yearMin) {
+          yearMin = yyyy;
+        }
+        if (yyyy > yearMax) {
+          yearMax = yyyy;
+        }
+      }
+    });
+  });
+}
+
+function setUpYSlider(){
+  $("#y-slider").kendoSlider({
+    change: function(e){
+      updateInfovis();
+      setUpYearLabel();
+    },
+    //showButtons: false,
+    min: yearMin,
+    max: yearMax,
+    smallStep: 1,
+    largeStep: yearMax - yearMin,
+    value: defaultYear,
+    tickPlacement: "none",
+    tooltip: {
+      format: "{0}年"
+    }
+  });
+
+  $(".k-icon").attr('title', '');
+  $(".k-draghandle").attr('title', '');
+}
+
+function setUpOptionSelect(){
+  var mapOption = $('#map-option');
+  mapOption.empty();
+  //mapOption.hide();
+  var optionSelect = $('<select>',
+                       {id: "option", title: "表示・動作設定", multiple: "multiple", name: "表示・動作設定", size: "5"});
+  optionSelect.appendTo(mapOption);
+  
+  var optgrpGlobal = $('<optgroup>', {label: "マップ表示設定"});
+  optgrpGlobal.appendTo(optionSelect);
+  var optgrpCellClick = $('<optgroup>', {label: "セルクリック時動作設定"});
+  optgrpCellClick.appendTo(optionSelect);
+  var optgrpListSearchUpdateHistory = $('<optgroup>', {label: "検索・一覧・更新履歴動作設定"});
+  optgrpListSearchUpdateHistory.appendTo(optionSelect);
+  
+  var options = [];
+  $.each(globalOptions, function(i, v){
+    v['group'] = optgrpGlobal;
+    options.push(v);
+  });
+  $.each(cellClickOptions, function(i, v){
+    v['group'] = optgrpCellClick;
+    options.push(v);
+  });
+  $.each(listSearchUpdateHistoryOptions, function(i, v){
+    v['group'] = optgrpListSearchUpdateHistory;
+    options.push(v);
+  });
+  $.each(options, function(i, v){
+    var optionAttr = {text: v['text'], value: v['value']};
+    if (v['default']) {
+      optionAttr['selected'] = 'selected';
+    }
+    $('<option>', optionAttr).appendTo(v['group']);
+  });
+  
+  optionSelect.multiselect({
+    header: false,
+    height: 400,
+    //height: 175,
+    //height: 'auto',
+    minWidth: 225,
+    classes: 'map-option-menu',
+    position: {
+      of: mapOption,
+      my: 'left bottom',
+      at: 'left top'
+    },
+    noneSelectedText: '表示・動作設定',
+    selectedText: '表示・動作設定',
+    click: function(event, ui){
+      if (ui.checked) {
+        //alert(optionValues().join(','));
+      } else {
+        
+      }
+      updateInfovis('', '', true);
+      gase('msmy #map-option', (ui.checked ? 'checked' : 'unchecked'), ui.value);
+    },
+    optgrouptoggle: function(event, ui){
+      updateInfovis('', '', true);
+    },
+    close: function(){
+      if (highlightedMarkets.length != 0 && !valueIsIncluded('h', optionValues())) {
+        highlightedMarkets = [];
+        $("#infovis").empty();
+        init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+      } else {
+        //updateInfovis();
+        updateLocationHash();
+      }
+      gase('msmy #map-option', 'close', selectedOptions());
+    }
+  });
+  
+}
+
+function setUpDataSelect(json){
+  //json.sort(function(a, b){ return a['id'] > b['id'] ? 1 : -1; }).reverse();
+  json.sort(function(a, b){ return a['dodr'] > b['dodr'] ? 1 : -1; });
+  
+  var mapOption = $('#data-select-option');
+  mapOption.empty();
+  //mapOption.hide();
+  var optionSelect = $('<select>',
+                       {id: "data-option", title: "データ選択設定", multiple: "multiple", name: "データ選択設定", size: "5"});
+  optionSelect.appendTo(mapOption);
+  
+  var optgrpDomesticMarket = $('<optgroup>', {label: "国内市場"});
+  optgrpDomesticMarket.appendTo(optionSelect);
+  var optgrpForeignMarket = $('<optgroup>', {label: "海外・世界市場"});
+  optgrpForeignMarket.appendTo(optionSelect);
+  var optgrpEtcData = $('<optgroup>', {label: "金額規模"});
+  optgrpEtcData.appendTo(optionSelect);
+  
+  var options = [];
+  indented = {};
+  $.each(json, function(i, v){
+    options.push({text: v.name,
+                  value: v.name,
+                 default: ('opt' in v) ? false : true,
+                  group: ('etc' in v) ? optgrpEtcData :
+                  ('frn' in v) ? optgrpForeignMarket :
+                  optgrpDomesticMarket});
+    if (v.dind != 0) {
+      indented[v.name] = v.dind;
+    }
+  });
+  $.each(options, function(i, v){
+    var optionAttr = {text: v['text'], value: v['value']};
+    if (v['default']) {
+      optionAttr['selected'] = 'selected';
+    }
+    $('<option>', optionAttr).appendTo(v['group']);
+  });
+  
+  optionSelect.multiselect({
+    header: true,
+    height: 350,
+    //height: 175,
+    //height: 'auto',
+    minWidth: 250,
+    classes: 'data-option-menu',
+    position: {
+      of: mapOption,
+      my: 'left bottom',
+      at: 'left top'
+    },
+    noneSelectedText: 'データ選択設定',
+    selectedText: 'データ選択設定',
+    checkAllText: '全て選択',
+    uncheckAllText: '全て選択解除',
+    click: function(event, ui){
+      if (ui.checked) {
+        //alert(optionValues().join(','));
+      } else {
+        
+      }
+      updateInfovis('', '', true);
+      gase('msmy #data-select-option', (ui.checked ? 'checked' : 'unchecked'), ui.value);
+    },
+    checkAll: function(){
+      updateInfovis('', '', true);
+    },
+    uncheckAll: function(){
+      updateInfovis('', '', true);
+    },
+    optgrouptoggle: function(event, ui){
+      updateInfovis('', '', true);
+    },
+    close: function(){
+      var notSelectedAndHighlightedMarketExists = false;
+      if (highlightedMarkets.length != 0) {
+        var currentSelectedMarkets = dataOptionValues();
+        var newHighlightedMarkets = [];
+        $.each(highlightedMarkets, function(i, v){
+          if (!(v in marketIdDict)) {
+            
+          } else if (!valueIsIncluded(marketIdDict[v], currentSelectedMarkets)) {
+            notSelectedAndHighlightedMarketExists = true;
+            //highlightedMarkets.splice($.inArray(v, highlightedMarkets), 1);
+          } else {
+            newHighlightedMarkets.push(v);
+          }
+        });
+        highlightedMarkets = newHighlightedMarkets;
+      }
+      if (notSelectedAndHighlightedMarketExists) {
+        $("#infovis").empty();
+        init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+      } else {
+        //updateInfovis();
+        updateLocationHash();
+      }
+    }
+  }).multiselectfilter({
+    label: 'フィルター：',
+    width: 150,
+    placeholder: '入力フィールド',
+    autoReset: false
+  });
+  
+  //alert(indented.join());
+  /*
+  $.each(indented, function(i, v){
+    $('input[name="multiselect_option"][value="' + v + '"]').parent('label').addClass('ui-corner-all-indented-1');
+    //$('input[name="multiselect_option"][value="' + v + '"]').next('span').text(v + '*** long string ***');
+  });
+  */
+  
+}
+
+function setUpColorPicker(minOrMax, cssId, defaultColor){
+  //$(cssId).empty();
+  $(cssId).colorPicker(
+    {pickerDefault: colorIntStr(defaultColor),
+     colors: colorList,
+     onColorChange: function(id, newValue){
+       updateInfovis(minOrMax, newValue);
+       updateColorGradient();
+     }});
+  $(cssId).val(defaultColor);
+}
+
+function setUpColorLegend(){
+  $("#map-color-label").text(colorLabel);  
+  setUpColorPicker('min', '#min-color', minDefaultColor);
+  setUpColorPicker('max', '#max-color', maxDefaultColor);
+  updateColorGradient();
+  updateColorLabel();
+}
+
+function openDialog(cssId, content, buttons,
+                    dialogTitle, maxHeight, dialogHeight, dialogModal, dialogDraggable, dialogResizable, dialogWidth){
+  $(cssId).dialog({
+    maxHeight: maxHeight === true ? true : false,
+    height: dialogHeight != undefined ? dialogHeight : 'auto',
+    modal: dialogModal === false ? false : true,
+    autoOpen: false,
+    draggable: dialogDraggable === true ? true : false,
+    resizable: dialogResizable === true ? true : false,
+    width: ipad ? 800 :
+           dialogWidth != undefined ? dialogWidth :
+           600,
+    title: dialogTitle != undefined ? dialogTitle : '',
+    position: android ? ['right', 'bottom'] : 'center',
+    open: function(event, ui){
+      $(".ui-widget-overlay").css({
+        opacity: 0,
+        filter: "Alpha(Opacity=0)",
+        backgroundColor: "white"
+      });
+      //$(this).parents('.ui-dialog-buttonpane button:eq(0)').focus();
+      //$(this).siblings('.ui-dialog-buttonpane').find('button:eq(1)').focus();
+
+      //$('.ui-dialog :button').blur();      
+      $('.ui-dialog a').blur();
+      //$('.ui-dialog button').first().focus();
+
+      $(this).scrollTop(0);
+      
+    },
+    buttons: buttons
+  });
+  if (content != undefined) {
+    $(cssId).html(content);
+  }
+  $(cssId).dialog('open');
+  return false;
+}
+
+function helpContent(){
+  var div = $('<div>');
+  if (smartPhone) {
+    $('<p>', {text: '[ マップの見方と操作法 ]'}).appendTo(div);
+  } else {
+    $('<h2>',  {text: 'マップの見方と操作法'}).appendTo(div);
+  }
+  var ul = $('<ul>');
+  $('<li>', {class: 'help-li', text: 'セルの大きさで市場規模、セルの色でその前年比を表します。'}).appendTo(ul);
+  $('<li>', {class: 'help-li', text: 'セルクリックで、' +
+             (smartPhone ? "詳細情報を表示します。" :
+              "トレンドグラフを表示します（デフォルト）。" +
+              "なお、「表示・動作設定」メニューの「セルクリック時動作設定」でクリック時の表示対象を出所、市場規模トレンド" +
+              //"、まとめページ（データ、参考資料置き場）" +
+              "に変更できます。")}).appendTo(ul);
+  if (!smartPhone) {
+    $('<li>', {class: 'help-li', text: 'デフォルトのマップ表示では、指定年のデータがあればこれを表示し、なければデータが存在する直近年まで過去にさかのぼり、その直近年のデータを表示します。また、過去にさかのぼってもデータが存在しない場合は最も過去のデータを表示します（データが存在する年範囲より過去の年指定を行った場合などが該当）。なお、風俗産業のように年次データがないものは無条件に表示対象となります。'}).appendTo(ul);
+    var liStrict = $('<li>', {class: 'help-li'});
+    $('<span>', {class: 'emphasis', text: '厳密に指定年のデータのみ表示したい場合は、'}).appendTo(liStrict);
+    $('<span>', {class: '', text: '「表示・動作設定」メニューの「マップ表示設定」で「指定年以外のデータは表示しない」を選択します。'}).appendTo(liStrict);
+    liStrict.appendTo(ul);
+    ul.append('<li class="help-li">デフォルトのマップ表示では、国内市場データのみが表示されますが、オプションとして「データ選択設定」メニューから、海外・世界市場データ、金額規模データを追加できます（追加した項目がマップに表示されるかどうかは「表示・動作設定」メニューの「マップ表示設定」により決定されます）。</li>')
+      .append('<li class="help-li">当市場規模マップでは、ある市場項目について、異なる市場規模定義によるデータ、異なる出所によるデータが存在する場合、２つ目以降のデータを「市場項目名(＃番号)」と表記しています。例えば「宝くじ」については異なる市場規模定義によるデータが存在するため、１つ目を「宝くじ」、２つ目を「宝くじ(＃２)」と表記しています。</li>');
+  }
+  ul.appendTo(div);
+  if (smartPhone) {
+    var beforeSelectedOptions = optionValues();
+    $('<p>', {text: '[ マップ表示設定 ]'}).appendTo(div);
+    var optionCheckbox = $('<div>', {id: 'map-option-checkbox'});
+    $.each(globalOptions, function(i, v){
+      var inputLabel = $('<label>');
+      var inputAttr = {type: 'checkbox', id: 'map-option-' + v.value, value: v.value};
+      if (valueIsIncluded(v.value, beforeSelectedOptions)) {
+        inputAttr['checked'] = 'checked';
+      }
+      $('<input>', inputAttr).appendTo(inputLabel);
+      $('<span>', {text: v.text, id: 'map-option-label-' + v.value}).appendTo(inputLabel);
+      inputLabel.appendTo(optionCheckbox);
+      $('<br>').appendTo(optionCheckbox);
+    });
+    optionCheckbox.appendTo(div);
+  } else {
+    div.append($('<h2>', {text: 'カスタマイズマップの作り方'}));
+    div.append($('<ul>')
+               .append($('<li>', {class: 'help-li', text: '「データ選択設定」メニューで項目を選択、選択解除することにより、該当項目をマップデータとして追加、除外できます（追加した項目がマップに表示されるかどうかは「表示・動作設定」メニューの「マップ表示設定」により決定されます）。なお、「国内市場」ヘッダ部分をクリックすることにより、該当グループの全選択、全選択解除ができます（他のヘッダについても同様）。'}))
+               .append($('<li>', {class: 'help-li', text: '「表示・動作設定」メニューの「セルクリック時動作設定」で「セルをハイライト表示」を選択すると、セルクリックにより該当項目をハイライト表示し、該当項目に焦点を当てることができます（再度同一セルクリックでハイライト表示解除）。'}))
+               .append($('<li>', {class: 'help-li', text: '「タイトル」ボタンから、カスタマイズマップにタイトルをつけることができます（最大４０文字まで）。'}))
+               .append($('<li>', {class: 'help-li', text: '「年指定」「マップ全体、市場規模１兆円未満などのマップ表示範囲」「前年比の色・濃淡範囲」「表示・動作設定」「データ選択設定」「ハイライト表示」「カスタマイズマップタイトル」について行ったカスタマイズは全てＵＲＬアドレスに反映されますので、これをカスタマイズマップのブックマークとして保存し、参照することができます（※「表示・動作設定」「データ選択設定」メニューで行うカスタマイズのマップ表示への反映は個々の項目選択、選択解除操作毎に行われますが、ＵＲＬアドレスへの反映についてはメニュークローズ時にまとめて行われます）。'}))
+              );
+    div.append($('<h2>', {text: '注意事項'}));
+    div.append($('<ul>')
+               .append($('<li>', {class: 'help-li', text: '当市場規模マップは未だ国内の全産業、業界の市場規模を網羅できていません。従って当市場規模マップ上で３番目に大きい市場であっても国内第３位の市場規模を意味するわけではありません（産業、業界のくくり、市場の定義によっても順位は変わります）。'}))
+               .append('<li class="help-li">当市場規模マップのデフォルト表示では、「中央競馬」、「宝くじ」等の公営ギャンブル、「パチンコ」の市場規模として、売上からユーザーへの還元分を差し引いた金額ベースの市場規模が表示されます。これは、カジノや他の業界の市場規模との適切な比較を目的としています。例えば、パチンコ業界での売上がユーザーの投入金総額（貸玉料総額）をさす（グロス方式の売上計上）のに対し、カジノ業界での売上はユーザーの投入金総額からユーザーの払出金総額（ユーザーへの還元分）を差し引いた金額をさす（ネット方式の売上計上）ため、パチンコとカジノの市場規模を単純に売上高ベースの市場規模で比較しても意味がありません（カジノ業界における売上に相当するのはパチンコ業界では粗利）。' +
+                       //'詳しくは、<a href="http://matome.naver.jp/odai/2135521222253029901" target="_blank">「パチンコ」まとめページ</a> の参考資料をご参照下さい。' +
+                       '</li>')
+               .append($('<li>', {class: 'help-li', text: '当市場規模マップのデフォルト表示では、一部の国内市場データが非表示（オプション扱い）となっています。これは出所データ等から、ある市場項目間の包含関係が明らかな場合に、マップ上の規模重複を少なくするために行っています。'
+                                  + 'また、小売業、情報通信産業のようにくくりが大きく他の市場項目との規模重複が多くなってしまう市場項目についても、デフォルトで非表示とする方針です'
+                                  + '。'}))
+              );
+    div.append($('<h2>', {text: 'その他'}));
+    div.append($('<ul>')
+               .append('<li class="help-li">当市場規模マップのデフォルト設定では、セルクリックでトレンドグラフを表示できます。マップの色から前年比は分かりますが、より長期的なトレンドは分かりません。例えば、前年比はプラスなのに長期的なトレンドはマイナスのような場合に前年比のみの情報での誤解を生じにくくするため、前年比だけでなくより長期的なトレンドも知りたい人のために、この機能を追加しました。１つの市場のトレンドだけでなく、複数の市場についてトレンドを比較したい場合は、<a href="' + mstRoot + '" target="_blank">市場規模トレンド</a> をお試し下さい。</li>')
+               .append('<li class="help-li">当市場規模マップでは、海外・世界市場データを円換算で表示する際、<a href="http://ecodb.net/exchange/" target="_blank">世界経済のネタ帳</a> の為替レート（年次）データを使用しています。</li>')
+              );
+  }
+  return div;
+}
+
+function setUpHelp(){
+  var buttons = {
+    "戻る": function(){
+      if (smartPhone) {
+        var beforeSelectedOptions = optionValues();
+        $.each(getOptionValues([globalOptions]), function(i, v){
+          var checked = $('#map-option-' + v).attr('checked');
+          if ((!valueIsIncluded(v, beforeSelectedOptions) && checked)
+              || (valueIsIncluded(v, beforeSelectedOptions) && !checked)) {
+            $("#option").multiselect("widget").find(":checkbox[value='" + v + "']").each(function(){
+              this.click();
+            });
+          }
+        });
+        updateLocationHash();
+        gase('msmy mb-help #map-option', 'close', selectedOptions());
+      }
+      $(this).dialog("close");
+    }
+  };
+  if (smartPhone) {
+    $("#map-mb-help").click(function(){
+      openDialog('#dialog', helpContent(), buttons);
+      gase('msmy help', 'click', '');
+    });
+  } else {
+    $("#map-help").click(function(){
+      openDialog('#dialog', helpContent(), {}, 'ヘルプ', true, 400, false, true, true, 500);
+      gase('msmy help', 'click', '');
+     });
+  }
+}
+
+function getSizeRange(value){
+  return (value < 0.1 ? '0.1' :
+          value <   1 ?   '1' :
+          value <  10 ?  '10' :
+          'all');
+}
+
+function marketHasNoYearlyData(name){
+  var marketTargetDate;
+  $.each(createTargetYearData(sourceData, defaultYear, []), function(i, v){
+    if (v.name == name) {
+      marketTargetDate = v.date;
+    }
+  });
+  assertSourceDataIsImmutable('marketHasNoYearlyData');
+  return marketTargetDate == undefined || !(/^\d{4}年/.test(marketTargetDate));
+}
+
+function findMarketByName(name, targetYear, searchOptions){
+  var result;
+  $.each(createTargetYearData(
+    sourceData,
+    targetYear != undefined ? targetYear : defaultYear,
+    searchOptions != undefined ? searchOptions : []
+  ), function(i, v){
+    if (v.name == name) {
+      result = {
+        id: v.id,
+        url: v.url,
+        year: targetYear != undefined ? targetYear : defaultYear,
+        valueRange: getSizeRange(parseFloat(v.value))
+      };
+    }
+  });
+  assertSourceDataIsImmutable('findMarketByName');
+  return result;
+}
+
+function marketFocusUrl(findResult){
+  return msmyRoot + '#t=' + findResult.year
+    + '&v=' + findResult.valueRange
+    + '&o=fgh&h=' + findResult.id;
+}
+
+function updateHistoryContent(uhJson){
+  var result = $('<div>', {id: 'update-history-dialog-content'});
+  uhJson[uhTarget].sort(function(a, b){ return a['date'] > b['date'] ? 1 : -1; }).reverse();
+  
+  $.each(uhJson[uhTarget], function(i, v){
+    var div = $('<div>', {class: 'update-history-log'});
+    $('<h2>', {text: v.date, class: ''}).appendTo(div);
+    //$.each(v.description, function(i2, k){
+    //  $('<p>',  {text: k, class: 'description'}).appendTo(div);
+    //});
+    div.append(v.description);
+    $.each(historyItems, function(i2, k){
+      if ((k.name in v) && v[k.name].length > 0) {
+        $('<p>', {text: k.text + ' (' + v[k.name].length + '項目)', class: 'data-description'}).appendTo(div);
+        var ul = $('<ul>');
+        $.each(v[k.name], function(i3, m){
+          if (valueIsIncluded(m.name, marketIds)) {
+            var li = $('<li>', {class: 'help-li'});
+            $('<a>', {
+              href: 'javascript:void(0)',
+              text: m.name,
+              class: 'market-focus'}).appendTo(li);
+            if (k.name == 'update_by_name_change' && 'oldName' in m) {
+              $('<span>', {text: '　(旧名称：' + m.oldName + ')'}).appendTo(li);
+            }
+            li.appendTo(ul);
+          } else {
+            var li = $('<li>', {class: 'help-li', text: m.name});
+            li.appendTo(ul);
+          }
+          if ('comment' in m) {
+            var li = $('<li>', {class: 'help-li-comment', text: m.comment});
+            li.appendTo(ul);
+          }
+        });
+        ul.appendTo(div);
+      }
+    });
+    if ('total' in v) { 
+      $('<p>', {text: 'データ項目数は、全部で ' + v.total + ' 項目となります。', class: 'description'}).appendTo(div);
+    }
+    //$.each(v.post_description, function(i2, k){
+    //  $('<p>',  {text: k, class: 'description'}).appendTo(div);
+    //});
+    div.append(v.post_description);
+    div.appendTo(result);
+  });
+  
+  return result;
+}
+
+function setUpUpdateHistory(uhJson){
+  $('#update-history-button')
+    .button({label: '更新履歴'})
+    .click(function(event){
+      openDialog('#update-history-dialog',
+                 updateHistoryContent(uhJson),
+                 {
+                   //"戻る": function(){
+                   //  $(this).dialog("close");
+                   //}
+                 }, '更新履歴', true, 400, false, true, true, 400);
+      setUpMarketFocusLink();
+      gase('msmy #update-history-button', 'click', '');
+     });
+}
+
+function setUpSearch(json){
+  $('#search-button')
+    .button({label: '検索'})
+    .click(function(event){
+      openDialog('#search-dialog',
+                 undefined,
+                 {
+                   //"戻る": function(){
+                   //  $(this).dialog("close");
+                   //}
+                 }, '検索', undefined, 220, false, true, true, 400);
+      gase('msmy #search-button', 'click', '');
+    });
+  var searchSource = [];
+  $.each(json, function(i, v){
+    searchSource.push(v.name);
+  });
+  var searchDialog = $('#search-dialog');
+  $('<label>',  {text: '市場名：', for: 'search-box'}).appendTo(searchDialog);
+  $('<input>',  {id: 'search-box', class: 'ui-corner-all'}).appendTo(searchDialog);
+  $('#search-box').autocomplete({
+    appendTo: '#search-dialog',
+    minLength: 0,
+    source: searchSource,
+    select: function(event, ui){
+      //alert(ui.item.value);
+      var searchName = ui.item.value;
+      $('#search-box').val(searchName);
+      //window.open(marketFocusUrl(findMarketByName(searchName)), '_self');
+      focusMarket(searchName);
+      return false;
+    }
+  }).keyup(function(event){
+    if (event.keyCode == 13) {
+      $(this).autocomplete("search");
+    }
+  });
+}
+
+function listContent(json){
+  var result = $('<div>', {id: 'list-dialog-content'});
+  var div = $('<div>');
+  $('<h2>', {text: 'マップ一覧', class: ''}).appendTo(div);
+  var mapList = [
+      //{name: '市場規模マップ（デフォルト表示）', href: location.href}
+      {name: '市場規模マップ（デフォルト表示）', href: msmyRoot}
+    , {name: 'からマップ', href: msmyRoot + '#t=&v=all&o=rwbc&m=&h=&mt='}
+    , {name: '映画 vs 紅しょうが', href: msmyRoot + '#t=2011&v=all&cn=cc0000&cx=00cc00&cr=10&o=gwb&m=0000020000000000000000000000000000000000200&h=&mt=%E6%98%A0%E7%94%BB%20vs%20%E7%B4%85%E3%81%97%E3%82%87%E3%81%86%E3%81%8C'}
+    , {name: '世界のカジノ vs パチンコ', href: msmyRoot + '#t=2011&v=all&cn=cc0000&cx=00cc00&cr=10&o=ogwb&m=8000000000000000000000000000000000000000000004&h=&mt=%E4%B8%96%E7%95%8C%E3%81%AE%E3%82%AB%E3%82%B8%E3%83%8E%20vs%20%E3%83%91%E3%83%81%E3%83%B3%E3%82%B3'}
+    , {name: '日本の外食 vs 中国の外食', href: msmyRoot + '#t=2011&v=all&cn=cc0000&cx=00cc00&cr=10&o=ogwb&m=0000000020000000000000000000000000000000002&h=&mt=%E6%97%A5%E6%9C%AC%E3%81%AE%E5%A4%96%E9%A3%9F%20vs%20%E4%B8%AD%E5%9B%BD%E3%81%AE%E5%A4%96%E9%A3%9F'}
+  ];
+  var ul = $('<ul>');
+  $.each(mapList, function(i, v){
+    ul.append('<li class="help-li mapList-li"><a href="' + v.href + '">' + v.name + '</a></li>');
+  });
+  ul.appendTo(div);
+  div.appendTo(result);
+  div = $('<div>');
+  $('<h2>', {text: 'データ項目一覧', class: ''}).appendTo(div);
+  var list = {
+    dms: {label: '国内市場',       markets: []},
+    frn: {label: '海外・世界市場', markets: []},
+    etc: {label: '金額規模',       markets: []}
+  };
+  $.each(json, function(i, v){
+    list[('frn' in v) ? 'frn' :
+         ('etc' in v) ? 'etc' :
+         'dms'].markets.push({
+           name: v.name,
+           dind: v.dind
+         });
+  });
+  $.each(['dms', 'frn', 'etc'], function(i2, k){
+    $('<p>', {text: list[k].label + ' (' + list[k].markets.length + '項目)'}).appendTo(div);
+    var ul = $('<ul>');
+    $.each(list[k].markets, function(i3, m){
+      var li = $('<li>', {class: m.dind != 0 ? ('help-li-indented-' + m.dind) : 'help-li'});
+      $('<a>', {
+        //href: marketFocusUrl(findMarketByName(m.name)),
+        href: 'javascript:void(0)',
+        text: m.name,
+        //text: m.name + (m.dind == 1 ? '*** long string ***' : ''),
+        class: 'market-focus'}).appendTo(li);
+      li.appendTo(ul);
+    });
+    ul.appendTo(div);
+  });
+  div.appendTo(result);
+  return result;
+}
+
+function setUpList(json){
+  $('#list-button')
+    .button({label: '一覧'})
+    .click(function(event){
+      openDialog('#list-dialog',
+                 listContent(json),
+                 {
+                   //"戻る": function(){
+                   //  $(this).dialog("close");
+                   //}
+                 }, '一覧', true, 400, false, true, true, 300);
+      setUpMarketFocusLink();
+
+      
+      if (cssua.userAgent.opera) {
+        //alert(cssua.userAgent.opera);
+        $('li.mapList-li a')
+          .click(function(){
+            //alert($(this).text());
+            if ($(this).attr('href').indexOf('#') != -1) {
+              window.open($(this).attr('href'), '_self');
+              location.reload();
+            }
+          });
+      }
+      
+      gase('msmy #list-button', 'click', '');
+      
+    });
+}
+
+function noteContent(){
+  var div = $('<div>');
+  return div;
+}
+
+function setUpNote(){
+  $('#note-button')
+    .button({label: '注意事項'})
+    .click(function(event){
+      openDialog('#note-dialog',
+                 noteContent(),
+                 {
+                   //"戻る": function(){
+                   //  $(this).dialog("close");
+                   //}
+                 }, '注意事項・その他', true, 500, false, true, true, 400);
+    });
+}
+
+function customizeContent(){
+  var div = $('<div>');
+  $('<label>', {text: 'タイトル：', for: 'customize-map-title-box'}).appendTo(div);
+  $('<input>', {id: 'customize-map-title-box', value: $('#customize-map-title').text(), class: 'ui-corner-all'}).appendTo(div);
+  return div;
+}
+
+function setUpCustomize(){
+  $('#customize-button')
+    .button({label: 'タイトル'})
+    .click(function(event){
+      openDialog('#customize-dialog',
+                 customizeContent(),
+                 {
+                   "設定": function(){
+                     updateCustomizeMapTitle($('#customize-map-title-box').val());
+                     setUpYearLabel();
+                     $("#infovis").empty();
+                     init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+                     gase('msmy #customize-dialog', 'map-title', $('#customize-map-title-box').val());
+                   },
+                   "戻る": function(){
+                     $(this).dialog("close");
+                   }
+                 }, 'カスタマイズマップ タイトル設定', false, 135, false, true, false, 740);
+      gase('msmy #customize-button', 'click', '');
+    });
+}
+
+function focusMarket(marketName){
+  var beforeSelectedOptions = optionValues();
+  var beforeSelectedMarkets = dataOptionValues();
+  var clickedByC = false;
+  if (!valueIsIncluded(marketName, beforeSelectedMarkets)) {
+    if (valueIsIncluded('c', beforeSelectedOptions)) {
+      clickedByC = true;
+      $("#data-option").multiselect("widget").find(":checkbox[value='" + marketName + "']").each(function(){
+        this.click();
+      });
+    } else {
+      alert('「' + marketName + '」はデータ選択されていないため表示できません。');
+      return;
+    }
+  }
+  var findResult = findMarketByName(marketName, yearValue(), beforeSelectedOptions);
+  if (findResult == undefined) {
+    if (valueIsIncluded('u', beforeSelectedOptions)) {
+      $.each(['e', 'f', 'o'], function(i, v){
+        if (valueIsIncluded(v, beforeSelectedOptions)) {
+          $("#option").multiselect("widget").find(":checkbox[value='" + v + "']").each(function(){
+            this.click();
+          });
+        }
+      });
+      findResult = findMarketByName(marketName, yearValue(), optionValues());
+    } else {
+      alert('現マップ表示設定では「' + marketName + '」を表示できません。');
+      // fallback
+      if (clickedByC) {
+        $("#data-option").multiselect("widget").find(":checkbox[value='" + marketName + "']").each(function(){
+          this.click();
+        });
+      }
+      return;
+    }
+  }
+  if (findResult != undefined) {
+    if (valueIsIncluded('a', beforeSelectedOptions)) {
+      $.each(['h'], function(i, v){
+        if (!valueIsIncluded(v, beforeSelectedOptions)) {
+          $("#option").multiselect("widget").find(":checkbox[value='" + v + "']").each(function(){
+            this.click();
+          });
+        }
+      });
+    }
+    sizeRangeValue(valueIsIncluded('w', beforeSelectedOptions) ? 'all' : findResult.valueRange);
+    
+    //if (!valueIsIncluded(findResult.id, highlightedMarkets)) {
+    //  highlightedMarkets.push(findResult.id);
+    //}
+    if (valueIsIncluded('a', beforeSelectedOptions)) {
+      highlightedMarkets = [findResult.id];
+    }
+    
+    $("#infovis").empty();
+    init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+
+    //node.data.matomeId, node.data.url
+    if (valueIsIncluded('b', beforeSelectedOptions)) {
+      drawGraph(marketName, {data: {matomeId: findResult.id, url: findResult.url}});
+    }
+    
+    gase('msmyfocus msdName', 'click', marketName);
+  }
+}
+
+function setUpMarketFocusLink(){
+  $('a.market-focus')
+    .click(function(){
+      //alert($(this).text());
+      var marketName = $(this).text();
+      focusMarket(marketName);
+    });
+}
+
+function setUpDialog(){
+  if (smartPhone) {
+    $(document).on("click", (smartPhone ? "#tip-dialog.dialog" : ".dialog"), function(){
+      $(this).closest(".ui-dialog-content").dialog("close");
+    });
+  }
+}
+
+function colorGradient(){
+  var div = $('<div>');
+  for (var i = 0; i < 20; i++) {
+    $('<div>', {style: 'left:' + (i * 5) + 'px;background-color:#' +
+                colorZeroPadding(blendColors(parseInt(colorIntStr($(i < 10 ? "#min-color" : "#max-color").val()), 16),
+                                             0,
+                                             i < 10 ? 1.0 - (i * 0.1) : (i - 9) * 0.1).toString(16)) +
+                ';width:5px;height:17px;position:absolute;'}).appendTo(div);
+  }
+  return div;
+}
+
+function colorIntStr(color){
+  return color.replace(/\#/g, "");
+}
+
+function colorZeroPadding(color){
+  return ("000000" + color).slice(-6);
+}
+
+function blendColors(color1, color2, percent){  
+  var remaining = 1.0 - percent;
+  
+  var red1 = (color1 >> 16) & 0xff;
+  var green1 = (color1 >> 8) & 0xff;
+  var blue1 = color1 & 0xff;
+  
+  var red2 = (color2 >> 16) & 0xff;
+  var green2 = (color2 >> 8) & 0xff;
+  var blue2 = color2 & 0xff;
+  
+  var color1 = ((red1 * percent) << 16) + ((green1 * percent) << 8) + (blue1 * percent);
+  var color2 = ((red2 * remaining) << 16) + ((green2 * remaining) << 8) + (blue2 * remaining);
+  
+  return Math.round(color1 + color2);
+}
+
+function nodeDetail(node){
+  var data = node.data;
+  var div = $('<div>');
+  $('<h2>', {text: node.name}).appendTo(div);
+  if (node.id == 'root') {
+    return div;
+  }
+  var dl = $('<dl>', {class: 'node-detail'});
+  if (data.value) {
+    $('<dt>', {text: data.type + ':'}).appendTo(dl);
+    $('<dd>', {text: data.value + ((data.date && data.date != '') ? (' (' + data.date + ')') : '')}).appendTo(dl);
+  }
+  if (data.change) {
+    $('<dt>', {text: '前年比:'}).appendTo(dl);
+    $('<dd>', {text: data.change}).appendTo(dl);
+  }
+  if (data.source) {
+    $('<dt>', {text: '出所:'}).appendTo(dl);
+    $('<dd>', {text: data.source}).appendTo(dl);
+  }
+  dl.appendTo(div);
+  if (data.unit != '') {
+    $('<p>', {text: '※換算レート：1' + data.unit + '=' + data.excRate + '円'}).appendTo(div);
+    $('<p>', {text: '※換算前の市場規模：' + data.dmVal + '兆' + data.unit}).appendTo(div);
+  }
+  if (data.cntbkwd != '') {
+    $('<p>', {text: '※この市場規模の値は、' + data.cntbkwd + 'の市場規模、前年比データをもとに逆算したものです。'}).appendTo(div);
+  }
+  if (data.comment.length > 0) {
+    $.each(data.comment, function(i, v){
+      div.append('<p>' + v.replace(/\n/g, '<br />') + '</p>');
+    });    
+  }
+  return div;
+}
+
+function graphValueFormatter(value){
+  return roundPrec(value, 4);
+}
+
+function createGraphData(json, name){
+  var targetMarket = false;
+  var yearDict = {};
+  $.each(json, function(i, v){
+    if (v.name == name) {
+      targetMarket = v;
+    }
+    $.each(v.yearly, function(i2, y){
+      if (y.year != ''){
+        yearDict[y.year.substr(0, 4)] = '';
+      }
+    });
+  });
+  var years = [];
+  $.each(yearDict, function(k){
+    years.push(k);
+  });
+  var excluded = false;
+  var targetDict = {};
+  $.each(targetMarket.yearly, function(i, y){
+    if (y.year == '') {
+      excluded = true;
+    }
+    targetDict[y.year.substr(0, 4)] = {
+      x: parseInt(y.year.substr(0, 4)),
+      xunit: y.year.substr(4),
+      //y: parseFloat(graphValueFormatter(y.value)),
+      y: parseFloat(y.value),
+      source: y.source,
+      url: y.url,
+      def: ('def' in targetMarket) ? targetMarket.def : '',
+      change: changeFormatter(y.change)
+    };
+  });
+  if (excluded) {
+    return [];
+  }
+  var result = {
+    key: targetMarket.name,
+    values: []
+  };
+  var sortedYears = years.sort();
+  var graphYearMin = parseInt(sortedYears[0]);
+  var graphYearMax = parseInt(sortedYears[sortedYears.length - 1]);
+  for (var y = graphYearMin; y <= graphYearMax; y++) {
+    var yStr = y.toString();
+    result.values.push((yStr in targetDict) ? targetDict[yStr] : {
+      x: y,
+      xunit: '',
+      y: null,
+      source: '',
+      url: '',
+      def: '',
+      change: '---'
+    });
+  }
+  return [result];
+}
+
+function matomeUrl(node){
+  return 'http://matome.naver.jp/odai/' + node.data.matomeId;
+}
+
+function drawGraph(name, node){
+  //$('#customize').hide();
+  //$('#note').hide();
+  //$('#list').hide();
+  //$('#search').hide();
+  //$('#update-history').hide();
+  $('#ads').hide();
+  $('#news').hide();
+  $('#social').hide();
+  $('#link').hide();
+  
+  var graphData = createGraphData(sourceData, name);
+  assertSourceDataIsImmutable('drawGraph');
+  
+  var chartTitleName = $('#chart1-title-name');
+  chartTitleName.empty();
+  var chartTitleNameMaxLength = 19;
+  $('<span>', {text: name.length > chartTitleNameMaxLength ? name.substr(0, chartTitleNameMaxLength) + '…' : name,
+               class: 'title'}).appendTo(chartTitleName);
+  var chartTitleLink = $('#chart1-title-link');
+  chartTitleLink.empty();
+  if (node != null) {
+    $('<a>', {text: '出所を表示', href: node.data.url, target: '_blank'}).appendTo(chartTitleLink);
+    $('<span>&nbsp;&nbsp;</span>').appendTo(chartTitleLink);
+  }
+  if (graphData.length != 0) {
+    $('<a>', {text: 'トレンドを比較', href: mstRoot + '#g=0&m=' + node.data.matomeId, target: '_blank'})
+      .appendTo(chartTitleLink);
+    $('<span>&nbsp;&nbsp;</span>').appendTo(chartTitleLink);
+  }
+  if (node != null) {
+    //$('<a>', {text: 'まとめ', href: matomeUrl(node), target: '_blank'}).appendTo(chartTitleLink);
+  }
+  
+  $('#chart1 svg').empty();
+  nv.addGraph(function(){
+    var chart = true ? nv.models.multiBarChart() : nv.models.lineChart();
+    chart.xAxis
+    //.axisLabel('（年または年度）')
+      .showMaxMin(true)
+      .tickFormat(d3.format('f'));
+    chart.yAxis
+      .axisLabel('市場規模(兆円)')
+      .tickFormat(function(d){ return d3.format(',.4f')(d) + '' });
+    chart.noData('年次データがありません');
+    chart.showLegend(false);
+    chart.showControls(false);
+    //chart.tooltips(false);
+    chart.tooltip(function(key, x, y, e, graph){
+      //$('div.nvtooltip').css('width', '200px');
+      
+      var changeSign = e.point['change'].substr(0,1);
+      return x + e.point['xunit'] + ' : ' + y + '兆円' + '<br />'
+        + '(前年比 ' + '<span style="color:' + (e.point['change'] == '---' ? '#000000' :
+                                                changeSign == '+' ? '#009900' :
+                                                changeSign == '-' ? '#990000' :
+                                                '#000000')
+        + '">' + e.point['change'] + '</span>' + ')'
+    });
+    chart.margin({top: 10, right: 20, bottom: 20, left: 100});
+    chart.multibar.delay(500);
+    d3.select('#chart1 svg')
+      .datum(graphData)
+      .transition().duration(500).call(chart);
+    return chart;
+  });
+  
+  $("#chart1-title-link a:contains('出所を表示')").click(function(){
+    gase('msmy msdName', 'click', node.name);
+  });
+  $("#chart1-title-link a:contains('トレンドを比較')").click(function(){
+    gase('msmymst msdName', 'click', node.name);
+  });
+  //$("#chart1").click(function(){
+  //  gase('msmy msdName g', 'click', node.name);
+  //});
+}
+
+function openTipDialog(node){
+  if (node.id != 'root') {
+    openDialog('#tip-dialog',
+               nodeDetail(node),
+               {
+                 "出所リンクを開く": function(){
+                   $(this).dialog("close");
+                   window.open(node.data.url, null);
+                   gase('msmy msdName', 'click', node.name);
+                 },
+                 "戻る": function(){
+                   $(this).dialog("close");
+                 }
+               });
+  }
+}
+
+function createMarketIds(json, seq){
+  //json.sort(function(a, b){ return a['id'] > b['id'] ? 1 : -1; });
+  var result = [];
+  var marketIdDict = {};
+  $.each(json, function(i, v){
+    marketIdDict[v.id] = v.name;
+  });
+  $.each(seq, function(i, v){
+    result.push((v in marketIdDict) ? marketIdDict[v] : '');
+  });
+  return {marketIds: result, marketIdDict: marketIdDict};
+}
+
+function updateCustomizeMapTitle(title){
+  var customizeMapTitle = $('#customize-map-title');
+  customizeMapTitle.html($('<div>', {id: 'customize-map-title-text',
+                                     text: title.length > 40 ? title.substr(0, 40) : title}));
+  if (!smartPhone) {
+    if (title != '') {
+      customizeMapTitle.show();
+    } else {
+      customizeMapTitle.hide();
+    }
+    setUpMapHeight();
+  }
+}
+
+function updateByLocationHash(mtOnlyUpdate){
+  //alert(location.hash);
+  if (/\/t=/.test(window.location.href) || /\&v=0\./.test(window.location.href)) {
+    window.location.href = window.location.href.replace(/\/t=/, '/#t=').replace(/\&v=0\./, '&v=0_');
+    return;
+  }
+  
+  var params = new Array();
+  if (location.hash.length >= 2) {
+    $.each(location.hash.split('#')[1].split('&'), function(){
+      var eachPrm = this.split('=');
+      params[eachPrm[0]] = decodeURI(eachPrm[1]);
+    });
+  }
+  if (mtOnlyUpdate === true) {
+    if ('mt' in params) {
+      updateCustomizeMapTitle(params['mt']);
+    } else {
+      //updateCustomizeMapTitle('');
+    }
+    return;
+  }
+  if ('t' in params) {
+    yearValue(params['t']);
+    setUpYearLabel();
+  }
+  if ('v' in params) {
+    //sizeRangeValue(params['v']);
+    sizeRangeValue(params['v'].replace(/_/, '.'));
+  }
+  if ('cn' in params) {
+    $('#min-color').val('#' + params['cn']);
+    $('#min-color').change();
+    updateColorGradient();
+  }
+  if ('cx' in params) {
+    $('#max-color').val('#' + params['cx']);
+    $('#max-color').change();
+    updateColorGradient();
+  }
+  if ('cr' in params) {
+    gradientRangeValue(params['cr']);
+    updateColorLabel();
+  }
+  
+  var mapSelectedOptions = [];
+  if ('o' in params) {
+    //var beforeSelectedOptions = optionValues();
+    $.each(getOptionValues([globalOptions, cellClickOptions, listSearchUpdateHistoryOptions]), function(i, v){
+      /*
+      if ((!valueIsIncluded(v, beforeSelectedOptions) && params['o'].indexOf(v) != -1)
+          || (valueIsIncluded(v, beforeSelectedOptions) && params['o'].indexOf(v) == -1)) {
+        $("#option").multiselect("widget").find(":checkbox[value='" + v + "']").each(function(){
+          this.click();
+        });
+      }
+      */
+      if (params['o'].indexOf(v) != -1) {
+        mapSelectedOptions.push(v);
+      }
+    });
+  } else {
+    var beforeSelectedOptions = optionValues();
+    $.each(getOptionValues([globalOptions, cellClickOptions, listSearchUpdateHistoryOptions]), function(i, v){
+      if (valueIsIncluded(v, beforeSelectedOptions)) {
+        mapSelectedOptions.push(v);
+      }
+    });
+  }
+  optionValues(mapSelectedOptions);
+  
+  var dataSelectedOptions = [];
+  if ('m' in params) {
+    var selectedMarketsBits = selectedMarketsHexToBits(params['m']);
+    var beforeSelectedMarkets = dataOptionValues();
+    $.each(marketIds, function(i, v){
+      /*
+      if ((i < selectedMarketsBits.length
+           && ((!valueIsIncluded(v, beforeSelectedMarkets) && selectedMarketsBits.substr(i, 1) == '1')
+               || (valueIsIncluded(v, beforeSelectedMarkets) && selectedMarketsBits.substr(i, 1) == '0')))
+          || (!(i < selectedMarketsBits.length) && valueIsIncluded(v, beforeSelectedMarkets))) {
+        $("#option").multiselect("widget").find(":checkbox[value='" + v + "']").each(function(){
+          this.click();
+        });
+      }
+      */
+      if (   (i <  selectedMarketsBits.length && selectedMarketsBits.substr(i, 1) == '1' && v != '')
+          // || (i >= selectedMarketsBits.length && valueIsIncluded(v, beforeSelectedMarkets))
+         ) {
+        dataSelectedOptions.push(v);
+      }
+    });
+  } else {
+    var beforeSelectedMarkets = dataOptionValues();
+    $.each(marketIds, function(i, v){
+      if (valueIsIncluded(v, beforeSelectedMarkets)) {
+        dataSelectedOptions.push(v);
+      }
+    });
+  }
+  dataOptionValues(dataSelectedOptions);
+  
+  if ('h' in params) {
+    highlightedMarkets = [];
+    var currentSelectedOptions = optionValues();
+    if (valueIsIncluded('h', currentSelectedOptions)) {
+      var paramHighlightedMarkets = params['h'].split(',');
+      var beforeSelectedMarkets = dataOptionValues();
+      $.each(sourceData, function(i, v){
+        if (valueIsIncluded(v.id, paramHighlightedMarkets)) {
+          highlightedMarkets.push(v.id);
+          if (!valueIsIncluded(v.name, beforeSelectedMarkets)) {
+            $("#data-option").multiselect("widget").find(":checkbox[value='" + v.name + "']").each(function(){
+              this.click();
+            });
+          }
+        }
+      });
+    }
+  }
+  assertSourceDataIsImmutable('updateByLocationHash');  
+}
+
+function selectedMarketsHexToBits(selectedMarketsHex){
+  var result = '';
+  var splitUnit = 1;
+  var zeroPaddingStr = '';
+  for (var i = 0; i < splitUnit * 4; i++) {
+    zeroPaddingStr += '0';
+  }
+  for (var i = 0; i < selectedMarketsHex.length; i += splitUnit) {
+    result += (zeroPaddingStr + parseInt(selectedMarketsHex.substr(i, splitUnit), 16).toString(2)).slice(-splitUnit * 4);
+  }
+  return result;
+}
+
+function selectedMarketsBitsToHex(selectedMarketsBits){
+  var result = '';
+  var splitUnit = 4;
+  var zeroPaddingStr = '';
+  for (var i = 0; i < splitUnit; i++) {
+    zeroPaddingStr += '0';
+  }
+  for (var i = 0; i < selectedMarketsBits.length; i += splitUnit) {
+    //alert(selectedMarketsBits.substr(i, splitUnit));
+    result += parseInt((selectedMarketsBits.substr(i, splitUnit) + zeroPaddingStr).substr(0, splitUnit), 2).toString(16);
+  }
+  return result;
+}
+
+function getOptionValues(options){
+  var result = [];
+  $.each(options, function(i, o){
+    $.each(o, function(i2, v){
+      result.push(v.value);
+    });
+  });
+  return result;
+}
+
+function selectedOptions(){
+  var result = '';
+  $.each(getOptionValues([globalOptions, cellClickOptions, listSearchUpdateHistoryOptions]), function(i, v){
+    result += (valueIsIncluded(v, optionValues()) ? v : '');
+  });
+  return result;
+}
+
+function updateLocationHash(){
+  var selectedMarkets = dataOptionValues();
+  var selectedMarketsBits = '';
+  $.each(marketIds, function(i, v){
+    selectedMarketsBits += (valueIsIncluded(v, selectedMarkets) ? '1' : '0');
+  });
+  var newLocationHash = '#t='  + yearValue() +
+                        //'&v='  + sizeRangeValue() +
+                        '&v='  + sizeRangeValue().replace(/\./, '_') +
+                        '&cn=' + colorIntStr($("#min-color").val()).toLowerCase() +
+                        '&cx=' + colorIntStr($("#max-color").val()).toLowerCase() +
+                        '&cr=' + gradientRangeValue() +
+                        '&o='  + selectedOptions() +
+                        '&m='  + selectedMarketsBitsToHex(selectedMarketsBits) +
+                        '&h='  + highlightedMarkets.join(',') +
+                        '&mt=' + $('#customize-map-title').text();
+  var newUrl = location.href.split('/').pop().split('#')[0] + encodeURI(newLocationHash);
+  if (history && history.pushState) {
+    if (location.hash == '') {
+      history.replaceState(null, null, newUrl);
+    } else if (location.hash != newLocationHash && location.hash != encodeURI(newLocationHash)) {
+      history.pushState(null, null, newUrl);
+    }
+  } else {
+    window.location.href = newUrl;
+    //location.reload();
+    //alert(cssua.userAgent.opera);
+  }
+}
+
+function showMapCtl(){
+  var showCtls;
+  if (smartPhone) {
+    showCtls = [
+      'map-color-legend',
+      'map-sl-size',
+      'map-sl-year',
+      //'map-sl-grad-label',
+      'map-sl-grad',
+      'map-mb-help'
+    ];
+  } else {
+    showCtls = [
+      'map-year-label',
+      'map-y-slider',
+      'map-dd-size',
+      'map-color-legend',
+      'map-slider',
+      'map-option',
+      'data-select-option',
+      'update-history',
+      'search',
+      'list',
+      //'note',
+      'customize',
+      //'social',
+      'map-help'
+    ];
+  }
+  $.each(showCtls, function(i, v){
+    $('#' + v).show();
+  });
+}
+
+function assertSourceDataIsImmutable(message){
+  if (debugMode) {
+    var sourceDataIsEqualToOrgSrcCopy = _.isEqual(sourceData, orgSrcCopy);
+    console.assert(sourceDataIsEqualToOrgSrcCopy, '### sourceData ### ' + message);
+    if (!sourceDataIsEqualToOrgSrcCopy) {
+      $.each(sourceData, function(i, v){
+        var elementIsEqual = _.isEqual(sourceData[i], orgSrcCopy[i]);
+        console.assert(elementIsEqual, i + ' : ' + v.name);
+        if (!elementIsEqual) {
+          console.dir(sourceData[i]);
+          console.dir(orgSrcCopy[i]);
+        }
+      });
+    }
+  }
+}
+
+function init(valueRange, gradientRange, minColor, maxColor, year, reSized){
+  //init TreeMap
+  tm = new $jit.TM.Squarified({
+    //where to inject the visualization
+    injectInto: 'infovis',
+    //no parent frames
+    titleHeight: 0,
+    //titleHeight: 35,
+    //enable animations
+    animate: animate,
+    //no box offsets
+    offset: 0,
+    //add cushion gradients
+    cushion: useGradients,
+    //duration of the animation
+    duration: 1500,
+    //Enable tips
+    Tips: {
+      enable: smartPhone ? false : true,
+      //add positioning offsets
+      offsetX: 20,
+      offsetY: 20,
+      //implement the onShow method to
+      //add content to the tooltip when a node
+      //is hovered
+      onShow: function(tip, node, isLeaf, domElement){
+        //if (node.id != 'root') {
+        tip.innerHTML = '';
+        nodeDetail(node).appendTo(tip);
+        //drawGraph(node.name);
+        //} else {
+        //  tip.innerHTML = '';
+        //}
+      }
+    },
+    //Add the name of the node in the correponding label
+    //This method is called once, on label creation.
+    onCreateLabel: function(domElement, node){
+      domElement.innerHTML = node.name;
+      var style = domElement.style;
+      style.display = '';
+      style.cursor = 'default';
+      style.fontSize = (node.id != 'root' ? node.data.fontSize :
+                        smartPhone ? '34px' :
+                        '22px');
+      //style.verticalAlign = 'middle';
+      //style.border = '1px solid transparent';
+      if (node.data.fontSize != undefined) {
+        var nodeDataFontSize = parseFloat(node.data.fontSize.replace(/px$/i, ''));
+        if (nodeDataFontSize > 20) {
+          style.lineHeight = Math.round(nodeDataFontSize * 1.2) + 'px';
+        }
+      }
+      style.border = '1px solid #999999';
+      if (valueIsIncluded(node.data.matomeId, highlightedMarkets)) {
+        style.border = '5px solid #9FD4FF';
+      } else {
+        domElement.onmouseover = function(){
+          style.border = '1px solid #9FD4FF';
+        };
+        domElement.onmouseout = function(){
+          style.border = '1px solid #999999';
+        };
+      }
+      domElement.onclick = function(){
+        //smartPhone ? openTipDialog(node) : window.open(node.data.url, null);
+        if (smartPhone) {
+          openTipDialog(node);
+          gase('msmyt msdName', 'click', node.name);
+        } else {
+          if (node.id != 'root') {
+            var currentSelectedOptions = optionValues();
+            if (valueIsIncluded('s', currentSelectedOptions)) {
+              window.open(node.data.url, null);
+              gase('msmy msdName d', 'click', node.name);
+            }
+            if (valueIsIncluded('g', currentSelectedOptions)) {
+              drawGraph(node.name, node);
+              gase('msmyg msdName', 'click', node.name);
+            }
+            if (valueIsIncluded('t', currentSelectedOptions)) {
+              if (marketHasNoYearlyData(node.name)) {
+                alert("「" + node.name + "」は年次データがないため、市場規模トレンドのサポート対象外です。");
+              } else {
+                window.open(mstRoot + '#g=0&m=' + node.data.matomeId, null);
+                gase('msmymst msdName d', 'click', node.name);
+              }
+            }
+            if (valueIsIncluded('d', currentSelectedOptions)) {
+              window.open(matomeUrl(node), null);
+            }
+            if (valueIsIncluded('h', currentSelectedOptions)) {
+              var market = node.data.matomeId;
+              if (valueIsIncluded(market, highlightedMarkets)) {
+                highlightedMarkets.splice($.inArray(market, highlightedMarkets), 1);
+              } else {
+                highlightedMarkets.push(market);
+              }
+              $("#infovis").empty();
+              init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+            }
+            if (valueIsIncluded('r', currentSelectedOptions)) {
+              $("#data-option").multiselect("widget").find(":checkbox[value='" + node.name + "']").each(function(){
+                this.click();
+              });
+              var market = node.data.matomeId;
+              if (valueIsIncluded(market, highlightedMarkets)) {
+                highlightedMarkets.splice($.inArray(market, highlightedMarkets), 1);
+                $("#infovis").empty();
+                init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+              } else {
+                updateLocationHash();
+              }
+            }
+          }
+        }
+      };
+    }
+  });
+
+  if (reSized) {
+    /*
+    tm.loadJSON(createMapData(filterByOption(createTargetYearData(sourceData, year, optionValues())),
+                              valueRange, gradientRange, minColor, maxColor));
+    */
+    tm.loadJSON(createMapData(createTargetYearData(filterByPrpAry(sourceData, 'name', dataOptionValues()),
+                                                   year, optionValues()),
+                              valueRange, gradientRange, minColor, maxColor));
+    tm.refresh();
+    updateLocationHash();
+    assertSourceDataIsImmutable('init:reSized');
+  } else {
+    var timestamp = parseInt((new Date)/1);
+    // $.post(msmyRoot + "data.cgi",
+    $.post("data.cgi",
+           {
+               tp: totalPx,
+               vr: valueRange,
+               gr: gradientRange,
+               nc: colorIntStr(minColor),
+               xc: colorIntStr(maxColor),
+               mt: "yearly",
+               ts: year,
+               timestamp: timestamp
+           },
+           function(dataJson){
+                //alert(dataJson.data);
+                if (dataJson.data == undefined) {
+                  if (!(history && history.pushState) && window.location.href != msmyRoot) {
+                    window.location.href = msmyRoot;
+                    return;
+                  }
+                }
+                
+                var json = dataJson.data;
+                //alert(json.data.as);
+                sourceData = json;
+                var resCreateMarketIds = createMarketIds(json, dataJson.seq);
+                marketIds    = resCreateMarketIds.marketIds;
+                marketIdDict = resCreateMarketIds.marketIdDict;
+                setUpOptionSelect();
+                setUpDataSelect(json);
+                
+                if (debugMode) {
+                  orgSrcCopy = _.cloneDeep(json);
+                  assertSourceDataIsImmutable('init:afterCopy');
+                }
+                
+                createYearRange(json);
+                setUpYSlider();
+                setUpCbYear();
+                setUpYearLabel();
+                updateByLocationHash();
+                
+                /*
+                tm.loadJSON(createMapData(filterByOption(createTargetYearData(json, yearValue(), optionValues())),
+                                          sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val()));
+                */
+                tm.loadJSON(createMapData(createTargetYearData(filterByPrpAry(json, 'name', dataOptionValues()),
+                                                               yearValue(), optionValues()),
+                                          sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val()));
+                tm.refresh();
+                
+                updateLocationHash();
+
+                //alert(location.href);
+                
+                setUpSearch(json);
+                setUpList(json);
+
+                //$.getJSON(msmyRoot + "uh.cgi",
+                //          function(uhJson){
+                            setUpUpdateHistory(dataJson.uh);
+                            
+                            showMapCtl();
+                            
+                //          });
+
+                if (history && history.pushState) {                
+                  window.addEventListener('popstate', function(event){
+                    var beforeCustomizeMapTitle = $('#customize-map-title').text();
+                    updateByLocationHash(true);
+                    var customizeMapTitle = $('#customize-map-title').text();
+                    if (!smartPhone
+                        && (   (beforeCustomizeMapTitle == '' && customizeMapTitle != '')
+                               || (beforeCustomizeMapTitle != '' && customizeMapTitle == ''))) {
+                      updateByLocationHash();
+                      $("#infovis").empty();
+                      //$("#infovis")[0].innerHTML = "";
+                      init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+                    } else {
+                      updateByLocationHash();
+                      updateInfovis();
+                    }
+                  }, false);
+                } else {
+                  window.addEventListener('hashchange', function(event){
+                    //alert('hashchange');
+                    
+
+                    var beforeCustomizeMapTitle = $('#customize-map-title').text();
+                    updateByLocationHash(true);
+                    var customizeMapTitle = $('#customize-map-title').text();
+                    if (!smartPhone
+                        && (   (beforeCustomizeMapTitle == '' && customizeMapTitle != '')
+                               || (beforeCustomizeMapTitle != '' && customizeMapTitle == ''))) {
+                      updateByLocationHash();
+                      $("#infovis").empty();
+                      //$("#infovis")[0].innerHTML = "";
+                      init(sizeRangeValue(), gradientRangeValue(), $("#min-color").val(), $("#max-color").val(), yearValue(), true);
+                    } else {
+                      updateByLocationHash();
+                      updateInfovis();
+                    }
+
+                    
+                  }, false);
+                }
+                
+                //alert(window.location.href);
+                //if (!(history && history.pushState) && hrefBeforeLoad != msmyRoot && window.location.href != hrefBeforeLoad) {
+                  //window.location.href = hrefBeforeLoad;
+                //}
+                
+                
+                if ($("#infovis:empty").size() != 0) {
+                  //alert($("#infovis:empty").size());
+                  location.reload();
+                }
+                
+              }, "json");
+  }
+}
